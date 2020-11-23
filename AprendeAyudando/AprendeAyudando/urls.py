@@ -15,9 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from . import views
 
 urlpatterns = [
-    # path('', ) // TODO Static landing page
+    path('', views.landingpage),
     path('admin/', admin.site.urls),
     path('courses/', include('courses.urls')),
 ]
