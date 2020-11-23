@@ -24,15 +24,37 @@ def join(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     
     # // TODO add logic to add user to course
+    success = False
+
+    # If the current logged user isn't enrolled in the course then add him
+    if request.user not in course.enrolled_users.all():
+        course.enrolled_users.add(request.user)
+        success = True
+
+    if success:
+        return HttpResponse("Bienvenido %s, ahora estás inscrito en el curso: %s." % (request.user.username, course.title))
+    else:
+        return HttpResponse("ERROR: Ya estás inscrito en este curso: %s." % course.title)
 
     # Return to course
-    return render(request, 'courses/detail.html', {'course': course})
+    # return render(request, 'courses/detail.html', {'course': course})
 
 
 
 @login_required
 def leave(request, course_id):
-    return HttpResponse("You no longer can participate in course id %s." % course_id)
+    course = get_object_or_404(Course, pk=course_id)
+
+    success = False
+    # If the current logged user isn't enrolled in the course then add him
+    if request.user in course.enrolled_users.all():
+        course.enrolled_users.remove(request.user)
+        success = True
+
+    if success:
+        return HttpResponse("Ya no estás inscrito en este curso: %s." % course.title)
+    else:
+        return HttpResponse("ERROR: No puedes cancelar tu inscripción en el siguiente curso porque no estás inscrito: %s." % course.title)
 
 
 # @permission_required('createCourse TODO')
