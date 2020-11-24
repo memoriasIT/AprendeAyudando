@@ -453,16 +453,17 @@
 			border-radius: 100%;
 			color: #202020;
 			display: inline-block;
-			height: 3.25em;
 			line-height: 3.25em;
 			text-align: center;
-			width: 3.25em;
 		}
 
 			.icon.rounded.big {
+				height: 3.25em;
 				font-size: 2.5em;
 				margin-bottom: 0.5em;
+				width: 3.25em;
 			}
+
 
 			.icon.rounded.color1 {
 				background-color: #3cadd4;
@@ -937,7 +938,6 @@
 
 	body.landing #header {
 		left: 0;
-		position: absolute;
 		top: 0;
 	}
 
@@ -1043,7 +1043,7 @@
 
 		.mainBanner {
 			background-color: #e3f6f5;
-			padding: 10em 0em 5em;
+			padding: 5em 0em 5em;
 		}
 
 		.zero {
@@ -1056,7 +1056,7 @@
 
 		#banner h2 {
 			color: #202020;
-			font-size: 4em;
+			font-size: 3em;
 			line-height: 1.25em;
 			margin: 0 0 0.5em 0;
 			padding: 0;
@@ -1067,11 +1067,23 @@
 			margin-bottom: 1.75em;
 		}
 
-		#pink_button {
+		.pink {
 			background-color: #ff7d97;
 		}
 
-/* Zero */
+/* Login */
+
+.login{
+	padding-bottom: 10em;
+}
+
+.login h2{
+	font-size: 4em;
+}
+
+.login icon{
+	font-size: 4em;
+}
 
 /* Wrapper */
 

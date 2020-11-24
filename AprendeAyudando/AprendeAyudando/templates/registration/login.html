@@ -1,6 +1,16 @@
-<h2>Log In</h2>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Log In</button>
-</form>
+{% extends "registration/base.html" %}
+{% block title %}{{login}}{% endblock %}
+
+{% block content %}
+<section class="wrapper align-center login">
+    <div class="container 50%">
+        <h2>Log In</h2>
+        <form method="post">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="button big" type="submit">Log In</button>
+        </form>
+    </div>
+</section>
+  </div>
+{% endblock %}
