@@ -38,11 +38,6 @@ def join(request, course_id): #Esto antes era join
         course.enrolled_users.add(request.user)
         success = True
 
-    #if success:
-    #    return HttpResponse("Bienvenido %s, ahora estás inscrito en el curso: %s." % (request.user.username, course.title))
-    #else:
-    #    return HttpResponse("Hola %s, te encuentras en el curso: %s." % (request.user.username, course.title))
-
     return render(request, 'courses/curso.html',{'usuario': request.user, 'course': course, 'success': success})
 
     # Return to course

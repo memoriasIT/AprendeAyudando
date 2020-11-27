@@ -2,9 +2,9 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% if success is True %}
-    <p>Bienvenido {{usuario.first_name}}, ahora estás inscrito en el curso:{{course.title}}</p>
+    <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en el curso: {{ course.title }}</p>
 {% else %}
-    <p>Hola {{usuario.first_name}}, te encuentras en el curso: <strong>{{course.title}}</strong></p>
+    <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
 {% endif %}
 <form action="{% url 'courses:leave' course.id %}" method="post">
     {% csrf_token %}
