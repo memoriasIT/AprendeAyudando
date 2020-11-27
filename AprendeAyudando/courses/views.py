@@ -2,7 +2,6 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
-
 from .models import Course
 
 @login_required
@@ -15,9 +14,13 @@ def index(request):
         if request.user in curso.enrolled_users.all() or request.user==curso.teacher:
             id_courses_list_inscripted.extend([curso.id]) 
 
+    is_teacher = False
+    if request.user.has_perm('courses.add_course'):
+        is_teacher = True
     context = {
         'courseList': courseList,
-        'courses_list_inscripted' : id_courses_list_inscripted
+        'courses_list_inscripted': id_courses_list_inscripted,
+        'is_teacher': is_teacher
     }
     return render(request, 'courses/index.html', context)
 

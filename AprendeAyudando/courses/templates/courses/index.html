@@ -11,6 +11,9 @@
   <body>
       <img src="{% static 'courses/images/logo.png' %}" alt="">
       <!--AQUI PONDRIA EL BOTON PARA LA SOLICITUD DE PROFESOR O ENTIDAD PUBLICA/PRIVADA-->
+      {% if is_teacher %}
+        <h5><a href="{% url 'courses:create' %}">Añadir curso</a></h5>
+      {% endif %}
       <h1>Lista de cursos</h1>
     {% if courseList %}
     <ol id="listaCursos">
