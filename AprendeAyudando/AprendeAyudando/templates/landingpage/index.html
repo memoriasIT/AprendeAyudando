@@ -12,7 +12,11 @@
 				<div class="5u 12u$(medium)">
 					<h2>Únete a nosotros</h3>
 					<p>Aprende Ayudando es una plataforma que permite de forma sencilla organizar cursos y eventos solidarios establecidos por profesores y entidades público privadas. Pueden participar en estos  todas aquellas personas que deseen tomar parte en cursos de servicio social.</p>
-					<button class="button big pink">Registrarse</button>
+					{% if not user.is_authenticated %}
+						<a href="/register" class="button big pink">Registrarse</a>
+					{% else %}
+						<a href="/courses" class="button big pink">Ver mis cursos</a>
+					{% endif %}
 				</div>
 			</div>
 		</div>
