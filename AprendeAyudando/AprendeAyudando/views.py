@@ -3,8 +3,8 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from .forms import RegisterForm
-from django.contrib.auth import login
-
+from django.contrib.auth import login, logout
+from django.shortcuts import redirect
 
 def landingpage(request):
     return render(request, 'landingpage/index.html')

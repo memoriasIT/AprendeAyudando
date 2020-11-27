@@ -19,8 +19,13 @@
 					<ul>
 						<li><a href="/">Inicio</a></li>
 						<li><a href="#">Cursos y Actividades</a></li>
-						<li><a href="/register" >Registro</a></li>
-						<li><a href="/accounts/login" class="button special" >Login</a></li>
+						{% if not user.is_authenticated %}
+							<li><a href="/register" >Registro</a></li>
+							<li><a href="/accounts/login" class="button special" >Login</a></li>
+						{% else %}
+							<li><a href="#" >Mi perfil</a></li>
+							<li><a href="{% url 'logout' %}" class="button special" >Cerrar sesion</a></li>
+						{% endif %}
 					</ul>
 				</nav>
             </header>
