@@ -12,7 +12,7 @@ def index(request):
 
     id_courses_list_inscripted = []
     for curso in courseList:
-        if request.user in curso.enrolled_users.all():
+        if request.user in curso.enrolled_users.all() or request.user==curso.teacher:
             id_courses_list_inscripted.extend([curso.id]) 
 
     context = {
@@ -61,6 +61,15 @@ def leave(request, course_id):
         return HttpResponse("ERROR: No puedes cancelar tu inscripción en el siguiente curso porque no estás inscrito: %s." % course.title)
 
 
-# @permission_required('createCourse TODO')
-# def createCourse(request):
-#     # // TODO
+
+@login_required
+@permission_required('courses.add_course', raise_exception=True)
+def createCourse(request):
+
+    if request.method=="POST":
+        new_course_name=request.POST["new_course_name"]
+        new_course = Course.objects.create(title=new_course_name, teacher=request.user)
+        new_course.save()
+        return HttpResponse("Se ha creado el curso: %s" % new_course_name)
+    return render(request, 'create.html',{})
+
