@@ -14,7 +14,11 @@
     {% if courseList %}
     <ol id="listaCursos">
         {% for course in courseList %}
-            <li><a href="{% url 'courses:detail' course.id %}">{{ course.title }}</a></li>
+            {% if not course.id in courses_list_inscripted %}
+                <li><a href="{% url 'courses:inscription' course.id %}">{{ course.title }}</a></li>
+            {% else %}
+                <li><a href="{% url 'courses:join' course.id %}">{{ course.title }}</a></li>
+            {% endif %}
         {% endfor %}
     </ol>
     {% else %}

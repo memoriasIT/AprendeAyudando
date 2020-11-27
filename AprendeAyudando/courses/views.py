@@ -8,19 +8,26 @@ from .models import Course
 @login_required
 def index(request):
     courseList = Course.objects.order_by('-pub_date')[:5]
+    
+
+    id_courses_list_inscripted = []
+    for curso in courseList:
+        if request.user in curso.enrolled_users.all():
+            id_courses_list_inscripted.extend([curso.id]) 
+
     context = {
         'courseList': courseList,
+        'courses_list_inscripted' : id_courses_list_inscripted
     }
-    
     return render(request, 'courses/index.html', context)
 
 @login_required
-def details(request, course_id):
+def inscription(request, course_id): #Esto antes era details
     course = get_object_or_404(Course, pk=course_id)
-    return render(request, 'courses/detail.html', {'course': course})
+    return render(request, 'courses/inscripcion.html', {'course': course})
 
 @login_required
-def join(request, course_id):
+def join(request, course_id): #Esto antes era join
     course = get_object_or_404(Course, pk=course_id)
     
     # // TODO add logic to add user to course
@@ -31,10 +38,12 @@ def join(request, course_id):
         course.enrolled_users.add(request.user)
         success = True
 
-    if success:
-        return HttpResponse("Bienvenido %s, ahora estás inscrito en el curso: %s." % (request.user.username, course.title))
-    else:
-        return HttpResponse("ERROR: Ya estás inscrito en este curso: %s." % course.title)
+    #if success:
+    #    return HttpResponse("Bienvenido %s, ahora estás inscrito en el curso: %s." % (request.user.username, course.title))
+    #else:
+    #    return HttpResponse("Hola %s, te encuentras en el curso: %s." % (request.user.username, course.title))
+
+    return render(request, 'courses/curso.html',{'usuario': request.user, 'course': course, 'success': success})
 
     # Return to course
     # return render(request, 'courses/detail.html', {'course': course})

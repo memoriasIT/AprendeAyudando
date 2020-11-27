@@ -1,5 +1,5 @@
-<h1>{{ course.title }}</h1>
-
+<h2>Inscripción en {{ course.title }}</h2>
+<p>Desea realizar la Inscripción en el curso <strong>{{ course.title }}</strong> ?</p>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
@@ -8,9 +8,9 @@
 <input type="submit" value="Matricularse">
 </form>
 
-<form action="{% url 'courses:leave' course.id %}" method="post">
+<!--<form action="{% url 'courses:leave' course.id %}" method="post">
     {% csrf_token %}
     <input type="submit" value="Desmatricularse">
-</form>
+</form>-->
 
 <!-- Maybe add more code to a course -->
