@@ -1,0 +1,12 @@
+<h1>{{ activity.title }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if success is True %}
+    <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en la actividad: {{ activity.title }}</p>
+{% else %}
+    <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
+{% endif %}
+<form action="{% url 'activity:leave' activity.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Desmatricularse">
+</form>

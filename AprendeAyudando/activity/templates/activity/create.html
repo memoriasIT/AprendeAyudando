@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear una actividad</title>
+</head>
+<body>
+    <h1>Solo puede entrar las entidades publico/privadas</h1>
+
+    <form action="{% url 'activity:create' %}" method="POST">
+        {% csrf_token %}
+        <p>Nombre de la actividad: <input type="text" name="new_activity_name" id=""></p>
+        <p>
+            <fieldset>
+                <legend>Desea restringir la entrada?</legend>
+                <label>
+                    <input type="radio" name="is_restricted_entry" id=""> Sí
+                </label>
+                <label>
+                    <input type="radio" name="is_restricted_entry" id=""> No
+                </label>
+            </fieldset>
+        </p>
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>

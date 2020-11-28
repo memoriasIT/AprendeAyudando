@@ -27,7 +27,7 @@ def index(request):
 @login_required
 def inscription(request, course_id): #Esto antes era details
     course = get_object_or_404(Course, pk=course_id)
-    return render(request, 'courses/inscripcion.html', {'course': course})
+    return render(request, 'courses/inscription.html', {'course': course})
 
 @login_required
 def join(request, course_id): #Esto antes era join

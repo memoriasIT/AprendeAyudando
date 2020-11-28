@@ -1,0 +1,9 @@
+<h2>Inscripción en {{ activity.title }}</h2>
+<p>Desea realizar la Inscripción en la actividad <strong>{{ activity.title }}</strong>?</p>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="{% url 'activity:join' activity.id %}" method="post">
+{% csrf_token %}
+<input type="submit" value="Matricularse">
+</form>
