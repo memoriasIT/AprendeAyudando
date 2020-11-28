@@ -15,8 +15,8 @@
         <img src="{% static 'courses/images/logo.png' %}" alt="" style="width:15%;height:15%;border-radius:500px;">
         <br><br><br>
 
-        {% if is_teacher %}
-            <h5><a href="{% url 'activity:create' %}">Añadir actividad</a></h5>
+        {% if is_entity %}
+			<a style="margin-bottom: 50px;" href="{% url 'activity:create' %}" class="button big pink">Añadir actividad</a>
         {% endif %}
         {% if activityList %}
         <ol id="prettyList" style="width:92%;">
