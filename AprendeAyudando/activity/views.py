@@ -10,12 +10,13 @@ from .models import Activity
 def index(request):
     activityList = Activity.objects.order_by('-pub_date')[:5]
     
-
+    #Miramos si el usuario logeado se encuentra en la activida o si el usuario logeado es el propietario de la actividad
     id_activities_list_inscripted = []
     for activity in activityList:
         if request.user in activity.enrolled_users.all() or request.user==activity.entity:
             id_activities_list_inscripted.extend([activity.id]) 
 
+    #Miramos si tiene permisos de añadir actividades(en un principio solo Admins y EntidadesPP) para mostrar o no mostrar el enlace de "crear actividad"
     is_entity = False
     if request.user.has_perm('activity.add_activity'):
         is_entity = True
@@ -27,15 +28,14 @@ def index(request):
     return render(request, 'activity/index.html', context)
 
 @login_required
-def inscription(request, activity_id): #Esto antes era details
+def inscription(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
     return render(request, 'activity/inscription.html', {'activity': activity})
 
 @login_required
-def join(request, activity_id): #Esto antes era join
+def join(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
     
-    # // TODO add logic to add user to course
     success = False
 
     # If the current logged user isn't enrolled in the course then add him
@@ -66,7 +66,7 @@ def leave(request, activity_id):
         return HttpResponse("ERROR: No puedes cancelar tu inscripción en la siguiente actividad porque no estás inscrito: %s." % activity.title)
 
 
-
+#Restringimos la entrada a los que puedan añadir actividades, si alguien intenta entrar sin permisos-> Forbiden error
 @login_required
 @permission_required('activity.add_activity', raise_exception=True)
 def createActivity(request):

@@ -10,7 +10,6 @@
   </head>
   <body>
       <img src="{% static 'activity/images/logo.png' %}" alt="">
-      <!--AQUI PONDRIA EL BOTON PARA LA SOLICITUD DE PROFESOR O ENTIDAD PUBLICA/PRIVADA-->
       {% if is_entity %}
         <h5><a href="{% url 'activity:create' %}">Añadir actividad</a></h5>
       {% endif %}

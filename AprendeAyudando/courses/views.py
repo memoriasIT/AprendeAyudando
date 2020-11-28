@@ -8,12 +8,13 @@ from .models import Course
 def index(request):
     courseList = Course.objects.order_by('-pub_date')[:5]
     
-
+    #Miramos si el usuario logeado se encuentra en el curso o si el usuario logeado es el propietario del curso
     id_courses_list_inscripted = []
     for curso in courseList:
         if request.user in curso.enrolled_users.all() or request.user==curso.teacher:
             id_courses_list_inscripted.extend([curso.id]) 
 
+    #Miramos si tiene permisos de añadir cursos(en un principio solo Admins y Profes) para mostrar o no mostrar el enlace de "crear curso"
     is_teacher = False
     if request.user.has_perm('courses.add_course'):
         is_teacher = True
@@ -64,7 +65,7 @@ def leave(request, course_id):
         return HttpResponse("ERROR: No puedes cancelar tu inscripción en el siguiente curso porque no estás inscrito: %s." % course.title)
 
 
-
+#Restringimos la entrada a los que puedan añadir cursos, si alguien intenta entrar sin permisos-> Forbiden error
 @login_required
 @permission_required('courses.add_course', raise_exception=True)
 def createCourse(request):
