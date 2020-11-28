@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Index - Aprende Ayudando</title>
+    <title>{% block title %} AprendeAyudando {% endblock %}</title>
     <link rel="stylesheet" type="text/css" href="{% static 'courses/css/skel.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'courses/css/style.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'courses/css/style-xlarge.css' %}"/>
@@ -18,12 +18,13 @@
 				<nav id="nav">
 					<ul>
 						<li><a href="/">Inicio</a></li>
-						<li><a href="#">Cursos y Actividades</a></li>
+						<li><a href="/courses">Cursos</a></li>
+						<li><a href="/activity">Actividades</a></li>
 						{% if not user.is_authenticated %}
 							<li><a href="/register" >Registro</a></li>
 							<li><a href="/accounts/login" class="button special" >Login</a></li>
 						{% else %}
-							<li><a href="#" >Mi perfil</a></li>
+							<li><a href="/account" >Mi perfil</a></li>
 							<li><a href="{% url 'logout' %}" class="button special" >Cerrar sesion</a></li>
 						{% endif %}
 					</ul>

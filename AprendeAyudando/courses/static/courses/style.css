@@ -1,6 +1,25 @@
- 
-ol {
-    counter-reset: li; 
+ul {
+    text-align: left;
+    margin-left: 40%;
+    list-style-type: none;
+}
+
+.user_logo {
+    background: url('/static/courses/images/email_logo.png') no-repeat left top;
+    height: 15%;
+}
+
+.list_image_text {
+    font-weight: bold;
+    line-height: 2.255555;
+}
+
+.clear_left {
+    clear: left;
+}
+
+#prettyList {
+    counter-reset: prettyListItem; 
     list-style: none; 
     *list-style: decimal; 
     font: 15px 'trebuchet MS', 'lucida sans';
@@ -9,11 +28,11 @@ ol {
     text-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
-ol {
+#prettyList {
     margin: 0 0 0 2em; 
 }
 
-  li{
+#prettyListItem {
     position: relative;
     display: block;
     padding: .4em .4em .4em .8em;
@@ -25,13 +44,13 @@ ol {
     transition: all .3s ease-out;   
 }
 
-  li:hover{
+#prettyListItem:hover{
     background: #eee;
 }   
 
-  li:before{
-    content: counter(li);
-    counter-increment: li;
+  #prettyListItem:before{
+    content: counter(prettyListItem);
+    counter-increment: prettyListItem;
     position: absolute; 
     left: -2.5em;
     top: 50%;
@@ -44,7 +63,7 @@ ol {
     font-weight: bold;
 }
 
-  li:after{
+  #prettyListItem:after{
     position: absolute; 
     content: '';
     border: .5em solid transparent;
@@ -54,7 +73,7 @@ ol {
     transition: all .3s ease-out;               
 }
 
-  li:hover:after{
+  #prettyListItem:hover:after{
     left: -.5em;
     border-left-color: #fa8072;             
 }

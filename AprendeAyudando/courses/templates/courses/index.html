@@ -1,33 +1,37 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Cursos - Aprende Ayudando</title>
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Cursos disponibles{% endblock %}
 
-
+{% block content %}
+<section class="wrapper align-center login">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
-  </head>
-  <body>
-      <img src="{% static 'courses/images/logo.png' %}" alt="">
-      <!--AQUI PONDRIA EL BOTON PARA LA SOLICITUD DE PROFESOR O ENTIDAD PUBLICA/PRIVADA-->
-      {% if is_teacher %}
-        <h5><a href="{% url 'courses:create' %}">Añadir curso</a></h5>
-      {% endif %}
-      <h1>Lista de cursos</h1>
-    {% if courseList %}
-    <ol id="listaCursos">
-        {% for course in courseList %}
-            {% if not course.id in courses_list_inscripted %}
-                <li><a href="{% url 'courses:inscription' course.id %}">{{ course.title }}</a></li>
-            {% else %}
-                <li><a href="{% url 'courses:join' course.id %}">{{ course.title }}</a></li>
-            {% endif %}
-        {% endfor %}
-    </ol>
-    {% else %}
-        <p>No courses are available.</p>
-    {% endif %}
 
-  </body> 
-</html>
+    <div class="container 100%">
+        {% if filtered_by_enrolled %}
+            <h2>Tus cursos</h2>
+        {% else %}
+            <h2>Cursos disponibles</h2>
+        {% endif %}
+        <img src="{% static 'courses/images/logo.png' %}" alt="" style="width:15%;height:15%;border-radius:500px;">
+        <br><br><br>
+
+        {% if is_teacher %}
+            <h5><a href="{% url 'courses:create' %}">Añadir curso</a></h5>
+        {% endif %}
+        {% if courseList %}
+        <ol id="prettyList" style="width:92%;">
+            {% for course in courseList %}
+                {% if not course.id in courses_list_inscripted %}
+                    <li id="prettyListItem"><a href="{% url 'courses:inscription' course.id %}">{{ course.title }}</a></li>
+                {% else %}
+                    <li id="prettyListItem"><a href="{% url 'courses:join' course.id %}">{{ course.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+        {% else %}
+            <p>Lo sentimos, no hay cursos disponibles.</p>
+        {% endif %}
+    </div>
+
+</section>
+{% endblock %}

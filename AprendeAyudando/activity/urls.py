@@ -8,4 +8,5 @@ urlpatterns = [
     path('<int:activity_id>/', views.join, name='join'), # /activity/curso/1
     path('leave/<int:activity_id>/', views.leave, name='leave'), # /activity/leave/1/
     path('create/', views.createActivity, name='create'),
+    path('enrolled/', views.enrolled, name='enrolled'),
 ]

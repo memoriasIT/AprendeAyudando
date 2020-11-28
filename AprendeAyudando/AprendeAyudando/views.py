@@ -10,8 +10,7 @@ def landingpage(request):
     return render(request, 'landingpage/index.html')
 
 def account(request):
-    # // TODO make account page
-    return render(request, 'landingpage/index.html')
+    return render(request, 'landingpage/account.html')
 
 def user_register(request):
     # if this is a POST request we need to process the form data

@@ -1,32 +1,37 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Actividades - Aprende Ayudando</title>
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Actividades disponibles{% endblock %}
 
-
+{% block content %}
+<section class="wrapper align-center login">
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
-  </head>
-  <body>
-      <img src="{% static 'activity/images/logo.png' %}" alt="">
-      {% if is_entity %}
-        <h5><a href="{% url 'activity:create' %}">Añadir actividad</a></h5>
-      {% endif %}
-      <h1>Lista de actividades</h1>
-    {% if activityList %}
-    <ol id="listaActividades">
-        {% for activity in activityList %}
-            {% if not activity.id in activities_list_inscripted %}
-                <li><a href="{% url 'activity:inscription' activity.id %}">{{ activity.title }}</a></li>
-            {% else %}
-                <li><a href="{% url 'activity:join' activity.id %}">{{ activity.title }}</a></li>
-            {% endif %}
-        {% endfor %}
-    </ol>
-    {% else %}
-        <p>No activities are available.</p>
-    {% endif %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
 
-  </body> 
-</html>
+    <div class="container 100%">
+        {% if filtered_by_enrolled %}
+            <h2>Tus actividades</h2>
+        {% else %}
+            <h2>Actividades disponibles</h2>
+        {% endif %}
+        <img src="{% static 'courses/images/logo.png' %}" alt="" style="width:15%;height:15%;border-radius:500px;">
+        <br><br><br>
+
+        {% if is_teacher %}
+            <h5><a href="{% url 'activity:create' %}">Añadir actividad</a></h5>
+        {% endif %}
+        {% if activityList %}
+        <ol id="prettyList" style="width:92%;">
+            {% for activity in activityList %}
+                {% if not activity.id in activities_list_inscripted %}
+                    <li id="prettyListItem"><a href="{% url 'activity:inscription' activity.id %}">{{ activity.title }}</a></li>
+                {% else %}
+                    <li id="prettyListItem"><a href="{% url 'activity:join' activity.id %}">{{ activity.title }}</a></li>
+                {% endif %}
+            {% endfor %}
+        </ol>
+        {% else %}
+            <p>Lo sentimos, no hay actividades disponibles.</p>
+        {% endif %}
+    </div>
+
+</section>
+{% endblock %}

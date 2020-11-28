@@ -21,9 +21,34 @@ def index(request):
     context = {
         'courseList': courseList,
         'courses_list_inscripted': id_courses_list_inscripted,
-        'is_teacher': is_teacher
+        'is_teacher': is_teacher,
+        'filtered_by_enrolled': False
     }
     return render(request, 'courses/index.html', context)
+
+@login_required
+def enrolled(request):
+    courseListAux = Course.objects.order_by('-pub_date')[:5]
+    
+    courseList = []
+    #Miramos si el usuario logeado se encuentra en el curso o si el usuario logeado es el propietario del curso
+    id_courses_list_inscripted = []
+    for course in courseListAux:
+        if request.user in course.enrolled_users.all() or request.user==course.teacher:
+            id_courses_list_inscripted.extend([course.id]) 
+            courseList.append(course)
+    #Miramos si tiene permisos de añadir cursos(en un principio solo Admins y Profes) para mostrar o no mostrar el enlace de "crear curso"
+    is_teacher = False
+    if request.user.has_perm('courses.add_course'):
+        is_teacher = True
+    context = {
+        'courseList': courseList,
+        'courses_list_inscripted': id_courses_list_inscripted,
+        'is_teacher': is_teacher,
+        'filtered_by_enrolled': True
+    }
+    return render(request, 'courses/index.html', context)
+
 
 @login_required
 def inscription(request, course_id): #Esto antes era details
@@ -60,7 +85,7 @@ def leave(request, course_id):
         success = True
 
     if success:
-        return HttpResponse("Ya no estás inscrito en este curso: %s." % course.title)
+        return render(request, 'landingpage/account.html')
     else:
         return HttpResponse("ERROR: No puedes cancelar tu inscripción en el siguiente curso porque no estás inscrito: %s." % course.title)
 

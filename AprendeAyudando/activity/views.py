@@ -10,7 +10,7 @@ from .models import Activity
 def index(request):
     activityList = Activity.objects.order_by('-pub_date')[:5]
     
-    #Miramos si el usuario logeado se encuentra en la activida o si el usuario logeado es el propietario de la actividad
+    #Miramos si el usuario logeado se encuentra en la actividad o si el usuario logeado es el propietario de la actividad
     id_activities_list_inscripted = []
     for activity in activityList:
         if request.user in activity.enrolled_users.all() or request.user==activity.entity:
@@ -26,6 +26,30 @@ def index(request):
         'is_entity': is_entity
     }
     return render(request, 'activity/index.html', context)
+
+@login_required
+def enrolled(request):
+    activityListAux = Activity.objects.order_by('-pub_date')[:5]
+    activityList = []
+    #Miramos si el usuario logeado se encuentra en la actividad o si el usuario logeado es el propietario de la actividad
+    id_activities_list_inscripted = []
+    for activity in activityListAux:
+        if request.user in activity.enrolled_users.all() or request.user==activity.entity:
+            id_activities_list_inscripted.extend([activity.id]) 
+            activityList.append(activity)
+
+    #Miramos si tiene permisos de añadir actividades(en un principio solo Admins y EntidadesPP) para mostrar o no mostrar el enlace de "crear actividad"
+    is_entity = False
+    if request.user.has_perm('activity.add_activity'):
+        is_entity = True
+    context = {
+        'activityList': activityList,
+        'activities_list_inscripted': id_activities_list_inscripted,
+        'is_entity': is_entity,
+        'filtered_by_enrolled': True,
+    }
+    return render(request, 'activity/index.html', context)
+
 
 @login_required
 def inscription(request, activity_id):
@@ -61,7 +85,7 @@ def leave(request, activity_id):
         success = True
 
     if success:
-        return HttpResponse("Ya no estás inscrito en esta actividad: %s." % activity.title)
+        return render(request, 'landingpage/account.html')
     else:
         return HttpResponse("ERROR: No puedes cancelar tu inscripción en la siguiente actividad porque no estás inscrito: %s." % activity.title)
 
