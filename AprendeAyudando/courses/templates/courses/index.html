@@ -10,9 +10,11 @@
   </head>
   <body>
       <img src="{% static 'courses/images/logo.png' %}" alt="">
-      <!--AQUI PONDRIA EL BOTON PARA LA SOLICITUD DE PROFESOR O ENTIDAD PUBLICA/PRIVADA-->
       {% if is_teacher %}
         <h5><a href="{% url 'courses:create' %}">Añadir curso</a></h5>
+      {% endif %}
+      {% if perms.request_permissions.add_request_permissions %}
+        <p><a href="{% url 'request_permissions:index' %}" style="text-align: right;">Solicitar permisos</a></p>
       {% endif %}
       <h1>Lista de cursos</h1>
     {% if courseList %}
