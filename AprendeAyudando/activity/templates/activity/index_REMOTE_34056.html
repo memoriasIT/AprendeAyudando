@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Actividades - Aprende Ayudando</title>
+
+
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+  </head>
+  <body>
+      <img src="{% static 'activity/images/logo.png' %}" alt="">
+      {% if is_entity %} <!--Esto se puede simplificar(simplemente mirando si tiene el permiso)-->
+        <h5><a href="{% url 'activity:create' %}">Añadir actividad</a></h5>
+      {% endif %}
+      {% if perms.request_permissions.add_request_permissions %}
+        <p><a href="{% url 'request_permissions:index' %}" style="text-align: right;">Solicitar permisos</a></p>
+      {% endif %}
+      <h1>Lista de actividades</h1>
+    {% if activityList %}
+    <ol id="listaActividades">
+        {% for activity in activityList %}
+            {% if not activity.id in activities_list_inscripted %}
+                <li><a href="{% url 'activity:inscription' activity.id %}">{{ activity.title }}</a></li>
+            {% else %}
+                <li><a href="{% url 'activity:join' activity.id %}">{{ activity.title }}</a></li>
+            {% endif %}
+        {% endfor %}
+    </ol>
+    {% else %}
+        <p>No activities are available.</p>
+    {% endif %}
+
+  </body> 
+</html>

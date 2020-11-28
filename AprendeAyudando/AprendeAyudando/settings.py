@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'courses',
     'activity',
+    'request_permissions',
 ]
 
 MIDDLEWARE = [
