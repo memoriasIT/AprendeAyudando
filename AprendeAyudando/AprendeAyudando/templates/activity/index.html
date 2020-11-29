@@ -4,9 +4,9 @@
 {% block content %}
 <section class="wrapper align-center login">
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
 
-    <div class="container 100%">
+    <div class="container 100% listaActividades">
         {% if filtered_by_enrolled %}
             <h2>Tus actividades</h2>
         {% else %}
