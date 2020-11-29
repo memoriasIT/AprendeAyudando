@@ -58,7 +58,7 @@ ROOT_URLCONF = 'AprendeAyudando.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [str(BASE_DIR.joinpath('AprendeAyudando/templates')), str(BASE_DIR.joinpath('forum/templates'))],
+        'DIRS': [str(BASE_DIR.joinpath('AprendeAyudando/templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,5 +122,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    str(BASE_DIR.joinpath('AprendeAyudando/static')),
+]
+
 LOGIN_REDIRECT_URL = '/account/'
 LOGOUT_REDIRECT_URL = '/'
