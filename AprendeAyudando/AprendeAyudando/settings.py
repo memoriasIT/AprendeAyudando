@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'courses',
     'activity',
+    'forum',
     'request_permissions',
 ]
 
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'AprendeAyudando.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [str(BASE_DIR.joinpath('AprendeAyudando/templates'))],
+        'DIRS': [str(BASE_DIR.joinpath('AprendeAyudando/templates')), str(BASE_DIR.joinpath('forum/templates'))],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

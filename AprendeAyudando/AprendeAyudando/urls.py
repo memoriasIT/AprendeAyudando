@@ -38,6 +38,7 @@ urlpatterns = [
         # accounts/reset/done/ [name='password_reset_complete']
     
     path('admin/', admin.site.urls),
+    path('forum/', include('forum.urls')),
     path('courses/', include('courses.urls')),
     path('activity/', include('activity.urls')),
     path('requestpermissions/', include('request_permissions.urls')),
