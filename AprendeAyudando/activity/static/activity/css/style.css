@@ -1038,7 +1038,7 @@
 		text-align: center;
 	}
 		#logobanner {
-			height: 250px;
+			height: 380px;
 		}
 
 		.mainBanner {
@@ -1210,7 +1210,7 @@
 		}
 
 		#footer a.icon {
-			color: #202020;
+			color: #fff;
 			font-size: 0.65em;
 			height: 4em;
 			line-height: 4em;
