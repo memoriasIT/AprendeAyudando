@@ -4,8 +4,9 @@ ul {
     list-style-type: none;
 }
 
-.user_logo {
-    background: url('/static/courses/images/email_logo.png') no-repeat left top;
+/* // TODO what is email_logo  */
+.user_logo { 
+    background: url('/static/general/images/email_logo.png') no-repeat left top;
     height: 15%;
 }
 
