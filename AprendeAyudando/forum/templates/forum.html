@@ -1,0 +1,12 @@
+<h1>{{ forum.title }}</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if success is True %}
+    <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en el foro: {{ forum.title }}</p>
+{% else %}
+    <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> del profesor <strong>{{ forum.teacher.first_name }}</strong></p>
+{% endif %}
+<form action="{% url 'forum:delete' forum.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Borrar foro">
+</form>

@@ -2,6 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+
 from .models import Forum
 
 @login_required
@@ -16,13 +17,36 @@ def createForum(request):
     return render(request, 'createForum.html',{})
 
 
-# @login_required
-# @permission_required('forum.delete_forum', raise_exception=True)
-# def deleteForum(request):
+@login_required
+@permission_required('forum.delete_forum', raise_exception=True)
+def delete(request, forum_id):
 
-    # if request.method=="POST":
-    #     new_forum_name=request.POST["new_forum_name"]
-    #     new_course = Course.objects.create(title=new_course_name, teacher=request.user)
-    #     new_course.save()
-    #     return HttpResponse("Se ha creado el curso: %s" % new_course_name)
-    # return render(request, 'createForum.html',{})
+    forum = get_object_or_404(Forum, pk=forum_id)
+    
+    print(forum)
+    print(request.method)
+
+    # HTML forms don't allow delete method yet
+    if request.method == 'POST': 
+        forum.delete() 
+        return HttpResponse('El foro se ha eliminado correctamente.')
+    else:
+        return HttpResponse('Se necesita método POST.')
+
+
+@login_required
+def details(request, forum_id): #Esto antes era join
+    forum = get_object_or_404(Forum, pk=forum_id)
+    
+    # // TODO add logic to add user to course
+    success = False
+
+    # If the current logged user isn't enrolled in the course then add him
+    if request.user not in forum.enrolled_users.all():
+        forum.enrolled_users.add(request.user)
+        success = True
+
+    return render(request, 'forum.html',{'usuario': request.user, 'forum': forum, 'success': success})
+
+    # Return to course
+    # return render(request, 'courses/detail.html', {'course': course})
