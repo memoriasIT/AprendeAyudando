@@ -11,7 +11,7 @@ def createForum(request):
 
     if request.method=="POST":
         new_forum_name=request.POST["new_forum_name"]
-        new_forum = Forum.objects.create(title=new_forum_name, teacher=request.user)
+        new_forum = Forum.objects.create(title=new_forum_name, author=request.user)
         new_forum.save()
         return HttpResponse("Se ha creado el foro: %s" % new_forum_name)
     return render(request, 'createForum.html',{})
