@@ -10,11 +10,18 @@
 {% if success is True %}
     <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en la actividad: {{ activity.title }}</p>
 {% else %}
+    {% if isEntity is True %}
+    <p>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></p>
+    {% else  %}
     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
+    {% endif %}
 {% endif %}
+{% if grupo == 'Estudiante'%}
 <form action="{% url 'activity:leave' activity.id %}" method="post">
     {% csrf_token %}
     <input type="submit" value="Desmatricularse">
 </form>
+{% else %}
+{% endif %}
 </div>
 {% endblock %}
