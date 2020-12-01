@@ -52,8 +52,8 @@ class AdminRequestPermissions(admin.ModelAdmin):
         messages.success(request, "La(s) peticion(es) seleccionadas han sido denegadas.") 
 
     # Hide the add new element button
-    def has_add_permission(self, request): 
-        return False
+    # def has_add_permission(self, request): 
+    #     return False
 
     admin.site.add_action(aceptarPeticion, "Aceptar Petición") 
     admin.site.add_action(denegarPeticion, "Denegar Petición") 
