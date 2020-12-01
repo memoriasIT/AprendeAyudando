@@ -1,10 +1,11 @@
 from django.shortcuts import render
 
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect
 from .forms import RegisterForm
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
+from django.urls import reverse
 
 def landingpage(request):
     return render(request, 'landingpage/index.html')
@@ -47,11 +48,15 @@ def user_register(request):
                 user.last_name = form.cleaned_data['last_name']
                 user.save()
                
+                # Add role student to new user
+                studentGroup = Group.objects.get(name='Estudiante')
+                studentGroup.user_set.add(user)
+
                 # Login the user
                 login(request, user)
                
                 # redirect to accounts page:
-                return HttpResponseRedirect('account')
+                return HttpResponseRedirect(reverse('account'))
 
    # No post data availabe, let's just show the page.
     else:
