@@ -1,0 +1,33 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Darse de baja{% endblock %}
+
+{% block content %}
+
+<section class="wrapper align-center login">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
+
+    <div class="container 100%">
+        <h2>Eliminación de usuario: {{ request.user.username }}</h2>
+
+
+        <h3>¿Estás seguro/a de realizar esta operación?</h3>
+        <p>Tenga en cuenta que esta operación es irreversible; todos sus datos serán borrados de la plataforma y el acceso a ella con su usuario actual será imposible.</p>
+        <br>
+        <h3>Seleccione una opción</h3>
+        <br>
+            <form method="post">
+              {% csrf_token %}
+              {{ form.as_p }}
+			  {% comment %}<a href="/account" class="button big pink">Cancelar operación</a>{% endcomment %}
+              <button class="button big" type="submit" name="cancel" style="margin-right:4%;">Cancelar operación</button>
+              <button class="button big pink" type="submit">Sí, deseo borrar mi cuenta</button>
+            </form>
+    </div>
+
+</section>
+
+
+
+{% endblock %}
+

@@ -6,13 +6,26 @@ from .forms import RegisterForm
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 def landingpage(request):
     return render(request, 'landingpage/index.html')
 
+@login_required
 def account(request):
     return render(request, 'landingpage/account.html')
 
+@login_required
+def delete_account(request):
+    if request.method == 'POST':
+        if "cancel" in request.POST:
+            return redirect('/account')
+        else:
+            request.user.delete()
+            return redirect('/')
+
+    return render(request, 'landingpage/delete_account.html')
+    
 def user_register(request):
     # if this is a POST request we need to process the form data
     template = 'registration/register.html'

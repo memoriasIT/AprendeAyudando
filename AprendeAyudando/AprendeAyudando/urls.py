@@ -26,6 +26,7 @@ urlpatterns = [
 
     url('register/', views.user_register, name='user_register'),
     url('account/', views.account, name='account'),
+    url('accountdelete/', views.delete_account, name='account_delete'),
     
     path('accounts/', include('django.contrib.auth.urls')),
         # accounts/login/ [name='login']
