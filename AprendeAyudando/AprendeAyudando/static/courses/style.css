@@ -19,6 +19,10 @@ ul {
     clear: left;
 }
 
+.clear_right {
+    clear: right;
+}
+
 #prettyList {
     counter-reset: prettyListItem; 
     list-style: none; 
