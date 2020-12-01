@@ -1,0 +1,9 @@
+{% extends 'admin/change_form.html' %}
+
+{% block submit_buttons_bottom %}
+    {{ block.super }}
+    <div class="submit-row">
+            <input type="submit" value="Dar rol" name="_aceptarPeticion">
+            <input type="submit" value="Denegar rol" name="_denegarPeticion">
+    </div>
+{% endblock %}
