@@ -1,0 +1,21 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Proporcionar permisos{% endblock %}
+
+{% block content %}
+
+<section class="wrapper align-center login">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
+
+    <div class="container 100%">
+        <h2>No tienes permisos suficientes para ver esta página</h2>
+
+        <h3>Se requiere de rol de Administrador o permisos para aceptar peticiones.</h3>
+    </div>
+
+</section>
+
+
+
+{% endblock %}
+
