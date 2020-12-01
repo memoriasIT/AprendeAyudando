@@ -35,10 +35,9 @@ def delete(request, forum_id):
 
 
 @login_required
-def details(request, forum_id): #Esto antes era join
+def details(request, forum_id): 
     forum = get_object_or_404(Forum, pk=forum_id)
     
-    # // TODO add logic to add user to course
     success = False
 
     # If the current logged user isn't enrolled in the course then add him
@@ -47,6 +46,3 @@ def details(request, forum_id): #Esto antes era join
         success = True
 
     return render(request, 'forum.html',{'usuario': request.user, 'forum': forum, 'success': success})
-
-    # Return to course
-    # return render(request, 'courses/detail.html', {'course': course})

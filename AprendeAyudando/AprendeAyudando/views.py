@@ -1,11 +1,16 @@
-from django.shortcuts import render
-
+# MODELS
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect
+
+# SESSION
 from .forms import RegisterForm
 from django.contrib.auth import login, logout
+
+# ROUTING
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
+
 
 def landingpage(request):
     return render(request, 'landingpage/index.html')

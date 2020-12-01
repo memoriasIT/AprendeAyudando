@@ -1,8 +1,14 @@
-from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+# Models
+from .models import Course
+
+# Session Handling
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
-from .models import Course
+
+# Routing
+from django.http import HttpResponse
+from django.shortcuts import render, get_object_or_404
+
 
 @login_required
 def index(request):
@@ -66,6 +72,7 @@ def join(request, course_id): #Esto antes era join
     if request.user not in course.enrolled_users.all():
         course.enrolled_users.add(request.user)
         success = True
+
 
     return render(request, 'courses/curso.html',{'usuario': request.user, 'course': course, 'success': success})
 
