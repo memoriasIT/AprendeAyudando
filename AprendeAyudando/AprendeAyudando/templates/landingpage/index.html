@@ -19,9 +19,13 @@
 					{% if not user.is_authenticated %}
 						<a href="/register" class="button big pink">Registrarse</a>
 					{% else %}
+							{% if grupo == 'Profesor' or grupo == 'Estudiante' %} 
 						<a href="/courses/enrolled" class="button big pink">Ver mis cursos</a>
+							{% endif %}
+							{% if grupo == 'Entidad' or grupo == 'Estudiante' %} 
                         <br><br>
 						<a href="/activity/enrolled" class="button big pink">Ver mis actividades</a>
+							{% endif %}
 					{% endif %}
 				</div>
 			</div>

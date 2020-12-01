@@ -54,20 +54,52 @@ def enrolled(request):
 @login_required
 def inscription(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
-    return render(request, 'activity/inscription.html', {'activity': activity})
+    grupo = 'Invitado';
+    if request.user.has_perm('courses.view_course'):
+        grupo = 'Estudiante'
+    if request.user.has_perm('courses.add_course'):
+        grupo = 'Profesor'
+    if request.user.has_perm('activity.add_activity'):
+        grupo = 'Entidad'
+
+    context = {
+        'grupo': grupo,
+        'activity': activity
+    }
+    return render(request, 'activity/inscription.html', context)
 
 @login_required
 def join(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
     
     success = False
+    isEntity = False
 
     # If the current logged user isn't enrolled in the course then add him
     if request.user not in activity.enrolled_users.all():
         activity.enrolled_users.add(request.user)
         success = True
 
-    return render(request, 'activity/activity.html',{'usuario': request.user, 'activity': activity, 'success': success})
+    if request.user==activity.entity:
+        isEntity = True
+
+    grupo = 'Invitado';
+    if request.user.has_perm('courses.view_course'):
+        grupo = 'Estudiante'
+    if request.user.has_perm('courses.add_course'):
+        grupo = 'Profesor'
+    if request.user.has_perm('activity.add_activity'):
+        grupo = 'Entidad'
+
+    context = {
+        'grupo': grupo,
+        'activity': activity,
+        'success': success,
+        'usuario': request.user,
+        'isEntity': isEntity
+    }
+
+    return render(request, 'activity/activity.html',context)
 
     # Return to course
     # return render(request, 'courses/detail.html', {'course': course})

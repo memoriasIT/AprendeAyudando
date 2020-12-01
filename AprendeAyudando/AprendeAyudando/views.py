@@ -13,7 +13,18 @@ from django.shortcuts import render
 
 
 def landingpage(request):
-    return render(request, 'landingpage/index.html')
+    grupo = 'Invitado';
+    if request.user.has_perm('courses.view_course'):
+        grupo = 'Estudiante'
+    if request.user.has_perm('courses.add_course'):
+        grupo = 'Profesor'
+    if request.user.has_perm('activity.add_activity'):
+        grupo = 'Entidad'
+
+    context = {
+        'grupo': grupo
+    }
+    return render(request, 'landingpage/index.html', context)
 
 def account(request):
     return render(request, 'landingpage/account.html')
