@@ -1,3 +1,9 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Curso{% endblock %}
+
+{% block content %}
+<div class="container 125% align-center minHeight">
+
 <h1>{{ activity.title }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -10,3 +16,5 @@
     {% csrf_token %}
     <input type="submit" value="Desmatricularse">
 </form>
+</div>
+{% endblock %}

@@ -1,3 +1,8 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Inscripción en un curso{% endblock %}
+
+{% block content %}
+<div class="container 125% align-center minHeight">
 <h2>Inscripción en {{ course.title }}</h2>
 <p>Desea realizar la Inscripción en el curso <strong>{{ course.title }}</strong>?</p>
 
@@ -7,6 +12,8 @@
 {% csrf_token %}
 <input type="submit" value="Matricularse">
 </form>
+</div>
+{% endblock %}
 
 <!--<form action="{% url 'courses:leave' course.id %}" method="post">
     {% csrf_token %}
