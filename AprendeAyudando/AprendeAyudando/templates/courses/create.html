@@ -1,17 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear un curso</title>
-</head>
-<body>
-    <h1>Solo puede entrar el profesor</h1>
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Crear Curso{% endblock %}
+
+{% block content %}
+<div class="container 75% align-center minHeight">
+    <h1 class="bigger">Crear un curso nuevo</h1>
 
     <form action="{% url 'courses:create' %}" method="POST">
         {% csrf_token %}
         <p>Nombre del curso: <input type="text" name="new_course_name" id=""></p>
         <input type="submit" value="Enviar">
     </form>
-</body>
-</html>
+</div>
+{% endblock %}

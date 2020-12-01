@@ -106,6 +106,6 @@ def createCourse(request):
         new_course_name=request.POST["new_course_name"]
         new_course = Course.objects.create(title=new_course_name, teacher=request.user)
         new_course.save()
-        return HttpResponse("Se ha creado el curso: %s" % new_course_name)
-    return render(request, 'create.html',{})
+        return render(request, 'courses/curso.html',{'course': new_course})
+    return render(request, 'courses/create.html',{})
 

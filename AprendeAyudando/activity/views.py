@@ -99,5 +99,5 @@ def createActivity(request):
         new_activity_name=request.POST["new_activity_name"]
         new_activity = Activity.objects.create(title=new_activity_name, entity=request.user)
         new_activity.save()
-        return HttpResponse("Se ha creado la actividad: %s" % new_activity_name)
+        return render(request, 'activity/activity.html',{'activity': new_activity})
     return render(request, 'activity/create.html',{})
