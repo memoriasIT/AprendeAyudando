@@ -15,7 +15,7 @@
     <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
     {% endif %}
 {% endif %}
-{% if grupo == 'Estudiante'%}
+{% if show_de_enroll %}
 <form action="{% url 'courses:leave' course.id %}" method="post">
     {% csrf_token %}
     <input type="submit" value="Desmatricularse">

@@ -60,25 +60,25 @@ def enrolled(request):
 def inscription(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
-    is_Estudiante = False
+    is_Estudiante_or_superuser = False
     #if request.user.has_perm('courses.view_course'):
     #    grupo = 'Estudiante'
     #if request.user.has_perm('courses.add_course'):
     #    grupo = 'Profesor'
     #if request.user.has_perm('activity.add_activity'):
     #    grupo = 'Entidad'
-    if has_group(request.user, 'Estudiante'):
-        is_Estudiante = True
+    if has_group(request.user, 'Estudiante') or request.user.is_superuser:
+        is_Estudiante_or_superuser = True
 
     if request.method=='POST':
-        if is_Estudiante or request.user.is_superuser:
+        if is_Estudiante_or_superuser:
             course.enrolled_users.add(request.user)
             return join(request, course_id)
         else:
             return HttpResponse("ERROR: Solo un estudiante puede realizar una inscripcion a este curso")    #Nunca deberia de entrar aqui
 
     context = {
-        'is_Estudiante': is_Estudiante,
+        'is_Estudiante_or_superuser': is_Estudiante_or_superuser,
         'course': course
     }
     return render(request, 'courses/inscription.html', context)
@@ -97,6 +97,11 @@ def join(request, course_id): #Esto antes era join
     if request.user not in course.enrolled_users.all() and not isTeacher:
         return inscription(request, course_id) 
 
+    #Para mostrarnos el boton de "Desmatricular"
+    show_de_enroll = False
+    if request.user in course.enrolled_users.all():
+        show_de_enroll = True
+
     grupo = 'Invitado';
     if request.user.has_perm('courses.view_course'):
         grupo = 'Estudiante'
@@ -110,7 +115,8 @@ def join(request, course_id): #Esto antes era join
         'course': course,
         'success': success,
         'usuario': request.user,
-        'isTeacher': isTeacher
+        'isTeacher': isTeacher,
+        'show_de_enroll':show_de_enroll
     }
     return render(request, 'courses/curso.html',context)
 
