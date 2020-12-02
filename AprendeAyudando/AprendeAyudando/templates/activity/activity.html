@@ -21,6 +21,12 @@
                 SI
             {% else %}
                 NO
+                {% if user.is_authenticated and not show_de_enroll %}
+                <form action="{% url 'activity:join' activity.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Guardar Actividad">
+                </form>
+                {% endif %}
             {% endif %}
         </strong>
     </p>

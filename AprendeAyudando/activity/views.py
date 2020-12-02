@@ -121,7 +121,9 @@ def join(request, activity_id):
         'isEntity': isEntity,
         'show_de_enroll': show_de_enroll
     }
-
+    if request.method=='POST' and request.user not in activity.enrolled_users.all():
+        activity.enrolled_users.add(request.user)
+        return render(request, 'landingpage/account.html')
     return render(request, 'activity/activity.html',context)
 
     # Return to course
