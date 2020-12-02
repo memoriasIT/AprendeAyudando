@@ -14,3 +14,15 @@ class Course(models.Model):
         # Como se muestra en la web de admin
         verbose_name = "Curso"
         verbose_name_plural = "Cursos"
+
+
+class Resource(models.Model):
+    course = models.ForeignKey(Course, on_delete=models.CASCADE)
+    resourceText = models.CharField(max_length=200)
+    resourceLink = models.CharField(max_length=200)
+    pub_date = models.DateTimeField(verbose_name="date published", auto_now_add=True)
+
+    class Meta:
+        # Como se muestra en la web de admin
+        verbose_name = "Recurso"
+        verbose_name_plural = "Recursos"
