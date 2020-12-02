@@ -95,12 +95,6 @@ def join(request, course_id): #Esto antes era join
     for forum in forumListAux:
         if course.id == forum.activityCourseFk:
             forumListCourse.append(forum)
-
-    #Miramos si el usuario está inscrito en el curso o si es profesor del curso
-    forumListInscripted = []
-    for forum in forumListAux:
-        if request.user in forum.enrolled_users.all() or request.user==course.teacher:
-            forumListInscripted.append(forum)
     
     # // TODO add logic to add user to course
     success = False
@@ -133,7 +127,6 @@ def join(request, course_id): #Esto antes era join
         'isTeacher': isTeacher,
         'show_de_enroll':show_de_enroll,
         'forumListCourse': forumListCourse,
-        'forumListInscripted': forumListInscripted,
     }
 
     return render(request, 'courses/curso.html', context)

@@ -4,12 +4,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
 from .models import Forum
+from courses.models import Course
 
 @login_required
 @permission_required('forum.add_forum', raise_exception=True)
 def createForum(request, activityCourseFk):
     if request.method=="POST":
-        
         activityCourseType = ' '
 
         if request.user.has_perm('courses.add_course'):
@@ -37,21 +37,27 @@ def createForum(request, activityCourseFk):
 def delete(request, forum_id):
 
     forum = get_object_or_404(Forum, pk=forum_id)
-    
+    course = get_object_or_404(Course, pk=forum.activityCourseFk)
     print(forum)
     print(request.method)
 
     # HTML forms don't allow delete method yet
     if request.method == 'POST': 
-        forum.delete() 
-        return HttpResponse('El foro se ha eliminado correctamente.')
-    else:
-        return HttpResponse('Se necesita método POST.')
+        Forum.objects.filter(id=forum_id).delete()
+    context = {
+        'course': course,
+    }
+    return render(request, 'courses/curso.html', context)
 
 
 @login_required
 def join(request, forum_id): 
     forum = get_object_or_404(Forum, pk=forum_id)
+
+    isAuthor = False
+
+    if request.user == forum.author:
+        isAuthor = True
     
     success = False
 
@@ -60,4 +66,11 @@ def join(request, forum_id):
         forum.enrolled_users.add(request.user)
         success = True
 
-    return render(request, 'forum/forum.html',{'usuario': request.user, 'forum': forum, 'success': success})
+    context = {
+        'usuario': request.user, 
+        'forum': forum, 
+        'success': success,
+        'isAuthor' : isAuthor
+    }
+
+    return render(request, 'forum/forum.html',context)

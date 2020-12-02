@@ -9,8 +9,9 @@
 {% if success is True %}
     <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en el foro: {{ forum.title }}</p>
 {% else %}
-    {% if isTeacher is True %}
+    {% if isAuthor is True %}
     <p>Bienvenido a tu foro: <strong>{{ forum.title }}</strong></p>
+    <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="button big pink">Borrar foro</a>
     {% else  %}
     <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> del profesor <strong>{{ forum.author.first_name }}</strong></p>
     {% endif %}
