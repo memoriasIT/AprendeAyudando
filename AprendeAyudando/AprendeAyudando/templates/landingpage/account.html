@@ -2,9 +2,10 @@
 {% block title %}AprendeAyudando - Mi perfil{% endblock %}
 
 {% block content %}
+{% load static %}
+{% load auth_extras %}
 
 <section class="wrapper align-center login">
-    {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
 
     <div class="container 100%">
@@ -29,12 +30,12 @@
         <ol id="prettyList">
             <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
             <li id="prettyListItem"><a href="/activity/enrolled">Mis actividades</a></li>
-            {% if perms.request_permissions.add_request_permissions %}
-                <li id="prettyListItem"><a href="{% url 'request_permissions:index' %}">Solicitar permisos</a></li>
-            {% endif %}
-            {% if perms.request_permissions.delete_request_permissions %}
+            {% if request.user|has_group:"Administrador" %}
                 <li id="prettyListItem"><a href="{% url 'request_permissions:give_permissions' %}">Proporcionar permisos</a></li>
             {% else %}
+                {% if request.user|has_group:"Estudiante" %}
+                    <li id="prettyListItem"><a href="{% url 'request_permissions:index' %}">Solicitar permisos</a></li>
+                {% endif %}
                 <li id="prettyListItem"><a href="{% url 'account_delete' %}">Darse de baja en la plataforma</a></li>
             {% endif %}
         </ol>
