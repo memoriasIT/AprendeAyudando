@@ -1,5 +1,6 @@
 # Models
 from .models import Course
+from forum.models import Forum
 
 # Session Handling
 from django.contrib.auth.decorators import login_required
@@ -86,6 +87,20 @@ def inscription(request, course_id):
 @login_required
 def join(request, course_id): #Esto antes era join
     course = get_object_or_404(Course, pk=course_id)
+
+    forumListAux = Forum.objects.all()
+    
+    #Miramos los foros que pertenecen al curso
+    forumListCourse = []
+    for forum in forumListAux:
+        if course.id == forum.activityCourseFk:
+            forumListCourse.append(forum)
+
+    #Miramos si el usuario está inscrito en el curso o si es profesor del curso
+    forumListInscripted = []
+    for forum in forumListAux:
+        if request.user in forum.enrolled_users.all() or request.user==course.teacher:
+            forumListInscripted.append(forum)
     
     # // TODO add logic to add user to course
     success = False
@@ -116,9 +131,12 @@ def join(request, course_id): #Esto antes era join
         'success': success,
         'usuario': request.user,
         'isTeacher': isTeacher,
-        'show_de_enroll':show_de_enroll
+        'show_de_enroll':show_de_enroll,
+        'forumListCourse': forumListCourse,
+        'forumListInscripted': forumListInscripted,
     }
-    return render(request, 'courses/curso.html',context)
+
+    return render(request, 'courses/curso.html', context)
 
     # Return to course
     # return render(request, 'courses/detail.html', {'course': course})
@@ -150,6 +168,13 @@ def createCourse(request):
         new_course_name=request.POST["new_course_name"]
         new_course = Course.objects.create(title=new_course_name, teacher=request.user)
         new_course.save()
-        return render(request, 'courses/curso.html',{'course': new_course})
+        isTeacher = True
+
+        context = {
+        'course': new_course,
+        'isTeacher': isTeacher,
+    }
+
+        return render(request, 'courses/curso.html',context)
     return render(request, 'courses/create.html',{})
 

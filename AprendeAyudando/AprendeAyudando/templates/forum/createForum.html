@@ -1,17 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear un foro</title>
-</head>
-<body>
-    <h1>Forum: Solo puede entrar el profesor</h1>
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Crear Curso{% endblock %}
 
-    <form action="{% url 'forum:create' %}" method="POST">
+{% block content %}
+<div class="container 75% align-center minHeight">
+    <h1 class="bigger">Crear un foro nuevo</h1>
+    <form action="{% url 'forum:create' activityCourseFk %}" method="POST">
         {% csrf_token %}
         <p>Nombre del foro: <input type="text" name="new_forum_name" id=""></p>
         <input type="submit" value="Enviar">
     </form>
-</body>
-</html>
+</div>
+{% endblock %}

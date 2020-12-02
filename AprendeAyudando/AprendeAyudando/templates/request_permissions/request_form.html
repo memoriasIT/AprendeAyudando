@@ -1,0 +1,20 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Solicitar permisos{% endblock %}
+
+{% block content %}
+
+<section class="wrapper align-center login">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
+
+    <div class="container 75% minHeightSmaller">
+        <h2>Solicitar permisos</h2>
+        <input class="button big" type="submit" value="Profesor" name="_rolProfesor">
+        <input class="button big" type="submit" value="Entidad" name="_rolEntidad">
+    </div>
+</section>
+
+
+
+{% endblock %}
+

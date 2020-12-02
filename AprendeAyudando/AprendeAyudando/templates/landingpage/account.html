@@ -28,8 +28,12 @@
         <br>
         <h3>&emsp;&emsp;&emsp;Funcionalidades</h3>
         <ol id="prettyList">
+            {% if request.user|has_group:"Entidad" is False %}
             <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
+            {% endif %}
+            {% if request.user|has_group:"Profesor" is False %}
             <li id="prettyListItem"><a href="/activity/enrolled">Mis actividades</a></li>
+            {% endif %}
             {% if request.user|has_group:"Administrador" %}
                 <li id="prettyListItem"><a href="{% url 'request_permissions:give_permissions' %}">Proporcionar permisos</a></li>
             {% else %}

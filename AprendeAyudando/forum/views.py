@@ -7,14 +7,29 @@ from .models import Forum
 
 @login_required
 @permission_required('forum.add_forum', raise_exception=True)
-def createForum(request):
-
+def createForum(request, activityCourseFk):
     if request.method=="POST":
+        
+        activityCourseType = ' '
+
+        if request.user.has_perm('courses.add_course'):
+            activityCourseType = 'Course'
+        else:
+            activityCourseType = 'Activity'
+
         new_forum_name=request.POST["new_forum_name"]
-        new_forum = Forum.objects.create(title=new_forum_name, author=request.user)
+        new_forum = Forum.objects.create(title=new_forum_name, author=request.user, activityCourseFk= activityCourseFk, activityCourseType=activityCourseType)
         new_forum.save()
-        return HttpResponse("Se ha creado el foro: %s" % new_forum_name)
-    return render(request, 'createForum.html',{})
+
+        isTeacher = True
+
+        context = {
+        'forum': new_forum,
+        'isTeacher': isTeacher,
+        }
+        return render(request, 'forum/forum.html',context)
+    return render(request, 'forum/createForum.html', {'activityCourseFk': activityCourseFk})
+    
 
 
 @login_required
@@ -35,7 +50,7 @@ def delete(request, forum_id):
 
 
 @login_required
-def details(request, forum_id): 
+def join(request, forum_id): 
     forum = get_object_or_404(Forum, pk=forum_id)
     
     success = False
@@ -45,4 +60,4 @@ def details(request, forum_id):
         forum.enrolled_users.add(request.user)
         success = True
 
-    return render(request, 'forum.html',{'usuario': request.user, 'forum': forum, 'success': success})
+    return render(request, 'forum/forum.html',{'usuario': request.user, 'forum': forum, 'success': success})

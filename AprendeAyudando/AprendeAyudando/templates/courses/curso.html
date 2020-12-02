@@ -11,6 +11,7 @@
 {% else %}
     {% if isTeacher is True %}
     <p>Bienvenido a tu curso: <strong>{{ course.title }}</strong></p>
+    <a style="margin-bottom: 50px;" href="{% url 'forum:create' course.id %}" class="button big pink">Crear un foro</a>
     {% else  %}
     <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
     {% endif %}
@@ -21,6 +22,15 @@
     <input type="submit" value="Desmatricularse">
 </form>
 {% else %}
+{% if forumListCourse %}
+        <ol id="prettyList" style="width:92%;">
+            {% for forum in forumListCourse %}
+                <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
+            {% endfor %}
+        </ol>
+        {% else %}
+            <p>Lo sentimos, no hay foros disponibles.</p>
+        {% endif %}
 {% endif %}
 </div>
 {% endblock %}
