@@ -32,10 +32,17 @@
     </p>
 {% endif %}
 {% if show_de_enroll %}
-<form action="{% url 'activity:leave' activity.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Desmatricularse">
-</form>
+    {% if not activity.restricted_entry %}
+        <form action="{% url 'activity:leave' activity.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Desvincular Actividad">
+        </form>
+    {% else %}
+        <form action="{% url 'activity:leave' activity.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Desmatricularse">
+        </form>
+    {% endif %}
 {% else %}
 {% endif %}
 </div>

@@ -34,7 +34,7 @@ def enrolled(request):
     #Miramos si el usuario logeado se encuentra en la actividad o si el usuario logeado es el propietario de la actividad
     id_activities_list_inscripted = []
     for activity in activityListAux:
-        if request.user in activity.enrolled_users.all() or request.user==activity.entity or not activity.restricted_entry:
+        if request.user in activity.enrolled_users.all() or request.user==activity.entity:
             id_activities_list_inscripted.extend([activity.id]) 
             activityList.append(activity)
 
@@ -53,14 +53,6 @@ def enrolled(request):
 
 def inscription(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
-
-    #grupo = 'Invitado';
-    #if request.user.has_perm('courses.view_course'):
-    #    grupo = 'Estudiante'
-    #if request.user.has_perm('courses.add_course'):
-    #    grupo = 'Profesor'
-    #if request.user.has_perm('activity.add_activity'):
-    #    grupo = 'Entidad'
 
     is_Estudiante_or_superuser = False
     if has_group(request.user, 'Estudiante') or request.user.is_superuser:
@@ -105,13 +97,6 @@ def join(request, activity_id):
     show_de_enroll = False
     if request.user in activity.enrolled_users.all():
         show_de_enroll = True
-    #grupo = 'Invitado';
-    #if request.user.has_perm('courses.view_course'):
-    #    grupo = 'Estudiante'
-    #if request.user.has_perm('courses.add_course'):
-    #    grupo = 'Profesor'
-    #if request.user.has_perm('activity.add_activity'):
-    #    grupo = 'Entidad'
 
     context = {
         #'grupo': grupo,
@@ -121,9 +106,10 @@ def join(request, activity_id):
         'isEntity': isEntity,
         'show_de_enroll': show_de_enroll
     }
-    if request.method=='POST' and request.user not in activity.enrolled_users.all():
+    if request.method=='POST' and request.user not in activity.enrolled_users.all() and request.user.is_authenticated:
         activity.enrolled_users.add(request.user)
-        return render(request, 'landingpage/account.html')
+        context['show_de_enroll'] = True
+
     return render(request, 'activity/activity.html',context)
 
     # Return to course
