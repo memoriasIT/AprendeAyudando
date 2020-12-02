@@ -4,17 +4,13 @@ from .models import Course
 # Session Handling
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
+from django.contrib.auth.models import Group
 
 # Routing
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
-from django.contrib.auth.models import Group
+from AprendeAyudando.views import has_group
 
-def has_group(user, group_name):
-    group = Group.objects.get(name=group_name)
-    return True if group in user.groups.all() else False
-
-#@login_required
 def index(request):
     courseList = Course.objects.order_by('-pub_date')[:5]
     

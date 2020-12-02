@@ -7,6 +7,11 @@ from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
+
+def has_group(user, group_name):
+    group = Group.objects.get(name=group_name)
+    return True if group in user.groups.all() else False
 
 def landingpage(request):
     grupo = 'Invitado';
