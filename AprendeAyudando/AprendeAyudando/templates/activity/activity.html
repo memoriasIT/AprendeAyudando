@@ -15,8 +15,17 @@
     {% else  %}
     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
     {% endif %}
+    <p>Actividad restringida:
+        <strong>
+            {% if activity.restricted_entry %}
+                SI
+            {% else %}
+                NO
+            {% endif %}
+        </strong>
+    </p>
 {% endif %}
-{% if grupo == 'Estudiante'%}
+{% if show_de_enroll %}
 <form action="{% url 'activity:leave' activity.id %}" method="post">
     {% csrf_token %}
     <input type="submit" value="Desmatricularse">

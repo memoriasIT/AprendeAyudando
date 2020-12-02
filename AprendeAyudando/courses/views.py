@@ -71,7 +71,7 @@ def inscription(request, course_id):
         is_Estudiante = True
 
     if request.method=='POST':
-        if is_Estudiante:
+        if is_Estudiante or request.user.is_superuser:
             course.enrolled_users.add(request.user)
             return join(request, course_id)
         else:

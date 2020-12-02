@@ -4,10 +4,11 @@
 {% block content %}
 <div class="container 125% align-center minHeight">
 
-{% if grupo != 'Estudiante' %}
-<p>No puedes inscribirte en una actividad si no eres estudiante.</p>
+{% if not user.is_authenticated %}
+<p>La actividad tiene el acceso restringido. Inicia sesión o registrate como estudiante para solicitar acceso.</p>
+{% elif not is_Estudiante_or_superuser %}
+<p>Solo los estudiantes tienen derecho al proceso de inscrición en una actividad.</p>
 {% else %}
-
 <h2>Inscripción en {{ activity.title }}</h2>
 <p>Desea realizar la Inscripción en la actividad <strong>{{ activity.title }}</strong>?</p>
 

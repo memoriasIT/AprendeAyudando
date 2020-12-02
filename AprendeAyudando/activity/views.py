@@ -5,8 +5,8 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from .models import Activity
+from AprendeAyudando.views import has_group
 
-@login_required
 def index(request):
     activityList = Activity.objects.order_by('-pub_date')[:5]
     
@@ -51,52 +51,75 @@ def enrolled(request):
     return render(request, 'activity/index.html', context)
 
 
-@login_required
 def inscription(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
-    grupo = 'Invitado';
-    if request.user.has_perm('courses.view_course'):
-        grupo = 'Estudiante'
-    if request.user.has_perm('courses.add_course'):
-        grupo = 'Profesor'
-    if request.user.has_perm('activity.add_activity'):
-        grupo = 'Entidad'
+
+    #grupo = 'Invitado';
+    #if request.user.has_perm('courses.view_course'):
+    #    grupo = 'Estudiante'
+    #if request.user.has_perm('courses.add_course'):
+    #    grupo = 'Profesor'
+    #if request.user.has_perm('activity.add_activity'):
+    #    grupo = 'Entidad'
+
+    is_Estudiante_or_superuser = False
+    if has_group(request.user, 'Estudiante') or request.user.is_superuser:
+        is_Estudiante_or_superuser = True
 
     context = {
-        'grupo': grupo,
-        'activity': activity
+        #'grupo': grupo,
+        'activity': activity,
+        'is_Estudiante_or_superuser': is_Estudiante_or_superuser
     }
-    return render(request, 'activity/inscription.html', context)
 
-@login_required
+    
+    if request.method=='POST' and request.user.is_authenticated:
+        activity.enrolled_users.add(request.user)
+        return join(request, activity_id)
+
+    if activity.restricted_entry:
+        return render(request, 'activity/inscription.html', context)
+    else:
+        return join(request, activity_id)
+    
+
+
 def join(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
+
+    #Mantenemos un control de quien entra aqui(si la actividad estra restringida)
+    if activity.restricted_entry and not request.user.is_authenticated:
+        return inscription(request, activity_id)
     
     success = False
     isEntity = False
-
-    # If the current logged user isn't enrolled in the course then add him
-    if request.user not in activity.enrolled_users.all():
-        activity.enrolled_users.add(request.user)
-        success = True
-
     if request.user==activity.entity:
         isEntity = True
 
-    grupo = 'Invitado';
-    if request.user.has_perm('courses.view_course'):
-        grupo = 'Estudiante'
-    if request.user.has_perm('courses.add_course'):
-        grupo = 'Profesor'
-    if request.user.has_perm('activity.add_activity'):
-        grupo = 'Entidad'
+    # Si tiene acceso restringido y ademas no esta inscrito(como Entidad o como Estudiante) entonces vamos al proceso de inscripcion
+    if request.user not in activity.enrolled_users.all() and not isEntity and activity.restricted_entry:
+        return inscription(request, activity_id)
+
+
+    #Para mostrarnos el boton de "Desmatricular"
+    show_de_enroll = False
+    if request.user in activity.enrolled_users.all():
+        show_de_enroll = True
+    #grupo = 'Invitado';
+    #if request.user.has_perm('courses.view_course'):
+    #    grupo = 'Estudiante'
+    #if request.user.has_perm('courses.add_course'):
+    #    grupo = 'Profesor'
+    #if request.user.has_perm('activity.add_activity'):
+    #    grupo = 'Entidad'
 
     context = {
-        'grupo': grupo,
+        #'grupo': grupo,
         'activity': activity,
         'success': success,
         'usuario': request.user,
-        'isEntity': isEntity
+        'isEntity': isEntity,
+        'show_de_enroll': show_de_enroll
     }
 
     return render(request, 'activity/activity.html',context)
