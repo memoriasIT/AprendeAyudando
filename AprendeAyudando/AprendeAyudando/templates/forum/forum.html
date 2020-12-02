@@ -13,7 +13,11 @@
     <p>Bienvenido a tu foro: <strong>{{ forum.title }}</strong></p>
     <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="button big pink">Borrar foro</a>
     {% else  %}
+    {% if forum.activityCourseType == 'Course' %}
     <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> del profesor <strong>{{ forum.author.first_name }}</strong></p>
+    {% else %}
+    <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> de la entidad público/privada <strong>{{ forum.author.first_name }}</strong></p>
+    {% endif %}
     {% endif %}
 {% endif %}
 </div>

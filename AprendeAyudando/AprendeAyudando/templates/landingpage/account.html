@@ -28,7 +28,7 @@
         <br>
         <h3>&emsp;&emsp;&emsp;Funcionalidades</h3>
         <ol id="prettyList">
-            {% if request.user|has_group:"Entidad" is False %}
+            {% if request.user|has_group:"EntidadPublicoPrivada" is False %}
             <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
             {% endif %}
             {% if request.user|has_group:"Profesor" is False %}

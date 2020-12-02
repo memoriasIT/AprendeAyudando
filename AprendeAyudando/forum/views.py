@@ -3,8 +3,9 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
-from .models import Forum
 from courses.models import Course
+from activity.models import Activity
+from forum.models import Forum
 
 @login_required
 @permission_required('forum.add_forum', raise_exception=True)
@@ -37,17 +38,28 @@ def createForum(request, activityCourseFk):
 def delete(request, forum_id):
 
     forum = get_object_or_404(Forum, pk=forum_id)
-    course = get_object_or_404(Course, pk=forum.activityCourseFk)
     print(forum)
     print(request.method)
+
+    if forum.activityCourseType == 'Course':
+        course = get_object_or_404(Course, pk=forum.activityCourseFk)
+        context = {
+            'course': course,
+        }
+    else:
+        activity =get_object_or_404(Activity, pk=forum.activityCourseFk)
+        context = {
+            'activity': activity,
+        }
+    
 
     # HTML forms don't allow delete method yet
     if request.method == 'POST': 
         Forum.objects.filter(id=forum_id).delete()
-    context = {
-        'course': course,
-    }
-    return render(request, 'courses/curso.html', context)
+    if forum.activityCourseType == 'Course':
+        return render(request, 'courses/curso.html', context)
+    else:
+        return render(request, 'activity/activity.html', context)
 
 
 @login_required

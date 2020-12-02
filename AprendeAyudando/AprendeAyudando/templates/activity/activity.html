@@ -12,6 +12,7 @@
 {% else %}
     {% if isEntity is True %}
     <p>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></p>
+    <a style="margin-bottom: 50px;" href="{% url 'forum:create' activity.id %}" class="button big pink">Crear un foro</a>
     {% else  %}
     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
     {% endif %}
@@ -43,7 +44,15 @@
             <input type="submit" value="Desmatricularse">
         </form>
     {% endif %}
-{% else %}
 {% endif %}
+{% if forumListCourse %}
+        <ol id="prettyList" style="width:92%;">
+            {% for forum in forumListCourse %}
+                <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
+            {% endfor %}
+        </ol>
+        {% else %}
+            <p>Lo sentimos, no hay foros disponibles.</p>
+        {% endif %}
 </div>
 {% endblock %}
