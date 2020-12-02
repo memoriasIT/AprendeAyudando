@@ -34,7 +34,7 @@ def enrolled(request):
     #Miramos si el usuario logeado se encuentra en la actividad o si el usuario logeado es el propietario de la actividad
     id_activities_list_inscripted = []
     for activity in activityListAux:
-        if request.user in activity.enrolled_users.all() or request.user==activity.entity:
+        if request.user in activity.enrolled_users.all() or request.user==activity.entity or not activity.restricted_entry:
             id_activities_list_inscripted.extend([activity.id]) 
             activityList.append(activity)
 
