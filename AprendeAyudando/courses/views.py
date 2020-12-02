@@ -8,9 +8,13 @@ from django.contrib.auth.decorators import permission_required
 # Routing
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.models import Group
 
+def has_group(user, group_name):
+    group = Group.objects.get(name=group_name)
+    return True if group in user.groups.all() else False
 
-@login_required
+#@login_required
 def index(request):
     courseList = Course.objects.order_by('-pub_date')[:5]
     
@@ -57,18 +61,28 @@ def enrolled(request):
 
 
 @login_required
-def inscription(request, course_id): #Esto antes era details
+def inscription(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
-    grupo = 'Invitado';
-    if request.user.has_perm('courses.view_course'):
-        grupo = 'Estudiante'
-    if request.user.has_perm('courses.add_course'):
-        grupo = 'Profesor'
-    if request.user.has_perm('activity.add_activity'):
-        grupo = 'Entidad'
+
+    is_Estudiante = False
+    #if request.user.has_perm('courses.view_course'):
+    #    grupo = 'Estudiante'
+    #if request.user.has_perm('courses.add_course'):
+    #    grupo = 'Profesor'
+    #if request.user.has_perm('activity.add_activity'):
+    #    grupo = 'Entidad'
+    if has_group(request.user, 'Estudiante'):
+        is_Estudiante = True
+
+    if request.method=='POST':
+        if is_Estudiante:
+            course.enrolled_users.add(request.user)
+            return join(request, course_id)
+        else:
+            return HttpResponse("ERROR: Solo un estudiante puede realizar una inscripcion a este curso")    #Nunca deberia de entrar aqui
 
     context = {
-        'grupo': grupo,
+        'is_Estudiante': is_Estudiante,
         'course': course
     }
     return render(request, 'courses/inscription.html', context)
@@ -80,14 +94,12 @@ def join(request, course_id): #Esto antes era join
     # // TODO add logic to add user to course
     success = False
     isTeacher = False
-
-    # If the current logged user isn't enrolled in the course then add him
-    if request.user not in course.enrolled_users.all():
-        course.enrolled_users.add(request.user)
-        success = True
-
     if request.user==course.teacher:
        isTeacher = True
+
+    # Si request.user intenta acceder a la pagina directamente con el id, nos redirige a la pagina de inscripcion
+    if request.user not in course.enrolled_users.all() and not isTeacher:
+        return inscription(request, course_id) 
 
     grupo = 'Invitado';
     if request.user.has_perm('courses.view_course'):

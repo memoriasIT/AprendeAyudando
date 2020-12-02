@@ -4,7 +4,7 @@
 {% block content %}
 <div class="container 125% align-center minHeight">
 
-{% if grupo != 'Estudiante' %}
+{% if not is_Estudiante %}
 <p>No puedes inscribirte en un curso si no eres estudiante.</p>
 {% else %}
 <h2>Inscripción en {{ course.title }}</h2>
@@ -12,7 +12,7 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'courses:join' course.id %}" method="post">
+<form action="{% url 'courses:inscription' course.id %}" method="post">
 {% csrf_token %}
 <input type="submit" value="Matricularse">
 </form>
