@@ -14,7 +14,8 @@
     
         {% if isOwner %}
             <p>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></p>
-            <a style="margin-bottom: 50px;" href="{% url 'forum:create' activity.id %}" class="button big pink">Crear un foro</a>
+            <a style="margin-bottom: 50px;" href="{% url 'forum:create' activity.id %}" class="button small pink">Crear un foro</a>
+            <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
         {% else  %}
             <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
         {% endif %}
