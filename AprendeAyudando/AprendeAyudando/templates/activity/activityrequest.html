@@ -20,13 +20,13 @@
             </tr>
             {% for esteUsuario in user_list %}
                 <tr>
-                    <th style="text-align:center;">{{ esteUsuario.requester.username }}</th>
+                    <th style="text-align:center; margin-top: 25px;">{{ esteUsuario.requester.username }}</th>
 
                     <th style="text-align:center;">
                         <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
-                            <input type="submit" value="Aceptar" name="aceptar">
+                            <input type="submit" style="margin-top: 25px;" value="Aceptar" name="aceptar" class="button small pink">
                         </form>
                     </th>
 
@@ -34,7 +34,7 @@
                         <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
-                            <input type="submit" value="Rechazar" name="rechazar">
+                            <input type="submit" style="margin-top: 25px;" value="Rechazar" name="rechazar" class="button small pink">
                         </form>
                     </th>
 
