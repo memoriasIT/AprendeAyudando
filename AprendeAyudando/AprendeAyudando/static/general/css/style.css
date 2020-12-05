@@ -1035,6 +1035,9 @@
 			padding: 12em 0em 12em;
 		}
 
+		.minHeightSmaller {
+			padding: 8.5em 0em 8.5em;
+		}
 		.bigger {
 			font-size: 40px;
 		}

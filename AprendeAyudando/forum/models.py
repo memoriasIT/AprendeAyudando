@@ -4,10 +4,11 @@ from django.db.models import Q
 
 class Forum(models.Model):
     title = models.CharField(max_length=200)
-    #enrolled_users = models.ManyToManyField(get_user_model(), related_name="forums", blank=True)
+    enrolled_users = models.ManyToManyField(get_user_model(), related_name="forums", blank=True)
     author = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE, 
                                 limit_choices_to=Q(groups__name='Profesor') | Q(groups__name='EntidadPublicoPrivada'))
-
+    activityCourseFk = models.IntegerField()
+    activityCourseType = models.CharField(max_length=20)
     def __str__(self):
         return self.title
     

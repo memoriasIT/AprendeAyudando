@@ -1,12 +1,24 @@
-<h1>{{ forum.title }}</h1>
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Foro{% endblock %}
+
+{% block content %}
+<div class="container 125% align-center minHeight">
+    <h1>{{ forum.title }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 {% if success is True %}
     <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en el foro: {{ forum.title }}</p>
 {% else %}
-    <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> del profesor <strong>{{ forum.teacher.first_name }}</strong></p>
+    {% if isAuthor is True %}
+    <p>Bienvenido a tu foro: <strong>{{ forum.title }}</strong></p>
+    <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="button big pink">Borrar foro</a>
+    {% else  %}
+    {% if forum.activityCourseType == 'Course' %}
+    <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> del profesor <strong>{{ forum.author.first_name }}</strong></p>
+    {% else %}
+    <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> de la entidad público/privada <strong>{{ forum.author.first_name }}</strong></p>
+    {% endif %}
+    {% endif %}
 {% endif %}
-<form action="{% url 'forum:delete' forum.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Borrar foro">
-</form>
+</div>
+{% endblock %}

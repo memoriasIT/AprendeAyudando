@@ -7,6 +7,8 @@ from django.contrib.auth.decorators import permission_required
 from .models import Activity
 from AprendeAyudando.views import has_group
 
+from forum.models import Forum
+
 def index(request):
     activityList = Activity.objects.order_by('-pub_date')[:5]
     
@@ -87,6 +89,14 @@ def join(request, activity_id):
     isEntity = False
     if request.user==activity.entity:
         isEntity = True
+    
+    #Miramos los foros que pertenecen a la actividad
+    forumListAux = Forum.objects.all()
+
+    forumListCourse = []
+    for forum in forumListAux:
+        if activity.id == forum.activityCourseFk:
+            forumListCourse.append(forum)
 
     # Si tiene acceso restringido y ademas no esta inscrito(como Entidad o como Estudiante) entonces vamos al proceso de inscripcion
     if request.user not in activity.enrolled_users.all() and not isEntity and activity.restricted_entry:
@@ -104,7 +114,8 @@ def join(request, activity_id):
         'success': success,
         'usuario': request.user,
         'isEntity': isEntity,
-        'show_de_enroll': show_de_enroll
+        'show_de_enroll': show_de_enroll,
+        'forumListCourse': forumListCourse,
     }
     if request.method=='POST' and request.user not in activity.enrolled_users.all() and request.user.is_authenticated:
         activity.enrolled_users.add(request.user)
