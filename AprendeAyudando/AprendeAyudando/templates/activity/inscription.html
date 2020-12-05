@@ -9,11 +9,17 @@
     {% elif not is_Estudiante_or_superuser %}
         <p>Solo los estudiantes tienen derecho al proceso de inscrición en una actividad.</p>
     {% elif exist_activity_request %}
-        <p>Su solicitud ya fue enviada al profesor del curso.</p>
+        <p>Su solicitud ya fue enviada al dueño de la actividad.</p>
     {% else %}
         <h2>Inscripción en {{ activity.title }}</h2>
-        <p>Desea realizar la Inscripción en la actividad <strong>{{ activity.title }}</strong>?</p>
-
+        <p> 
+            La actividad tiene acceso restringido, por lo que
+            necesita realizar una inscripción. Esta inscripción se enviará
+            al dueño de la actividad.
+        </p>
+        <p>
+            Desea realizar la Inscripción en la actividad <strong>{{ activity.title }}</strong>?
+        </p>
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
         <form action="{% url 'activity:inscription' activity.id %}" method="post">

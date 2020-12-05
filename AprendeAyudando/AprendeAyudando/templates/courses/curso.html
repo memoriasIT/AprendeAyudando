@@ -2,35 +2,41 @@
 {% block title %}AprendeAyudando - Curso{% endblock %}
 
 {% block content %}
-<div class="container 125% align-center minHeight">
-<h1>{{ course.title }}</h1>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-{% if success is True %}
-    <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en el curso: {{ course.title }}</p>
-{% else %}
-    {% if isTeacher is True %}
-    <p>Bienvenido a tu curso: <strong>{{ course.title }}</strong></p>
-    <a style="margin-bottom: 50px;" href="{% url 'forum:create' course.id %}" class="button big pink">Crear un foro</a>
-    {% else  %}
-    <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
-    {% endif %}
-{% endif %}
-{% if show_de_enroll %}
-<form action="{% url 'courses:leave' course.id %}" method="post">
-    {% csrf_token %}
-    <input type="submit" value="Desmatricularse">
-</form>
-{% else %}
-{% if forumListCourse %}
-        <ol id="prettyList" style="width:92%;">
-            {% for forum in forumListCourse %}
-                <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
-            {% endfor %}
-        </ol>
+<section class="wrapper align-center login">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+    
+    <div class="container 100%">
+        <h1>{{ course.title }}</h1>
+
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+
+        {% if isTeacher is True %}
+            <p>Bienvenido a tu curso: <strong>{{ course.title }}</strong></p>
+            <a style="margin-bottom: 50px;" href="{% url 'forum:create' course.id %}" class="button big pink">Crear un foro</a>
+        {% else %}
+            <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
+        {% endif %}
+
+
+        {% if show_de_enroll %}
+            <form action="{% url 'courses:leave' course.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Desmatricularse">
+            </form>
+        {% endif %}
+
+        {% if forumListCourse %}
+            <ol id="prettyList" style="width:92%;">
+                {% for forum in forumListCourse %}
+                    <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
+                {% endfor %}
+            </ol>
         {% else %}
             <p>Lo sentimos, no hay foros disponibles.</p>
         {% endif %}
-{% endif %}
-</div>
+    </div>
+</section>
 {% endblock %}

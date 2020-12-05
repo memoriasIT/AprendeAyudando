@@ -2,54 +2,61 @@
 {% block title %}AprendeAyudando - Curso{% endblock %}
 
 {% block content %}
-<div class="container 125% align-center minHeight">
+<section class="wrapper align-center login">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
 
-<h1>{{ activity.title }}</h1>
+    <div class="container 100%">
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        <h1>{{ activity.title }}</h1>
+
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
     
-{% if isOwner %}
-    <p>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></p>
-    <a style="margin-bottom: 50px;" href="{% url 'forum:create' activity.id %}" class="button big pink">Crear un foro</a>
-{% else  %}
-    <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
-{% endif %}
-<p>Actividad restringida:
-    <strong>
-        {% if activity.restricted_entry %}
-            SI
-        {% else %}
-            NO
-            {% if user.is_authenticated and not show_de_enroll and not isOwner %}
-                <form action="{% url 'activity:join' activity.id %}" method="post">
+        {% if isOwner %}
+            <p>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></p>
+            <a style="margin-bottom: 50px;" href="{% url 'forum:create' activity.id %}" class="button big pink">Crear un foro</a>
+        {% else  %}
+            <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
+        {% endif %}
+            <p>Actividad restringida:
+                <strong>
+                    {% if activity.restricted_entry %}
+                        SI
+                    {% else %}
+                        NO
+                        {% if user.is_authenticated and not show_de_enroll and not isOwner %}
+                            <form action="{% url 'activity:join' activity.id %}" method="post">
+                                {% csrf_token %}
+                                <input type="submit" value="Guardar Actividad">
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </strong>
+            </p>
+
+        {% if show_de_enroll %}
+            {% if not activity.restricted_entry %}
+                <form action="{% url 'activity:leave' activity.id %}" method="post">
                     {% csrf_token %}
-                    <input type="submit" value="Guardar Actividad">
+                    <input type="submit" value="Desvincular Actividad">
+                </form>
+            {% else %}
+                <form action="{% url 'activity:leave' activity.id %}" method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="Desmatricularse">
                 </form>
             {% endif %}
         {% endif %}
-    </strong>
-</p>
-{% if show_de_enroll %}
-    {% if not activity.restricted_entry %}
-        <form action="{% url 'activity:leave' activity.id %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Desvincular Actividad">
-        </form>
-    {% else %}
-        <form action="{% url 'activity:leave' activity.id %}" method="post">
-            {% csrf_token %}
-            <input type="submit" value="Desmatricularse">
-        </form>
-    {% endif %}
-{% endif %}
-{% if forumListCourse %}
-        <ol id="prettyList" style="width:92%;">
-            {% for forum in forumListCourse %}
-                <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
-            {% endfor %}
-        </ol>
+
+        {% if forumListCourse %}
+            <ol id="prettyList" style="width:92%;">
+                {% for forum in forumListCourse %}
+                    <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
+                {% endfor %}
+            </ol>
         {% else %}
             <p>Lo sentimos, no hay foros disponibles.</p>
         {% endif %}
-</div>
+    </div>
+</section>
 {% endblock %}
