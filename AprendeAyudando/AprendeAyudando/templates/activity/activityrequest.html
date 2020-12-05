@@ -1,0 +1,50 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Solicitudes entrantes{% endblock %}
+
+{% block content %}
+<section class="wrapper align-center login">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+
+    <div class="container 100% listaActividades">
+        <h2>Solicitudes de actividades</h2>
+        <img src="{% static 'general/images/logoTransparent.png' %}" alt="" style="width:15%;height:15%;border-radius:500px;">
+        <br><br><br>
+
+        {% if user_list %}
+        <table>
+            <tr>
+                <th style="text-align:center;"><strong style="font-size:20px">Nombre usuario</strong></th>
+                <th style="text-align:center;"><strong style="font-size:20px">Aceptar</strong></th>
+                <th style="text-align:center;"><strong style="font-size:20px">Rechazar</strong></th>
+            </tr>
+            {% for esteUsuario in user_list %}
+                <tr>
+                    <th style="text-align:center;">{{ esteUsuario.requester.username }}</th>
+
+                    <th style="text-align:center;">
+                        <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
+                            <input type="submit" value="Aceptar" name="aceptar">
+                        </form>
+                    </th>
+
+                    <th style="text-align:center;">
+                        <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
+                        {% csrf_token %}
+                            <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
+                            <input type="submit" value="Rechazar" name="rechazar">
+                        </form>
+                    </th>
+
+                </tr>
+            {% endfor %}
+        </table>
+        {% else %}
+            <p>Lo sentimos, no hay solicitudes de estudiantes disponibles.</p>
+        {% endif %}
+    </div>
+
+</section>
+{% endblock %}

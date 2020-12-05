@@ -7,31 +7,28 @@
 <h1>{{ activity.title }}</h1>
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-{% if success is True %}
-    <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en la actividad: {{ activity.title }}</p>
-{% else %}
-    {% if isEntity is True %}
+    
+{% if isOwner %}
     <p>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></p>
     <a style="margin-bottom: 50px;" href="{% url 'forum:create' activity.id %}" class="button big pink">Crear un foro</a>
-    {% else  %}
+{% else  %}
     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
-    {% endif %}
-    <p>Actividad restringida:
-        <strong>
-            {% if activity.restricted_entry %}
-                SI
-            {% else %}
-                NO
-                {% if user.is_authenticated and not show_de_enroll %}
+{% endif %}
+<p>Actividad restringida:
+    <strong>
+        {% if activity.restricted_entry %}
+            SI
+        {% else %}
+            NO
+            {% if user.is_authenticated and not show_de_enroll %}
                 <form action="{% url 'activity:join' activity.id %}" method="post">
                     {% csrf_token %}
                     <input type="submit" value="Guardar Actividad">
                 </form>
-                {% endif %}
             {% endif %}
-        </strong>
-    </p>
-{% endif %}
+        {% endif %}
+    </strong>
+</p>
 {% if show_de_enroll %}
     {% if not activity.restricted_entry %}
         <form action="{% url 'activity:leave' activity.id %}" method="post">

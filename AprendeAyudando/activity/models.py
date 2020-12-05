@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.contrib.auth import get_user_model
+from django.db.models import Q
 
 class Activity(models.Model):
     title = models.CharField(max_length=200)
@@ -16,3 +17,14 @@ class Activity(models.Model):
         # Como se muestra en la web de admin
         verbose_name = "Actividad"
         verbose_name_plural = "Actividades"
+
+
+class ActivityRequest(models.Model):
+    requester = models.ForeignKey(get_user_model(), on_delete=models.CASCADE, limit_choices_to=Q(groups__name='Estudiante'))
+    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
+    pub_date = models.DateTimeField(verbose_name="date published", auto_now_add=True, null=True)
+    class Meta:
+        # Como se muestra en la web de admin
+        verbose_name = "Solicitud de Actividad"
+        verbose_name_plural = "Solicitudes de Actividades"
+        unique_together = ('requester', 'activity')

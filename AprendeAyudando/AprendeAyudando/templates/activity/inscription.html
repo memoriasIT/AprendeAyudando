@@ -2,23 +2,26 @@
 {% block title %}AprendeAyudando - Inscripción en una actividad{% endblock %}
 
 {% block content %}
-<div class="container 125% align-center minHeight">
+    <div class="container 125% align-center minHeight">
 
-{% if not user.is_authenticated %}
-<p>La actividad tiene el acceso restringido. Inicia sesión o registrate como estudiante para solicitar acceso.</p>
-{% elif not is_Estudiante_or_superuser %}
-<p>Solo los estudiantes tienen derecho al proceso de inscrición en una actividad.</p>
-{% else %}
-<h2>Inscripción en {{ activity.title }}</h2>
-<p>Desea realizar la Inscripción en la actividad <strong>{{ activity.title }}</strong>?</p>
+    {% if not user.is_authenticated %}
+        <p>La actividad tiene el acceso restringido. Inicia sesión o registrate como estudiante para solicitar acceso.</p>
+    {% elif not is_Estudiante_or_superuser %}
+        <p>Solo los estudiantes tienen derecho al proceso de inscrición en una actividad.</p>
+    {% elif exist_activity_request %}
+        <p>Su solicitud ya fue enviada al profesor del curso.</p>
+    {% else %}
+        <h2>Inscripción en {{ activity.title }}</h2>
+        <p>Desea realizar la Inscripción en la actividad <strong>{{ activity.title }}</strong>?</p>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'activity:join' activity.id %}" method="post">
-{% csrf_token %}
-<input type="submit" value="Matricularse">
-</form>
+        <form action="{% url 'activity:inscription' activity.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Matricularse">
+        </form>
 
-{% endif %}
-</div>
+    {% endif %}
+
+    </div>
 {% endblock %}

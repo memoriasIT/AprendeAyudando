@@ -79,8 +79,8 @@ def join(request, forum_id):
         success = True
 
     context = {
-        'usuario': request.user, 
-        'forum': forum, 
+        'usuario': request.user,
+        'forum': forum,
         'success': success,
         'isAuthor' : isAuthor
     }
