@@ -32,7 +32,7 @@
 
                     <th style="text-align:center;">
                         <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
-                        {% csrf_token %}
+                            {% csrf_token %}
                             <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
                             <input type="submit" value="Rechazar" name="rechazar">
                         </form>
@@ -42,7 +42,7 @@
             {% endfor %}
         </table>
         {% else %}
-            <p>Lo sentimos, no hay solicitudes de estudiantes disponibles.</p>
+            <p>No hay solicitudes de estudiantes disponibles.</p>
         {% endif %}
     </div>
 

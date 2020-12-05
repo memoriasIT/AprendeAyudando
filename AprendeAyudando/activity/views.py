@@ -1,5 +1,6 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
@@ -78,7 +79,7 @@ def inscription(request, activity_id):
         if has_group(request.user, 'Estudiante'):
             new_activity_request = ActivityRequest.objects.create(requester=request.user, activity=activity)
             new_activity_request.save()
-            return HttpResponse("Se ha enviado la solicitud con exito")
+            context['exist_activity_request'] = True
         elif request.user.is_superuser:
             activity.enrolled_users.add(request.user)
             return join(request, activity_id)
@@ -93,8 +94,9 @@ def inscription(request, activity_id):
 def view_activity_request(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
 
+    #Para controlar que otra EntidadPP no acceda(solo podra el dueño o un superusuario)
     if request.user!=activity.entity and not request.user.is_superuser:
-        return HttpResponse("Entrada no permitida")
+        return HttpResponseForbidden()
 
     user_list = ActivityRequest.objects.filter(activity=activity)
 
@@ -106,8 +108,10 @@ def view_activity_request(request, activity_id):
 
     return render(request, 'activity/activityrequest.html', context)
 
+
 @login_required
-@permission_required('activity.view_activityrequest', raise_exception=True)     #Aqui tambien seria un delete y un add
+@permission_required('activity.view_activityrequest', raise_exception=True)
+@permission_required('activity.delete_activityrequest', raise_exception=True)
 def action_activity_request(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
 
