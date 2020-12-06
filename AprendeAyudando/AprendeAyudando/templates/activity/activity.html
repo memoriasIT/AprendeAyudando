@@ -1,6 +1,11 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Curso{% endblock %}
 
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+{% endblock %}
+
 {% block content %}
 <section class="wrapper align-center login">
     

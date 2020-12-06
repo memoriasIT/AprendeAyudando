@@ -58,3 +58,15 @@
     left: -.5em;
     border-left-color: #fa8072;             
 }
+
+input[type="submit"].letraEnBlanco{
+    color: #FFFFFF !important;
+}
+
+.eliminarDefaultCheckBox{
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}

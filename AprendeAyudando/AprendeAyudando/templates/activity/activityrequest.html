@@ -3,7 +3,7 @@
 
 {% block style %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -28,11 +28,11 @@
                         <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
-                            <ul class="actions align-center" style="margin-top: 25px; margin-left: 0%;">
+                            <ul class="actions" style="margin-top: 25px;">
                                 <li>
                                     <input type="submit" value="Aceptar" name="aceptar" class="letraEnBlanco">
                                 </li>
-                                <li>
+                                <li style="margin-left: 20%;">
                                     <input type="submit" value="Rechazar" name="rechazar" class="special">
                                 </li>
                             </ul>

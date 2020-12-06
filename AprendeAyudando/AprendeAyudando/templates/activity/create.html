@@ -1,25 +1,35 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Crear Curso{% endblock %}
 
-{% block content %}
-<div class="container 75% align-center minHeight">
-    <h1 class="bigger">Crear actividad</h1>
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
 
-    <form action="{% url 'activity:create' %}" method="POST">
-        {% csrf_token %}
-        <p>Nombre de la actividad: <input type="text" name="new_activity_name" id=""></p>
-        <p>
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Crear actividad</h1>
+
+        <form action="{% url 'activity:create' %}" method="POST">
+            {% csrf_token %}
+            <p><strong>Nombre de la actividad:</strong></p> 
+            <p><input type="text" name="new_activity_name" id=""></p>
+            <p>
             <fieldset>
                 <legend>Desea restringir la entrada?</legend>
-                <label>
-                    <input type="radio" name="is_restricted_entry" value="si"> Sí
+                
+                <input type="radio" class="eliminarDefaultCheckBox" name="is_restricted_entry" value="si" id="ssi" checked>
+                <label for="ssi">
+                    Sí
                 </label>
-                <label>
-                    <input type="radio" name="is_restricted_entry" value="no"> No
+                
+                <input type="radio" class="eliminarDefaultCheckBox" name="is_restricted_entry" value="no" id="nno">
+                <label for="nno">
+                    No
                 </label>
             </fieldset>
         </p>
-        <input type="submit" value="Enviar">
+        <input type="submit" value="Crear Actividad">
     </form>
 </div>
 {% endblock %}
