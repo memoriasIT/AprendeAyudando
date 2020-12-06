@@ -1,6 +1,11 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Solicitudes entrantes{% endblock %}
 
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+{% endblock %}
+
 {% block content %}
 <section class="wrapper align-center login">
 
@@ -23,7 +28,7 @@
                         <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
-                            <ul class="actions" style="margin-top: 25px;">
+                            <ul class="actions align-center" style="margin-top: 25px; margin-left: 0%;">
                                 <li>
                                     <input type="submit" value="Aceptar" name="aceptar" class="letraEnBlanco">
                                 </li>
