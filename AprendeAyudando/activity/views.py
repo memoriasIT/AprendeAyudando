@@ -63,9 +63,10 @@ def inscription(request, activity_id):
 
 
     exist_activity_request = False
-    ar = ActivityRequest.objects.filter(activity=activity, requester=request.user)
-    if ar.exists():
-        exist_activity_request = True
+    if request.user.is_authenticated:   #Para evitar errores
+        ar = ActivityRequest.objects.filter(activity=activity, requester=request.user)
+        if ar.exists():
+            exist_activity_request = True
 
     context = {
         #'grupo': grupo,
