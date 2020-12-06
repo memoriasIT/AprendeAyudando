@@ -993,8 +993,8 @@
 					}
 
 					#header nav > ul > li .button {
-						background-color: #fff !important;
-						color: #444 !important;
+						background-color: rgb(78, 78, 78) !important;
+						color: #fff !important;
 						height: 2.25em;
 						line-height: 2.25em;
 						margin-bottom: 0;

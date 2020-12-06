@@ -5,7 +5,7 @@
 <section class="wrapper align-center login">
 
     <div class="container 100%">
-        <h3>Solicitudes de actividades</h3>
+        <h3>Solicitudes de acceso</h3>
         {% if user_list %}
         <table class="alt">
             <thead>
@@ -17,7 +17,7 @@
             <tbody>
             {% for esteUsuario in user_list %}
                 <tr>
-                    <td>{{ esteUsuario.requester.username }}</td>
+                    <td><strong>{{ esteUsuario.requester.username }}</strong></td>
 
                     <td style="text-align:center;">
                         <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
