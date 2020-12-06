@@ -2,22 +2,22 @@
 {% block title %}AprendeAyudando - Inscripción en un curso{% endblock %}
 
 {% block content %}
-<div class="container 125% align-center minHeight">
+    <div class="container 125% align-center minHeight">
 
-{% if not is_Estudiante_or_superuser %}
-<p>No puedes inscribirte en un curso si no eres estudiante.</p>
-{% else %}
-<h2>Inscripción en {{ course.title }}</h2>
-<p>Desea realizar la Inscripción en el curso <strong>{{ course.title }}</strong>?</p>
+        {% if not is_Estudiante_or_superuser %}
+            <p>No puedes inscribirte en un curso si no eres estudiante.</p>
+        {% else %}
+            <h2>Inscripción en {{ course.title }}</h2>
+            <p>Desea realizar la Inscripción en el curso <strong>{{ course.title }}</strong>?</p>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'courses:inscription' course.id %}" method="post">
-{% csrf_token %}
-<input type="submit" value="Matricularse">
-</form>
-{% endif %}
-</div>
+            <form action="{% url 'courses:inscription' course.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="Matricularse" class="button">
+            </form>
+        {% endif %}
+    </div>
 {% endblock %}
 
 <!--<form action="{% url 'courses:leave' course.id %}" method="post">

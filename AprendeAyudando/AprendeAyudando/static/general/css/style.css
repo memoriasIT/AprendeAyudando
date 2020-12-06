@@ -888,7 +888,7 @@
 		input[type="button"].special,
 		.button.special {
 			background-color: #383b43;
-			color: #202020 !important;
+			color: #FFFFFF !important;
 		}
 
 			input[type="submit"].special:hover,

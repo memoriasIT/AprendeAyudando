@@ -82,3 +82,7 @@ ul {
     left: -.5em;
     border-left-color: #fa8072;             
 }
+
+input[type="submit"].letraEnBlanco{
+    color: #FFFFFF !important;
+}

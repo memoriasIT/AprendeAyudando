@@ -3,43 +3,40 @@
 
 {% block content %}
 <section class="wrapper align-center login">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
 
-    <div class="container 100% listaActividades">
-        <h2>Solicitudes de actividades</h2>
-        <img src="{% static 'general/images/logoTransparent.png' %}" alt="" style="width:15%;height:15%;border-radius:500px;">
-        <br><br><br>
-
+    <div class="container 100%">
+        <h3>Solicitudes de actividades</h3>
         {% if user_list %}
-        <table>
-            <tr>
-                <th style="text-align:center;"><strong style="font-size:20px">Nombre usuario</strong></th>
-                <th style="text-align:center;"><strong style="font-size:20px">Aceptar</strong></th>
-                <th style="text-align:center;"><strong style="font-size:20px">Rechazar</strong></th>
-            </tr>
+        <table class="alt">
+            <thead>
+                <tr>
+                    <th style="text-align:center;"><strong style="font-size:20px">Nombre usuario</strong></th>
+                    <th style="text-align:center;"><strong style="font-size:20px">Acción</strong></th>
+                </tr>
+            </thead>
+            <tbody>
             {% for esteUsuario in user_list %}
                 <tr>
-                    <th style="text-align:center; margin-top: 25px;">{{ esteUsuario.requester.username }}</th>
+                    <td>{{ esteUsuario.requester.username }}</td>
 
-                    <th style="text-align:center;">
+                    <td style="text-align:center;">
                         <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
-                            <input type="submit" style="margin-top: 25px;" value="Aceptar" name="aceptar" class="button small pink">
+                            <ul class="actions" style="margin-top: 25px;">
+                                <li>
+                                    <input type="submit" value="Aceptar" name="aceptar" class="letraEnBlanco">
+                                </li>
+                                <li>
+                                    <input type="submit" value="Rechazar" name="rechazar" class="special">
+                                </li>
+                            </ul>
                         </form>
-                    </th>
-
-                    <th style="text-align:center;">
-                        <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
-                            {% csrf_token %}
-                            <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
-                            <input type="submit" style="margin-top: 25px;" value="Rechazar" name="rechazar" class="button small pink">
-                        </form>
-                    </th>
+                    </td>
 
                 </tr>
             {% endfor %}
+            </tbody>
         </table>
         {% else %}
             <p>No hay solicitudes de estudiantes disponibles.</p>
