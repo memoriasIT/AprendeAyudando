@@ -122,10 +122,11 @@ def action_activity_request(request, activity_id):
         if 'aceptar' in request.POST:
             activity.enrolled_users.add(usu)
             ActivityRequest.objects.filter(requester=usu).delete()
-            return HttpResponse("Se ACEPTO la solicitud")
+            #return HttpResponse("Se ACEPTO la solicitud")
+            return view_activity_request(request, activity_id)
         elif 'rechazar' in request.POST:
             ActivityRequest.objects.filter(requester=usu).delete()
-            return HttpResponse("Se rechazo la solictud")
+            return view_activity_request(request, activity_id)
     return HttpResponse("error")
 
 def join(request, activity_id):
@@ -167,9 +168,7 @@ def join(request, activity_id):
         'show_de_enroll': show_de_enroll,
         'forumListCourse': forumListCourse,
     }
-    if (request.method=='POST'
-    and request.user not in activity.enrolled_users.all()
-    and request.user.is_authenticated):
+    if (request.method=='POST' and request.user not in activity.enrolled_users.all() and request.user.is_authenticated):
         activity.enrolled_users.add(request.user)
         context['show_de_enroll'] = True
 
