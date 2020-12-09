@@ -9,5 +9,7 @@ urlpatterns = [
     path('leave/<int:course_id>/', views.leave, name='leave'), # /courses/leave/1/
     path('create/', views.createCourse, name='create'),
     path('enrolled/', views.enrolled, name='enrolled'),
+
+    path('createResource/<int:course_id>', views.createResource, name='createResource'),
 ]
 

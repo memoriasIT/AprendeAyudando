@@ -1,0 +1,15 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Crear Curso{% endblock %}
+
+{% block content %}
+<div class="container 75% align-center minHeight">
+    <h1 class="bigger">Crear un recurso nuevo</h1>
+    <form action="{% url 'courses:createResource' activityCourseFk %}" method="POST">
+        {% csrf_token %}
+        <p>Nombre del recurso: <input type="text" name="new_resource_name" id=""></p>
+        <p>Link del recurso: <input type="text" name="new_resource_link" id=""></p>
+
+        <input type="submit" value="Enviar">
+    </form>
+</div>
+{% endblock %}

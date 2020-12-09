@@ -22,17 +22,18 @@
             <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
         {% endif %}
 
-        <p>{{course.description}}</p>
-        {% if isTeacher is True %}
-            <a style="margin-bottom: 50px;" href="{% url 'forum:create' course.id %}" class="button big pink">Crear un foro</a>
-        {% endif %}
-
         {% if show_de_enroll %}
             <form action="{% url 'courses:leave' course.id %}" method="post">
                 {% csrf_token %}
                 <input type="submit" value="Desmatricularse">
             </form>
         {% endif %}
+
+        <p>{{course.description}}</p>
+        {% if isTeacher is True %}
+            <a style="margin-bottom: 50px;" href="{% url 'forum:create' course.id %}" class="button big pink">Crear un foro</a>
+        {% endif %}
+
 
         <h4>FOROS:</h4>
 
@@ -44,6 +45,21 @@
             </ol>
         {% else %}
             <p>Lo sentimos, no hay foros disponibles.</p>
+        {% endif %}
+
+        {% if isTeacher is True %}
+            <a style="margin-bottom: 50px;" href="{% url 'courses:createResource' course.id %}" class="button big pink">Crear un recurso</a>
+        {% endif %}
+        <h4>Recursos:</h4>
+
+        {% if resourceListCourse %}
+            <ol id="prettyList" style="width:92%;">
+                {% for resource in resourceListCourse %}
+                    <li id="prettyListItem"><a href={{ resource.resourceLink }}>{{ resource.resourceText }}</a></li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <p>Lo sentimos, no hay recursos disponibles.</p>
         {% endif %}
     </div>
 </section>

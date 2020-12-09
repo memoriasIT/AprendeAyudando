@@ -1,5 +1,5 @@
 # Models
-from .models import Course
+from .models import Course, Resource
 from forum.models import Forum
 
 # Session Handling
@@ -95,6 +95,14 @@ def join(request, course_id): #Esto antes era join
     for forum in forumListAux:
         if course.id == forum.activityCourseFk:
             forumListCourse.append(forum)
+
+    #Miramos los recursos que pertenecen al curso
+    resourceListAux = Resource.objects.all()
+    resourceListCourse = []
+    for resource in resourceListAux:
+        if course.id == resource.course_id:
+            resourceListCourse.append(resource)
+    
     
     # // TODO add logic to add user to course
     success = False
@@ -127,6 +135,7 @@ def join(request, course_id): #Esto antes era join
         'isTeacher': isTeacher,
         'show_de_enroll':show_de_enroll,
         'forumListCourse': forumListCourse,
+        'resourceListCourse': resourceListCourse,
     }
 
     return render(request, 'courses/curso.html', context)
@@ -172,3 +181,18 @@ def createCourse(request):
         return render(request, 'courses/curso.html',context)
     return render(request, 'courses/create.html',{})
 
+
+
+@login_required
+@permission_required('Resource.add_resource', raise_exception=True)
+def createResource(request, course_id):
+    if request.method=="POST":
+        new_resource_name=request.POST["new_resource_name"]
+        new_resource_link=request.POST["new_resource_link"]
+        course = Course.objects.get(pk=course_id)
+        new_resource = Resource.objects.create(course = course, resourceText = new_resource_name, resourceLink = new_resource_link)
+        new_resource.save()
+
+
+        return join(request, course_id)
+    return render(request, 'resource/createResource.html', {'activityCourseFk': course_id})
