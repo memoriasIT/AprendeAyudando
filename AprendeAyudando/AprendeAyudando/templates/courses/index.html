@@ -2,44 +2,54 @@
 {% block title %}AprendeAyudando - Cursos disponibles{% endblock %}
 
 {% block content %}
-<section class="wrapper align-center login">
+<section class="wrapper login">
     {% load static %}
     {% load auth_extras %}
     <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
 
     <div class="container 100%">
-        {% if filtered_by_enrolled %}
-            <h2>Tus cursos</h2>
-        {% else %}
-            <h2>Cursos disponibles</h2>
-        {% endif %}
-
-        <img src="{% static 'general/images/logoTransparent.png' %}" alt="" style="width:15%;height:15%;border-radius:500px;">
-        <br><br><br>
-
-        {% if is_teacher %}
-			<a style="margin-bottom: 50px;" href="{% url 'courses:create' %}" class="button big pink">Añadir curso</a>
-        {% elif request.user|is_guest  %}
-            <p>Aviso: Necesitas registrarte para poder acceder a la información de los cursos.</p>
-        {% endif %}
-
-
-
-        {% if courseList %}
-        <ol id="prettyList" style="width:92%;">
-            {% for course in courseList %}
-                {% if request.user|is_guest  %}
-                    <li id="prettyListItem"><span style="color:#db685a;">{{ course.title }}</span></li>
-                {% elif not course.id in courses_list_inscripted %}
-                    <li id="prettyListItem"><a href="{% url 'courses:inscription' course.id %}">{{ course.title }}</a></li>
+        <div class="courseElement">
+            <div class="courseElementLeft"> 
+                {% if filtered_by_enrolled %}
+                    <h2>Tus cursos</h2>
                 {% else %}
-                    <li id="prettyListItem"><a href="{% url 'courses:join' course.id %}">{{ course.title }}</a></li>
+                    <h2>Cursos disponibles</h2>
                 {% endif %}
-            {% endfor %}
-        </ol>
-        {% else %}
-            <p>Lo sentimos, no hay cursos disponibles.</p>
-        {% endif %}
+            </div>
+            <div class="courseElementRight"> 
+                {% if is_teacher %}
+                    <a style="margin-bottom: 50px;" href="{% url 'courses:create' %}" class="button pink">Añadir curso</a>
+                {% elif request.user|is_guest  %}
+                    <p>Aviso: Necesitas registrarte para poder acceder a la información de los cursos.</p>
+                {% endif %}
+            </div>
+            <div class="courseElementContent"> 
+                {% if courseList %}
+                <ol id="prettyList" style="width:92%;">
+                    {% for course in courseList %}
+                        {% if request.user|is_guest  %}
+                            <li id="prettyListItem"><span style="color:#db685a;">{{ course.title }}</span></li>
+                        {% elif not course.id in courses_list_inscripted %}
+                            <li id="prettyListItem"><a href="{% url 'courses:inscription' course.id %}">{{ course.title }}</a></li>
+                        {% else %}
+                            <li id="prettyListItem"><a href="{% url 'courses:join' course.id %}">{{ course.title }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                </ol>
+                {% else %}
+                    <p>Lo sentimos, no hay cursos disponibles.</p>
+                {% endif %}
+            </div> 
+        </div> 
+        
+
+        
+
+        
+
+
+
+        
     </div>
 
 </section>

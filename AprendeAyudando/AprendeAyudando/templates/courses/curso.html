@@ -8,59 +8,84 @@
 
 {% block content %}
 
-<section class="wrapper align-center login">
+<section class="wrapper login">
     
     <div class="container 100%">
-        <h1>{{ course.title }}</h1>
+        <h1 class="courseTitle">{{ course.title }}</h1>
 
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
+        <!-- DESCRIPCIÖN -->
+        <div class="courseElement">
+            <div class="courseElementLeft"> 
+                {% if isTeacher is True %}
+                    <p>Bienvenido a tu curso: <strong>{{ course.title }}</strong></p>
+                {% else %}
+                    <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
+                {% endif %}
+            </div>
+            <div class="courseElementRight"> 
+                {% if show_de_enroll %}
+                    <form action="{% url 'courses:leave' course.id %}" method="post">
+                        {% csrf_token %}
+                        <input type="submit" value="Desmatricularse">
+                    </form>
+                {% endif %}
+            </div>
+            <div class="courseElementContent"> 
+                <p>{{course.description}}</p>
+            </div> 
+        </div> 
 
-        {% if isTeacher is True %}
-            <p>Bienvenido a tu curso: <strong>{{ course.title }}</strong></p>
-        {% else %}
-            <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
-        {% endif %}
+<!-- FOROS -->
+        <div class="courseElement">
+            <div class="courseElementLeft"> 
+                <h4>FOROS:</h4>
+            </div>
+            <div class="courseElementRight"> 
+                {% if isTeacher is True %}
+                    <a  href="{% url 'forum:create' course.id %}" class="button pink">Crear un foro</a>
+                {% endif %}
+            </div>
+            <div class="courseElementContent"> 
+                <p>{% if forumListCourse %}
+                    <ol id="prettyList" style="width:92%;">
+                        {% for forum in forumListCourse %}
+                            <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p>Lo sentimos, no hay foros disponibles.</p>
+                {% endif %}</p>
+            </div> 
+        </div> 
+        
 
-        {% if show_de_enroll %}
-            <form action="{% url 'courses:leave' course.id %}" method="post">
-                {% csrf_token %}
-                <input type="submit" value="Desmatricularse">
-            </form>
-        {% endif %}
+<!-- RECURSOS -->
+        <div class="courseElement">
+            <div class="courseElementLeft"> 
+                <h4>Recursos:</h4>
+            </div>
+            <div class="courseElementRight"> 
+                {% if isTeacher is True %}
+                    <a href="{% url 'courses:createResource' course.id %}" class="button pink">Crear un recurso</a>
+                {% endif %}
+            </div>
+            <div class="courseElementContent"> 
+                {% if resourceListCourse %}
+                        <ol id="prettyList" style="width:92%;">
+                            {% for resource in resourceListCourse %}
+                                <li id="prettyListItem"><a href={{ resource.resourceLink }}>{{ resource.resourceText }}</a></li>
+                            {% endfor %}
+                        </ol>
+                    {% else %}
+                        <p>Lo sentimos, no hay recursos disponibles.</p>
+                    {% endif %}
+                </div>
+            </div> 
+        </div> 
 
-        <p>{{course.description}}</p>
-        {% if isTeacher is True %}
-            <a style="margin-bottom: 50px;" href="{% url 'forum:create' course.id %}" class="button big pink">Crear un foro</a>
-        {% endif %}
-
-
-        <h4>FOROS:</h4>
-
-        {% if forumListCourse %}
-            <ol id="prettyList" style="width:92%;">
-                {% for forum in forumListCourse %}
-                    <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
-                {% endfor %}
-            </ol>
-        {% else %}
-            <p>Lo sentimos, no hay foros disponibles.</p>
-        {% endif %}
-
-        {% if isTeacher is True %}
-            <a style="margin-bottom: 50px;" href="{% url 'courses:createResource' course.id %}" class="button big pink">Crear un recurso</a>
-        {% endif %}
-        <h4>Recursos:</h4>
-
-        {% if resourceListCourse %}
-            <ol id="prettyList" style="width:92%;">
-                {% for resource in resourceListCourse %}
-                    <li id="prettyListItem"><a href={{ resource.resourceLink }}>{{ resource.resourceText }}</a></li>
-                {% endfor %}
-            </ol>
-        {% else %}
-            <p>Lo sentimos, no hay recursos disponibles.</p>
-        {% endif %}
-    </div>
+    
+        
 </section>
 {% endblock %}

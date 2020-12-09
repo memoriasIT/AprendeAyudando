@@ -1,4 +1,21 @@
- 
+.activityTitle {
+    font-size: xx-large;
+}
+
+.activityElement {
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px; 
+    grid-auto-rows: auto;
+}
+
+.activityElementLeft { grid-area: 1 / 1 / 2 / 2; }
+.activityElementRight { grid-area: 1 / 2 / 2 / 3; }
+.activityElementContent { grid-area: 2 / 1 / 3 / 3; } 
+
+
 .listaActividades ol {
     counter-reset: li; 
     list-style: none; 

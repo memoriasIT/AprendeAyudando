@@ -1,3 +1,21 @@
+.courseTitle {
+    font-size: xx-large;
+}
+
+.courseElement {
+    display: grid;
+    display: grid;
+    grid-template-columns: 4fr 1fr;
+    grid-template-rows: repeat(2, 1fr);
+    grid-column-gap: 0px;
+    grid-row-gap: 0px; 
+    grid-auto-rows: auto;
+}
+
+.courseElementLeft { grid-area: 1 / 1 / 2 / 2; }
+.courseElementRight { grid-area: 1 / 2 / 2 / 3; }
+.courseElementContent { grid-area: 2 / 1 / 3 / 3; } 
+
 ul {
     text-align: left;
     margin-left: 40%;
@@ -29,7 +47,7 @@ ul {
     *list-style: decimal; 
     font: 15px 'trebuchet MS', 'lucida sans';
     padding: 0;
-    margin-bottom: 4em;
+    margin-bottom: 1em;
     text-shadow: 0 1px 0 rgba(255,255,255,.5);
 }
 
