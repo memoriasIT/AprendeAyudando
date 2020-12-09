@@ -1,6 +1,16 @@
+.profileGrid {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    }
+    
+    .leftPannel { grid-area: 1 / 1 / 2 / 2; }
+    .rightPannel { grid-area: 1 / 2 / 2 / 3; } 
+
 ul {
     text-align: left;
-    margin-left: 40%;
     list-style-type: none;
 }
 
