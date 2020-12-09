@@ -1,6 +1,11 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Curso{% endblock %}
 
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+{% endblock %}
+
 {% block content %}
 
 <section class="wrapper align-center login">
@@ -13,11 +18,14 @@
 
         {% if isTeacher is True %}
             <p>Bienvenido a tu curso: <strong>{{ course.title }}</strong></p>
-            <a style="margin-bottom: 50px;" href="{% url 'forum:create' course.id %}" class="button big pink">Crear un foro</a>
         {% else %}
             <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
         {% endif %}
 
+        <p>{{course.description}}</p>
+        {% if isTeacher is True %}
+            <a style="margin-bottom: 50px;" href="{% url 'forum:create' course.id %}" class="button big pink">Crear un foro</a>
+        {% endif %}
 
         {% if show_de_enroll %}
             <form action="{% url 'courses:leave' course.id %}" method="post">
@@ -25,6 +33,8 @@
                 <input type="submit" value="Desmatricularse">
             </form>
         {% endif %}
+
+        <h4>FOROS:</h4>
 
         {% if forumListCourse %}
             <ol id="prettyList" style="width:92%;">

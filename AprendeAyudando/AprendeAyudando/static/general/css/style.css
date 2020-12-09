@@ -240,6 +240,27 @@
 		width: 100%;
 	}
 
+	.biggerTextarea {
+		-moz-appearance: none;
+		-webkit-appearance: none;
+		-o-appearance: none;
+		-ms-appearance: none;
+		appearance: none;
+		background: rgba(144, 144, 144, 0.075);
+		border-radius: 4px;
+		border: none;
+		color: inherit;
+		display: block;
+		outline: 0;
+		padding-bottom: 10em;
+		padding-left: 3em;
+		padding-right: 3em;
+		padding-top: 1em;
+		text-decoration: none;
+		width: 100%;
+		
+	}
+
 		input[type="text"]:invalid,
 		input[type="password"]:invalid,
 		input[type="email"]:invalid,

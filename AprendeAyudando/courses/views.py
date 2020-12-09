@@ -159,7 +159,8 @@ def createCourse(request):
 
     if request.method=="POST":
         new_course_name=request.POST["new_course_name"]
-        new_course = Course.objects.create(title=new_course_name, teacher=request.user)
+        new_course_description=request.POST["new_course_description"]
+        new_course = Course.objects.create(title=new_course_name, description=new_course_description, teacher=request.user)
         new_course.save()
         isTeacher = True
 
