@@ -981,20 +981,26 @@
 			vertical-align: middle;
 		}
 
-			#header nav > ul {
+			#header nav > .left {
+				margin: 0;
+				left: 0;
+				padding-left: 0;
+			}
+
+			#header nav > .right > ul {
 				list-style: none;
 				margin: 0;
 				padding-left: 0;
 			}
 
-				#header nav > ul > li {
+				#header nav > .right > ul > li {
 					border-radius: 4px;
 					display: inline-block;
 					margin-left: 2em;
 					padding-left: 0;
 				}
 
-					#header nav > ul > li a {
+					#header nav > .right > ul > li a {
 						-moz-transition: color 0.2s ease-in-out;
 						-webkit-transition: color 0.2s ease-in-out;
 						-o-transition: color 0.2s ease-in-out;
@@ -1005,7 +1011,7 @@
 						text-decoration: none;
 					}
 
-						#header nav > ul > li a:active, #header nav > ul > li a:hover {
+						#header nav > .right > ul > li a:active, #header nav > ul > li a:hover {
 							color: #202020;
 						}
 
@@ -1013,7 +1019,7 @@
 						margin-left: 0;
 					}
 
-					#header nav > ul > li .button {
+					#header nav > .right > ul > li .button {
 						background-color: rgb(78, 78, 78) !important;
 						color: #fff !important;
 						height: 2.25em;

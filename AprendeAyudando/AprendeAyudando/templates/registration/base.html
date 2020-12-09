@@ -16,19 +16,25 @@
   <body class="landing">
 		<!-- Header -->
 			<header id="header">
+				<div class="left">
+					<img style="height: 65px;margin-top: 10px;" src="/static/general/images/logo-NoText.png" alt="">
+				</div>
 				<nav id="nav">
-					<ul>
-						<li><a href="/">Inicio</a></li>
-						<li><a href="/courses">Cursos</a></li>
-						<li><a href="/activity">Actividades</a></li>
-						{% if not user.is_authenticated %}
-							<li><a href="/register" >Registro</a></li>
-							<li><a href="/accounts/login" class="button special" >Login</a></li>
-						{% else %}
-							<li><a href="/account" >Mi perfil</a></li>
-							<li><a href="{% url 'logout' %}" class="button special" >Cerrar sesion</a></li>
-						{% endif %}
-					</ul>
+					<div class="right">
+						<ul>
+							<li><a href="/">Inicio</a></li>
+							<li><a href="/courses">Cursos</a></li>
+							<li><a href="/activity">Actividades</a></li>
+							{% if not user.is_authenticated %}
+								<li><a href="/register" >Registro</a></li>
+								<li><a href="/accounts/login" class="button special" >Login</a></li>
+							{% else %}
+								<li><a href="/account" >Mi perfil</a></li>
+								<li><a href="{% url 'logout' %}" class="button special" >Cerrar sesion</a></li>
+							{% endif %}
+						</ul>
+					</div>
+					
 				</nav>
             </header>
             
