@@ -9,8 +9,8 @@
 
     <div class="container 75% minHeightSmaller">
         <h2>Solicitar permisos</h2>
-        <input class="button big" type="submit" value="Profesor" name="_rolProfesor">
-        <input class="button big" type="submit" value="Entidad" name="_rolEntidad">
+        <a  href="{% url 'request_permissions:redirectForm' 'Profesor' %}" class="button big">Profesor</a>
+        <a  href="{% url 'request_permissions:redirectForm' 'EntidadPublicoPrivada' %}" class="button big">Entidad Público/Privada</a>
     </div>
 </section>
 

@@ -1,0 +1,23 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Solicitar permisos profesor{% endblock %}
+
+{% block content %}
+
+<section class="wrapper align-center login">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
+
+    <div class="container 75% minHeightSmaller">
+        <h2>Solicitar permisos de profesor</h2>
+        <form action="{% url 'request_permissions:create' 'Profesor' %}" method="POST">
+            {% csrf_token %}
+            <p>Número de teléfono: <input type="text" name="telefono" id=""></p>
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+    
+</section>
+
+
+
+{% endblock %}
