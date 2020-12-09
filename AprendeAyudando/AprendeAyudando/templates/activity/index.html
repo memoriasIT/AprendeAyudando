@@ -4,6 +4,7 @@
 {% block content %}
 <section class="wrapper align-center login">
     {% load static %}
+    {% load auth_extras %}
     <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
 
     <div class="container 100% listaActividades">
@@ -17,14 +18,18 @@
 
         {% if is_entity %}
 			<a style="margin-bottom: 50px;" href="{% url 'activity:create' %}" class="button big pink">Añadir actividad</a>
+        {% elif request.user|is_guest  %}
+            <p>Aviso: Necesitas registrarte para poder acceder a la información de las actividades restringidas.</p>
         {% endif %}
         {% if activityList %}
         <ol id="prettyList" style="width:92%;">
             {% for activity in activityList %}
-                {% if not activity.id in activities_list_inscripted %}
-                    <li id="prettyListItem"><a href="{% url 'activity:inscription' activity.id %}">{{ activity.title }}</a></li>
-                {% else %}
+                {% if not activity.restricted_entry %}
                     <li id="prettyListItem"><a href="{% url 'activity:join' activity.id %}">{{ activity.title }}</a></li>
+                {% elif not request.user|is_guest and not activity.id in activities_list_inscripted %}
+                    <li id="prettyListItem"><a href="{% url 'activity:inscription' activity.id %}">{{ activity.title }}</a></li>
+                {% elif request.user|is_guest %}
+                <li id="prettyListItem"><span style="color:#db685a;">{{ activity.title }}</span></li>
                 {% endif %}
             {% endfor %}
         </ol>

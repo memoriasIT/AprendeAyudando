@@ -10,3 +10,8 @@ def has_group(user, group_name):
         return True if group in user.groups.all() else False
     except Group.DoesNotExist:
         return False
+
+@register.filter(name='is_guest')
+def is_guest(user):
+    return  not has_group(user, "Estudiante") and not has_group(user, "Profesor") and not has_group(user, "Entidad") and not has_group(user, "Administrador")
+
