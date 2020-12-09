@@ -20,5 +20,10 @@
     {% endif %}
     {% endif %}
 {% endif %}
+{% if forum.activityCourseType == 'Course' %}
+    <a style="margin-bottom: 50px;" href="{% url 'courses:join' forum.activityCourseFk %}" class="button big">Volver a curso</a>
+{% else %}
+    <a style="margin-bottom: 50px;" href="{% url 'activity:join' forum.activityCourseFk %}" class="button big">Volver a actividad</a>   
+{% endif %}
 </div>
 {% endblock %}

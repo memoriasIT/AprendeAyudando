@@ -1,5 +1,5 @@
 {% extends "registration/base.html" %}
-{% block title %}AprendeAyudando - Curso{% endblock %}
+{% block title %}AprendeAyudando - Actividad{% endblock %}
 
 {% block style %}
     {% load static %}
@@ -22,10 +22,12 @@
             {% else %}
                 <p>Hola {{ usuario.first_name }}, te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
             {% endif %}
+            <p>{{activity.description}}</p>
             <a style="margin-bottom: 50px;" href="{% url 'forum:create' activity.id %}" class="button small pink">Crear un foro</a>
             <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
         {% else  %}
             <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
+            <p>{{activity.description}}</p>
         {% endif %}
             <p>Actividad restringida:
                 <strong>
@@ -42,7 +44,6 @@
                     {% endif %}
                 </strong>
             </p>
-
         {% if show_de_enroll %}
             {% if not activity.restricted_entry %}
                 <form action="{% url 'activity:leave' activity.id %}" method="post">
@@ -57,6 +58,7 @@
             {% endif %}
         {% endif %}
 
+        <h4>FOROS:</h4>
         {% if forumListCourse %}
             <ol id="prettyList" style="width:92%;">
                 {% for forum in forumListCourse %}

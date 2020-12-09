@@ -22,11 +22,11 @@ def createForum(request, activityCourseFk):
         new_forum = Forum.objects.create(title=new_forum_name, author=request.user, activityCourseFk= activityCourseFk, activityCourseType=activityCourseType)
         new_forum.save()
 
-        isTeacher = True
+        isAuthor = True
 
         context = {
         'forum': new_forum,
-        'isTeacher': isTeacher,
+        'isAuthor': isAuthor,
         }
         return render(request, 'forum/forum.html',context)
     return render(request, 'forum/createForum.html', {'activityCourseFk': activityCourseFk})
@@ -43,19 +43,19 @@ def delete(request, forum_id):
 
     if forum.activityCourseType == 'Course':
         course = get_object_or_404(Course, pk=forum.activityCourseFk)
+        isTeacher = True
         context = {
             'course': course,
+            'isTeacher': isTeacher,
         }
     else:
         activity =get_object_or_404(Activity, pk=forum.activityCourseFk)
+        isOwner = True
         context = {
             'activity': activity,
+            'isOwner': isOwner,
         }
-    
-
-    # HTML forms don't allow delete method yet
-    if request.method == 'POST': 
-        Forum.objects.filter(id=forum_id).delete()
+    Forum.objects.filter(id=forum_id).delete()
     if forum.activityCourseType == 'Course':
         return render(request, 'courses/curso.html', context)
     else:
@@ -74,7 +74,7 @@ def join(request, forum_id):
     success = False
 
     # If the current logged user isn't enrolled in the course then add him
-    if request.user not in forum.enrolled_users.all():
+    if request.user not in forum.enrolled_users.all() and request.user != forum.author:
         forum.enrolled_users.add(request.user)
         success = True
 

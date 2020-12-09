@@ -203,8 +203,9 @@ def createActivity(request):
 
     if request.method=="POST":
         new_activity_name=request.POST["new_activity_name"]
+        new_activity_description=request.POST["new_activity_description"]
         new_activity_is_restricted=request.POST["is_restricted_entry"]=='si'
-        new_activity = Activity.objects.create(title=new_activity_name, entity=request.user,restricted_entry=new_activity_is_restricted)
+        new_activity = Activity.objects.create(title=new_activity_name, description=new_activity_description, entity=request.user,restricted_entry=new_activity_is_restricted)
         new_activity.save()
-        return render(request, 'activity/activity.html',{'activity': new_activity})
+        return render(request, 'activity/activity.html',{'activity': new_activity, 'isOwner': True})
     return render(request, 'activity/create.html',{})
