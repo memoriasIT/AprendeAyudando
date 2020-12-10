@@ -27,12 +27,12 @@
                 {% if activityList %}
                 <ol id="prettyList" style="width:92%;">
                     {% for activity in activityList %}
-                        {% if not activity.restricted_entry %}
-                            <li id="prettyListItem"><a href="{% url 'activity:join' activity.id %}">{{ activity.title }}</a></li>
-                        {% elif not request.user|is_guest and not activity.id in activities_list_inscripted %}
+                        {% if activity.restricted_entry and request.user|is_guest or activity.restricted_entry and request.user|has_group:"EntidadPublicoPrivada" and activity.entity != request.user %}
+                            <li id="prettyListItem"><span style="color:#db685a;">{{ activity.title }}</span></li>
+                        {% elif not activity.id in activities_list_inscripted %}
                             <li id="prettyListItem"><a href="{% url 'activity:inscription' activity.id %}">{{ activity.title }}</a></li>
-                        {% elif request.user|is_guest %}
-                        <li id="prettyListItem"><span style="color:#db685a;">{{ activity.title }}</span></li>
+                        {% else %}
+                            <li id="prettyListItem"><a href="{% url 'activity:join' activity.id %}">{{ activity.title }}</a></li>
                         {% endif %}
                     {% endfor %}
                 </ol>

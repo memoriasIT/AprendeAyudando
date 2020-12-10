@@ -27,7 +27,7 @@
                 {% if courseList %}
                 <ol id="prettyList" style="width:92%;">
                     {% for course in courseList %}
-                        {% if request.user|is_guest  %}
+                        {% if request.user|is_guest or request.user|has_group:"Profesor" and course.teacher is not request.user %}
                             <li id="prettyListItem"><span style="color:#db685a;">{{ course.title }}</span></li>
                         {% elif not course.id in courses_list_inscripted %}
                             <li id="prettyListItem"><a href="{% url 'courses:inscription' course.id %}">{{ course.title }}</a></li>
