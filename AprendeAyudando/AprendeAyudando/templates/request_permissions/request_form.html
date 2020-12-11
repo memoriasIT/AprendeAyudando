@@ -6,12 +6,20 @@
 <section class="wrapper align-center login">
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
-
-    <div class="container 75% minHeightSmaller">
-        <h2>Solicitar permisos</h2>
-        <a  href="{% url 'request_permissions:redirectForm' 'Profesor' %}" class="button big">Profesor</a>
-        <a  href="{% url 'request_permissions:redirectForm' 'EntidadPublicoPrivada' %}" class="button big">Entidad Público/Privada</a>
-    </div>
+    {% if solicitudExistente %}
+        <div class="container 75% minHeightSmaller">
+            <h4>Ya ha enviado una solicitud.</h4>
+            <p></p>
+            <a href="/account" class="button big">Volver a mi perfil</a>
+        </div>
+    {% else %}
+        <div class="container 75% minHeightSmaller">
+            <h2>Solicitar permisos</h2>
+            <a  href="{% url 'request_permissions:redirectForm' 'Profesor' %}" class="button big">Profesor</a>
+            <a  href="{% url 'request_permissions:redirectForm' 'EntidadPublicoPrivada' %}" class="button big">Entidad Público/Privada</a>
+        </div>
+    {% endif %}
+    
 </section>
 
 

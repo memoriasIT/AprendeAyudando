@@ -11,7 +11,14 @@ from django.utils import timezone
 @login_required
 @permission_required('request_permissions.add_request_permissions', raise_exception=True)
 def index(request):
-    return render(request, 'request_permissions/request_form.html')
+    solicitudExistente = False
+    
+    for r in Request_permissions.objects.all():
+        if r.requester == request.user:
+            solicitudExistente = True
+    context = {"solicitudExistente": solicitudExistente}
+
+    return render(request, 'request_permissions/request_form.html', context)
 
 @login_required
 @permission_required('request_permissions.delete_request_permissions', raise_exception=True)
@@ -43,6 +50,7 @@ def deny(request, request_id):
 @login_required
 @permission_required('request_permissions.add_request_permissions', raise_exception=True)
 def createRequest(request, requestType):
+    
     telefono = request.POST["telefono"]
     if requestType == 'Profesor':
         role = 'Profesor'
