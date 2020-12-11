@@ -61,13 +61,10 @@ def enrolled(request):
 def inscription(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
+    if request.user==course.teacher:
+        return join(request, course_id)
+
     is_Estudiante_or_superuser = False
-    #if request.user.has_perm('courses.view_course'):
-    #    grupo = 'Estudiante'
-    #if request.user.has_perm('courses.add_course'):
-    #    grupo = 'Profesor'
-    #if request.user.has_perm('activity.add_activity'):
-    #    grupo = 'Entidad'
     if has_group(request.user, 'Estudiante') or request.user.is_superuser:
         is_Estudiante_or_superuser = True
 
@@ -85,33 +82,34 @@ def inscription(request, course_id):
     return render(request, 'courses/inscription.html', context)
 
 @login_required
-def join(request, course_id): #Esto antes era join
+def join(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
     forumListAux = Forum.objects.all()
     
-    #Miramos los foros que pertenecen al curso
-    forumListCourse = []
+    #-----------------------------------------FOROS-----------------------------------------
+    forumListCourse = Forum.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
+    """forumListCourse = []
     for forum in forumListAux:
         if course.id == forum.activityCourseFk:
-            forumListCourse.append(forum)
+            forumListCourse.append(forum)"""
 
-    #Miramos los recursos que pertenecen al curso
+    #-----------------------------------------RECURSOS-----------------------------------------
     resourceListAux = Resource.objects.all()
     resourceListCourse = []
     for resource in resourceListAux:
         if course.id == resource.course_id:
             resourceListCourse.append(resource)
     
-    
-    # // TODO add logic to add user to course
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
     success = False
-    isTeacher = False
+    isOwner = False
     if request.user==course.teacher:
-       isTeacher = True
+       isOwner = True
 
     # Si request.user intenta acceder a la pagina directamente con el id, nos redirige a la pagina de inscripcion
-    if request.user not in course.enrolled_users.all() and not isTeacher:
+    if request.user not in course.enrolled_users.all() and not isOwner:
         return inscription(request, course_id) 
 
     #Para mostrarnos el boton de "Desmatricular"
@@ -119,7 +117,7 @@ def join(request, course_id): #Esto antes era join
     if request.user in course.enrolled_users.all():
         show_de_enroll = True
 
-    grupo = 'Invitado';
+    grupo = 'Invitado'
     if request.user.has_perm('courses.view_course'):
         grupo = 'Estudiante'
     if request.user.has_perm('courses.add_course'):
@@ -132,7 +130,7 @@ def join(request, course_id): #Esto antes era join
         'course': course,
         'success': success,
         'usuario': request.user,
-        'isTeacher': isTeacher,
+        'isTeacher': isOwner,
         'show_de_enroll':show_de_enroll,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
@@ -171,11 +169,11 @@ def createCourse(request):
         new_course_description=request.POST["new_course_description"]
         new_course = Course.objects.create(title=new_course_name, description=new_course_description, teacher=request.user)
         new_course.save()
-        isTeacher = True
+        isOwner = True
 
         context = {
         'course': new_course,
-        'isTeacher': isTeacher,
+        'isTeacher': isOwner,
     }
 
         return render(request, 'courses/curso.html',context)
