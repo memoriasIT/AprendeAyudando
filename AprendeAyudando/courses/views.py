@@ -100,16 +100,7 @@ def join(request, course_id):
     if request.user in course.enrolled_users.all():
         show_de_enroll = True
 
-    grupo = 'Invitado'
-    if request.user.has_perm('courses.view_course'):
-        grupo = 'Estudiante'
-    if request.user.has_perm('courses.add_course'):
-        grupo = 'Profesor'
-    if request.user.has_perm('activity.add_activity'):          #--------------------------------------------QUITAR
-        grupo = 'Entidad'
-
     context = {
-        'grupo': grupo,
         'course': course,
         'success': success,
         'usuario': request.user,

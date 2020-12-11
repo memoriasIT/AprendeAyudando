@@ -75,7 +75,7 @@
                 {% if resourceListCourse %}
                         <ol id="prettyList" style="width:92%;">
                             {% for resource in resourceListCourse %}
-                                <li id="prettyListItem"><a href={{ resource.resourceLink }}>{{ resource.resourceText }}</a></li>
+                                <li id="prettyListItem"><a href="{{ resource.resourceLink }}">{{ resource.resourceText }}</a></li>
                             {% endfor %}
                         </ol>
                     {% else %}
