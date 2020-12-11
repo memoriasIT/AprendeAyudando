@@ -1,6 +1,7 @@
 # Models
 from .models import Course, Resource
 from forum.models import Forum
+from AprendeAyudando.templatetags.auth_extras import is_owner
 
 # Session Handling
 from django.contrib.auth.decorators import login_required
@@ -12,45 +13,44 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from AprendeAyudando.views import has_group
 
+#Queries
+from django.db.models import Q
+
+
 def index(request):
     courseList = Course.objects.order_by('-pub_date')[:5]
-    
-    #Miramos si el usuario logeado se encuentra en el curso o si el usuario logeado es el propietario del curso
-    id_courses_list_inscripted = []
-    for curso in courseList:
-        if request.user in curso.enrolled_users.all() or request.user==curso.teacher:
-            id_courses_list_inscripted.extend([curso.id]) 
 
     #Miramos si tiene permisos de añadir cursos(en un principio solo Admins y Profes) para mostrar o no mostrar el enlace de "crear curso"
     is_teacher = False
     if request.user.has_perm('courses.add_course'):
         is_teacher = True
+
     context = {
         'courseList': courseList,
-        'courses_list_inscripted': id_courses_list_inscripted,
         'is_teacher': is_teacher,
         'filtered_by_enrolled': False
     }
+
     return render(request, 'courses/index.html', context)
 
 @login_required
 def enrolled(request):
-    courseListAux = Course.objects.order_by('-pub_date')[:5]
-    
-    courseList = []
+    #courseListAux = Course.objects.order_by('-pub_date')[:5]
+    courseList = Course.objects.filter(Q(enrolled_users=request.user) | Q(teacher=request.user))
+    """courseList = []
     #Miramos si el usuario logeado se encuentra en el curso o si el usuario logeado es el propietario del curso
     id_courses_list_inscripted = []
     for course in courseListAux:
         if request.user in course.enrolled_users.all() or request.user==course.teacher:
             id_courses_list_inscripted.extend([course.id]) 
-            courseList.append(course)
+            courseList.append(course)"""
     #Miramos si tiene permisos de añadir cursos(en un principio solo Admins y Profes) para mostrar o no mostrar el enlace de "crear curso"
     is_teacher = False
     if request.user.has_perm('courses.add_course'):
         is_teacher = True
     context = {
         'courseList': courseList,
-        'courses_list_inscripted': id_courses_list_inscripted,
+        #'courses_list_inscripted': id_courses_list_inscripted,
         'is_teacher': is_teacher,
         'filtered_by_enrolled': True
     }
@@ -61,7 +61,7 @@ def enrolled(request):
 def inscription(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
-    if request.user==course.teacher:
+    if is_owner(request.user, course.teacher):
         return join(request, course_id)
 
     is_Estudiante_or_superuser = False
@@ -85,14 +85,18 @@ def inscription(request, course_id):
 def join(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
-    forumListAux = Forum.objects.all()
-    
-    #-----------------------------------------FOROS-----------------------------------------
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    success = False
+    isOwner = is_owner(request.user, course.teacher)
+
+    # Si request.user intenta acceder a la pagina directamente con el id, nos redirige a la pagina de inscripcion
+    if request.user not in course.enrolled_users.all() and not isOwner:
+        return inscription(request, course_id) 
+
+
+    #-----------------------------------------FOROS-------------------------------------------
     forumListCourse = Forum.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
-    """forumListCourse = []
-    for forum in forumListAux:
-        if course.id == forum.activityCourseFk:
-            forumListCourse.append(forum)"""
+
 
     #-----------------------------------------RECURSOS-----------------------------------------
     resourceListAux = Resource.objects.all()
@@ -100,18 +104,9 @@ def join(request, course_id):
     for resource in resourceListAux:
         if course.id == resource.course_id:
             resourceListCourse.append(resource)
-    
 
-    #-----------------------------------CONTROL DE ACCESO-----------------------------------
-    success = False
-    isOwner = False
-    if request.user==course.teacher:
-       isOwner = True
 
-    # Si request.user intenta acceder a la pagina directamente con el id, nos redirige a la pagina de inscripcion
-    if request.user not in course.enrolled_users.all() and not isOwner:
-        return inscription(request, course_id) 
-
+    #-----------------------------------CONTROL DE ELEMENTOS DEL HTML---------------------------
     #Para mostrarnos el boton de "Desmatricular"
     show_de_enroll = False
     if request.user in course.enrolled_users.all():
@@ -122,7 +117,7 @@ def join(request, course_id):
         grupo = 'Estudiante'
     if request.user.has_perm('courses.add_course'):
         grupo = 'Profesor'
-    if request.user.has_perm('activity.add_activity'):
+    if request.user.has_perm('activity.add_activity'):          #--------------------------------------------QUITAR
         grupo = 'Entidad'
 
     context = {
@@ -137,9 +132,6 @@ def join(request, course_id):
     }
 
     return render(request, 'courses/curso.html', context)
-
-    # Return to course
-    # return render(request, 'courses/detail.html', {'course': course})
 
 
 
@@ -172,11 +164,11 @@ def createCourse(request):
         isOwner = True
 
         context = {
-        'course': new_course,
-        'isTeacher': isOwner,
-    }
-
+            'course': new_course,
+            'isTeacher': isOwner,
+        }
         return render(request, 'courses/curso.html',context)
+
     return render(request, 'courses/create.html',{})
 
 
@@ -184,13 +176,13 @@ def createCourse(request):
 @login_required
 @permission_required('Resource.add_resource', raise_exception=True)
 def createResource(request, course_id):
+
     if request.method=="POST":
         new_resource_name=request.POST["new_resource_name"]
         new_resource_link=request.POST["new_resource_link"]
         course = Course.objects.get(pk=course_id)
         new_resource = Resource.objects.create(course = course, resourceText = new_resource_name, resourceLink = new_resource_link)
         new_resource.save()
-
-
         return join(request, course_id)
+
     return render(request, 'resource/createResource.html', {'activityCourseFk': course_id})
