@@ -35,22 +35,14 @@ def index(request):
 
 @login_required
 def enrolled(request):
-    #courseListAux = Course.objects.order_by('-pub_date')[:5]
     courseList = Course.objects.filter(Q(enrolled_users=request.user) | Q(teacher=request.user))
-    """courseList = []
-    #Miramos si el usuario logeado se encuentra en el curso o si el usuario logeado es el propietario del curso
-    id_courses_list_inscripted = []
-    for course in courseListAux:
-        if request.user in course.enrolled_users.all() or request.user==course.teacher:
-            id_courses_list_inscripted.extend([course.id]) 
-            courseList.append(course)"""
+    
     #Miramos si tiene permisos de añadir cursos(en un principio solo Admins y Profes) para mostrar o no mostrar el enlace de "crear curso"
     is_teacher = False
     if request.user.has_perm('courses.add_course'):
         is_teacher = True
     context = {
         'courseList': courseList,
-        #'courses_list_inscripted': id_courses_list_inscripted,
         'is_teacher': is_teacher,
         'filtered_by_enrolled': True
     }
@@ -99,11 +91,7 @@ def join(request, course_id):
 
 
     #-----------------------------------------RECURSOS-----------------------------------------
-    resourceListAux = Resource.objects.all()
-    resourceListCourse = []
-    for resource in resourceListAux:
-        if course.id == resource.course_id:
-            resourceListCourse.append(resource)
+    resourceListCourse = Resource.objects.filter(course=course)
 
 
     #-----------------------------------CONTROL DE ELEMENTOS DEL HTML---------------------------
