@@ -29,7 +29,7 @@
                 {% if courseList %}
                 <ol id="prettyList" style="width:92%;">
                     {% for course in courseList %}
-                        {% if user|isCourseOwner:course.teacher or user|has_group:"Estudiante" or user.is_superuser %}
+                        {% if user|is_owner:course.teacher or user|has_group:"Estudiante" or user.is_superuser %}
                             <li id="prettyListItem"><a href="{% url 'courses:join' course.id %}">{{ course.title }}</a></li>
                         {% else %}
                             <li id="prettyListItem"><span style="color:#db685a;">{{ course.title }}</span></li>
@@ -41,15 +41,6 @@
                 {% endif %}
             </div> 
         </div> 
-        
-
-        
-
-        
-
-
-
-        
     </div>
 
 </section>

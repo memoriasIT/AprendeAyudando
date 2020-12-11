@@ -19,31 +19,29 @@
             <div class="activityElementRight"> 
                 {% if is_entity %}
                     <a style="margin-bottom: 50px;" href="{% url 'activity:create' %}" class="button pink">Añadir actividad</a>
-                {% elif request.user|is_guest  %}
-                    <p>Aviso: Necesitas registrarte para poder acceder a la información de las actividades restringidas.</p>
+                {% elif user|has_group:"Profesor" %}
+                    <p>Aviso: Necesitas ser Estudiante para poder acceder a la información de las actividades restringidas.</p>
+                {% elif user|is_guest %}
+                    <p>Aviso: Necesitas registrarte para poder acceder a la información de los cursos.</p>
                 {% endif %}
             </div>
+
             <div class="activityElementContent"> 
                 {% if activityList %}
                 <ol id="prettyList" style="width:92%;">
                     {% for activity in activityList %}
-                        {% if activity.restricted_entry and request.user|is_guest or activity.restricted_entry and request.user|has_group:"EntidadPublicoPrivada" and activity.entity != request.user %}
-                            <li id="prettyListItem"><span style="color:#db685a;">{{ activity.title }}</span></li>
-                        {% elif not activity.id in activities_list_inscripted %}
-                            <li id="prettyListItem"><a href="{% url 'activity:inscription' activity.id %}">{{ activity.title }}</a></li>
-                        {% else %}
+                        {% if user|is_owner:activity.entity or user|has_group:"Estudiante" or user.is_superuser or not activity.restricted_entry %}
                             <li id="prettyListItem"><a href="{% url 'activity:join' activity.id %}">{{ activity.title }}</a></li>
+                        {% else %}
+                            <li id="prettyListItem"><span style="color:#db685a;">{{ activity.title }}</span></li>
                         {% endif %}
                     {% endfor %}
                 </ol>
                 {% else %}
                     <p>Lo sentimos, no hay actividades disponibles.</p>
                 {% endif %}
-            </div> 
-
-        
-        
+            </div>
+        </div>
     </div>
-
 </section>
 {% endblock %}
