@@ -104,7 +104,7 @@ def join(request, course_id):
         'course': course,
         'success': success,
         'usuario': request.user,
-        'isTeacher': isOwner,
+        'isOwner': isOwner,
         'show_de_enroll':show_de_enroll,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
