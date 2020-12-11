@@ -160,6 +160,8 @@ def createResource(request, course_id):
         new_resource_name=request.POST["new_resource_name"]
         new_resource_link=request.POST["new_resource_link"]
         course = Course.objects.get(pk=course_id)
+        if not new_resource_link.startswith('http://') and not new_resource_link.startswith('https://'):
+            new_resource_link='http://'+new_resource_link
         new_resource = Resource.objects.create(course = course, resourceText = new_resource_name, resourceLink = new_resource_link)
         new_resource.save()
         return join(request, course_id)
