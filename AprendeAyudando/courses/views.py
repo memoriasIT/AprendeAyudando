@@ -153,7 +153,7 @@ def createCourse(request):
 
 
 @login_required
-@permission_required('Resource.add_resource', raise_exception=True)
+@permission_required('courses.add_resource', raise_exception=True)
 def createResource(request, course_id):
 
     if request.method=="POST":
