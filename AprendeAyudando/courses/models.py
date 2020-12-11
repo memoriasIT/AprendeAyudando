@@ -6,7 +6,7 @@ class Course(models.Model):
     pub_date = models.DateTimeField(verbose_name="date published", auto_now_add=True)
     enrolled_users = models.ManyToManyField(get_user_model(), related_name="courses", blank=True)
     teacher = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE, limit_choices_to={'groups__name':'Profesor'})
-    description = models.CharField(max_length=1000)
+    description = models.CharField(max_length=1000, blank=True)
     def __str__(self):
         return self.title
     
