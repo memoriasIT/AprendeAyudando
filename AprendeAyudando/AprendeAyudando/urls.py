@@ -44,3 +44,7 @@ urlpatterns = [
     path('activity/', include('activity.urls')),
     path('requestpermissions/', include('request_permissions.urls')),
 ]
+
+admin.site.site_header = 'Administración Aprende Ayudando'
+admin.site.index_title = 'Administración'
+admin.site.site_title = 'Aprende Ayudando'
