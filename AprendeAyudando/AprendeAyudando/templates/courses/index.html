@@ -19,22 +19,20 @@
             <div class="courseElementRight"> 
                 {% if is_teacher %}
                     <a style="margin-bottom: 50px;" href="{% url 'courses:create' %}" class="button pink">Añadir curso</a>
-                {% elif request.user|is_guest  %}
+                {% elif user|has_group:"EntidadPublicoPrivada" %}
+                    <p>Aviso: Necesitas ser Estudiante para poder acceder a la información de los cursos.</p>
+                {% elif user|is_guest %}
                     <p>Aviso: Necesitas registrarte para poder acceder a la información de los cursos.</p>
                 {% endif %}
             </div>
-            <div class="courseElementContent"> 
+            <div class="courseElementContent">
                 {% if courseList %}
                 <ol id="prettyList" style="width:92%;">
                     {% for course in courseList %}
-                        {% if request.user|is_guest %}
-                            <li id="prettyListItem"><span style="color:#db685a;">{{ course.title }}</span></li>
-                        {% elif request.user|has_group:"Profesor" and course.teacher is not request.user %}
-                            <li id="prettyListItem"><a href="{% url 'courses:inscription' course.id %}">{{ course.title }}</a></li>
-                        {% elif not course.id in courses_list_inscripted %}
-                            <li id="prettyListItem"><a href="{% url 'courses:inscription' course.id %}">{{ course.title }}</a></li>
-                        {% else %}
+                        {% if user|isCourseOwner:course.teacher or user|has_group:"Estudiante" or user.is_superuser %}
                             <li id="prettyListItem"><a href="{% url 'courses:join' course.id %}">{{ course.title }}</a></li>
+                        {% else %}
+                            <li id="prettyListItem"><span style="color:#db685a;">{{ course.title }}</span></li>
                         {% endif %}
                     {% endfor %}
                 </ol>

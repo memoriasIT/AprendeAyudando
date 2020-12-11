@@ -13,5 +13,8 @@ def has_group(user, group_name):
 
 @register.filter(name='is_guest')
 def is_guest(user):
-    return  not has_group(user, "Estudiante") and not has_group(user, "Profesor") and not has_group(user, "Entidad") and not has_group(user, "Administrador")
-
+    return not user.is_authenticated
+    
+@register.filter(name='isCourseOwner')
+def isCourseOwner(user, request_user):
+    return True if user==request_user else False

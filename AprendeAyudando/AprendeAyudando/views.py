@@ -14,7 +14,7 @@ def has_group(user, group_name):
     return True if group in user.groups.all() else False
 
 def landingpage(request):
-    grupo = 'Invitado';
+    grupo = 'Invitado'
     if request.user.has_perm('courses.view_course'):
         grupo = 'Estudiante'
     if request.user.has_perm('courses.add_course'):
