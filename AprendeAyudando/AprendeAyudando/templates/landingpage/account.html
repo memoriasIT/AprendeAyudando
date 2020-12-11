@@ -9,23 +9,26 @@
     <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
 
     <div class="container 100%">
-        <h2>Bienvenido, {{ request.user.username }}</h2>
+        <h2>Bienvenido, {{ user.username }}</h2>
         <div class="profileGrid">
             <div class="leftPannel">    
                 <h3>&emsp;&emsp;&emsp;Funcionalidades</h3>
                 <ol id="prettyList">
-                    {% if request.user|has_group:"EntidadPublicoPrivada" is False %}
-                    <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
+                    {% if not user|has_group:"EntidadPublicoPrivada" %}
+                        <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
                     {% endif %}
-                    {% if request.user|has_group:"Profesor" is False %}
-                    <li id="prettyListItem"><a href="/activity/enrolled">Mis actividades</a></li>
-                    {% endif %}
-                    {% if request.user|has_group:"Administrador" %}
-                        <li id="prettyListItem"><a href="{% url 'request_permissions:give_permissions' %}">Proporcionar permisos</a></li>
+
+                    {% if not user|has_group:"Profesor" %}
+                        <li id="prettyListItem"><a href="/activity/enrolled">Mis actividades</a></li>
                     {% else %}
-                        {% if request.user|has_group:"Estudiante" %}
-                            <li id="prettyListItem"><a href="{% url 'request_permissions:index' %}">Solicitar permisos</a></li>
-                        {% endif %}
+                        <li id="prettyListItem"><a href="/activity/enrolled">Actividades guardadas</a></li>
+                    {% endif %}
+
+                    {% if user|has_group:"Administrador" or user.is_superuser %}
+                        <li id="prettyListItem"><a href="{% url 'request_permissions:give_permissions' %}">Proporcionar permisos</a></li>
+                    {% elif user|has_group:"Estudiante" %}
+                        <li id="prettyListItem"><a href="{% url 'request_permissions:index' %}">Solicitar permisos</a></li>
+                    {% else %}
                         <li id="prettyListItem"><a href="{% url 'account_delete' %}">Darse de baja en la plataforma</a></li>
                     {% endif %}
                 </ol>
@@ -34,13 +37,13 @@
                 <h3>&emsp;&emsp;&emsp;Detalles de usuario</h3>
                 <br>
                 <ul>
-                    <li><img src="{% static 'general/images/profile/id_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ request.user.first_name }} {{ request.user.last_name }} </span></li>
+                    <li><img src="{% static 'general/images/profile/id_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.first_name }} {{ user.last_name }} </span></li>
                     <li class="clear_left"></li>
 
-                    <li><img src="{% static 'general/images/profile/user_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text">{{ request.user.username }}</span></li>
+                    <li><img src="{% static 'general/images/profile/user_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text">{{ user.username }}</span></li>
                     <li class="clear_left"></li>
 
-                    <li><img src="{% static 'general/images/profile/email_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ request.user.email }} </span></li>
+                    <li><img src="{% static 'general/images/profile/email_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.email }} </span></li>
                     <li class="clear_left"></li>
 
                 </ul>
