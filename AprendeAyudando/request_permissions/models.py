@@ -16,7 +16,6 @@ class Request_permissions(models.Model):
     requester_email = models.EmailField(max_length=40)
 
     
-
     def __str__(self):
         return self.requester_name
     

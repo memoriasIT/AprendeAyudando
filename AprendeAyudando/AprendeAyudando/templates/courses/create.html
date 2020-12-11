@@ -8,7 +8,7 @@
     <form action="{% url 'courses:create' %}" method="POST">
         {% csrf_token %}
         <p>Nombre del curso: <input type="text" name="new_course_name" id=""></p>
-        <p>Descripcion: <input type="text" name="new_course_description" id= ""></p>
+        <p>Descripcion: <input type="textarea" class="biggerTextarea" name="new_course_description" id= ""></p>
         <input type="submit" value="Enviar">
     </form>
 </div>

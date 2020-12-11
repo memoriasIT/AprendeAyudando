@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     'activity',
     'forum',
     'request_permissions',
+    'user_info',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,23 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Solicitar permisos Entidad Público/Privada{% endblock %}
+
+{% block content %}
+
+<section class="wrapper align-center login">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
+
+    <div class="container 75% minHeightSmaller">
+        <h2>Solicitar permisos de Entidad Público/Privada</h2>
+        <form action="{% url 'request_permissions:create' 'EntidadPublicoPrivada' %}" method="POST">
+            {% csrf_token %}
+            <p>Nombre de la organización: <input type="text" name="org" id=""></p>
+            <p>Número de teléfono: <input type="text" name="telefono" id=""></p>
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
+</section>
+
+
+
+{% endblock %}
