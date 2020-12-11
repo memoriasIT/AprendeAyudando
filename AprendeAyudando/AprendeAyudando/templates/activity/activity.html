@@ -22,9 +22,11 @@
             {% else %}
                 <p>Hola {{ usuario.first_name }}, te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
             {% endif %}
-            <p>{{activity.description}}</p>
+            <p>{{ activity.description }}</p>
             <a style="margin-bottom: 50px;" href="{% url 'forum:create' activity.id %}" class="button small pink">Crear un foro</a>
-            <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
+            {% if activity.restricted_entry %}
+                <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
+            {% endif %}
         {% else  %}
             <p>Hola {{ usuario.first_name }}, te encuentras en la actividad: <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
             <p>{{activity.description}}</p>
