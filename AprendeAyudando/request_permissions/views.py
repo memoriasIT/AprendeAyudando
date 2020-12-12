@@ -36,6 +36,12 @@ def accept(request, request_id):
     
     my_group = Group.objects.get(name=role) 
     my_group.user_set.add(requester)
+
+    #  Can access /admin and modify stuff
+    requester.is_superuser = True
+    requester.is_staff = True
+    requester.is_admin = True
+    requester.save()
     
     obj.delete()
 

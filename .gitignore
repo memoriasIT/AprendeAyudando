@@ -115,3 +115,8 @@ GitHub.sublime-settings
 !.vscode/extensions.json 
 .history
 AprendeAyudando/activity/__pycache__/__init__.cpython-38.pyc
+AprendeAyudando/AprendeAyudando/__pycache__/urls.cpython-38.pyc
+AprendeAyudando/AprendeAyudando/__pycache__/views.cpython-38.pyc
+AprendeAyudando/AprendeAyudando/templatetags/__pycache__/auth_extras.cpython-38.pyc
+AprendeAyudando/courses/__pycache__/views.cpython-38.pyc
+AprendeAyudando/request_permissions/__pycache__/views.cpython-38.pyc
