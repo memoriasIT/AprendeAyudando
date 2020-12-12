@@ -9,5 +9,5 @@ class UserInfo(models.Model):
     organization_name = models.CharField(max_length=30)
 
     def __str__(self):
-        return self.user
+        return self.user.username
 
