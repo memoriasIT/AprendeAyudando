@@ -7,11 +7,35 @@ from django.contrib.auth.models import User, Group
 
 
 class AdminRequestPermissions(admin.ModelAdmin):
+    def aceptarPeticion(modeladmin, request, queryset): 
+        for obj in queryset:
+            requester = getattr(obj, "requester")
+            role = getattr(obj, "role")
+            
+            my_group = Group.objects.get(name=role) 
+            my_group.user_set.add(requester)
+
+            #  Can access /admin and modify stuff
+            if role == 'Administrador':
+                requester.is_superuser = True
+                requester.is_staff = True
+                requester.is_admin = True
+                requester.save()
+            
+            obj.delete()
+        messages.success(request, "La(s) peticion(es) seleccionadas han sido aceptadas.") 
+
+    def denegarPeticion(modeladmin, request, queryset): 
+        queryset.delete()
+        messages.success(request, "La(s) peticion(es) seleccionadas han sido denegadas.") 
+
+
     change_form_template = "permissionsForm.html"
     change_list_results_template = "test.html"
     list_display=("requester","requester_name","pub_date", "role")
     search_fields=("requester",)   #Para realizar barra de busqueda
     date_hierarchy="pub_date"
+    actions=[aceptarPeticion, denegarPeticion]
 
     # Delete the original delete selected elements
     def get_actions(self, request):
@@ -27,6 +51,13 @@ class AdminRequestPermissions(admin.ModelAdmin):
             
             my_group = Group.objects.get(name=role) 
             my_group.user_set.add(requester)
+
+            #  Can access /admin and modify stuff if role is admin
+            if role == 'Administrador':
+                requester.is_superuser = True
+                requester.is_staff = True
+                requester.is_admin = True
+                requester.save()
             
             obj.delete()
 
@@ -36,27 +67,10 @@ class AdminRequestPermissions(admin.ModelAdmin):
 
         return super().response_change(request, obj)
 
-    def aceptarPeticion(modeladmin, request, queryset): 
-        for obj in queryset:
-            requester = getattr(obj, "requester")
-            role = getattr(obj, "role")
-            
-            my_group = Group.objects.get(name=role) 
-            my_group.user_set.add(requester)
-            
-            obj.delete()
-        messages.success(request, "La(s) peticion(es) seleccionadas han sido aceptadas.") 
-
-    def denegarPeticion(modeladmin, request, queryset): 
-        queryset.delete()
-        messages.success(request, "La(s) peticion(es) seleccionadas han sido denegadas.") 
-
+    
     # Hide the add new element button
     # def has_add_permission(self, request): 
     #     return False
-
-    admin.site.add_action(aceptarPeticion, "Aceptar Petición") 
-    admin.site.add_action(denegarPeticion, "Denegar Petición") 
 
     
 
