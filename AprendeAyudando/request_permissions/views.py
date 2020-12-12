@@ -6,7 +6,6 @@ from .models import Request_permissions
 from django.contrib.auth.models import User, Group
 from django.shortcuts import get_object_or_404
 from user_info.models import UserInfo
-from django.utils import timezone
 from .models import PROFESOR, ENTIDADPUBLICOPRIVADA, ADMINISTRADOR, ESTUDIANTE
 from courses.models import Course
 from activity.models import Activity
