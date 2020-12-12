@@ -37,6 +37,7 @@
       <ul>
         <li><a href="#descripción-del-producto">Descripción del producto</a></li>
         <li><a href="#tecnologías-utilizadas">Tecnologías utilizadas</a></li>
+        <li><a href="#demo">Demo</a></li>
       </ul>
     </li>
     <li>
@@ -82,7 +83,26 @@ El proyecto se ha desarrollado con herramientas y lenguaje de libre uso. Las tec
 * [Python](https://www.python.org/)
 * [Django](https://www.djangoproject.com/)
 
+### Demo
 
+Es posible acceder a una demostración de la aplicación, puede utilizar los credenciales que se muestran a continuación.
+[Demo](https://aprendeayudando.herokuapp.com/)
+
+## Usuarios demo
+### Superusuario
+admin:admin
+
+### Administrador de la plataforma
+administradorDemo:aprendeayudando
+
+### Entidad Público Privada
+entidadDemo:aprendeayudando
+
+### Alumno
+alumnoDemo:aprendeayudando
+
+### PeticionDemo
+peticionDemo:aprendeayudando
 
 
 <!-- GETTING STARTED -->
@@ -200,18 +220,4 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 # AprendeAyudando
 
-## Usuarios demo
-### Superusuario
-admin:admin
 
-### Administrador de la plataforma
-administradorDemo:aprendeayudando
-
-### Entidad Público Privada
-entidadDemo:aprendeayudando
-
-### Alumno
-alumnoDemo:aprendeayudando
-
-### PeticionDemo
-peticionDemo:aprendeayudando
