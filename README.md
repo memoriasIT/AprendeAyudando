@@ -12,3 +12,6 @@ entidadDemo:aprendeayudando
 
 ### Alumno
 alumnoDemo:aprendeayudando
+
+### PeticionDemo
+peticionDemo:aprendeayudando
