@@ -7,7 +7,7 @@ from django.contrib.auth.models import User, Group
 from django.shortcuts import get_object_or_404
 from user_info.models import UserInfo
 from django.utils import timezone
-from .models import PROFESOR, ENTIDADPUBLICOPRIVADA, ADMINISTRADOR
+from .models import PROFESOR, ENTIDADPUBLICOPRIVADA, ADMINISTRADOR, ESTUDIANTE
 
 @login_required
 @permission_required('request_permissions.add_request_permissions', raise_exception=True)
@@ -36,18 +36,22 @@ def accept(request, request_id):
     my_group = Group.objects.get(name=request_selected.role)
     my_group.user_set.add(request_selected.requester)
 
+    #Quitamos el rol de alumno
+    student_group = Group.objects.get(name=ESTUDIANTE)
+    student_group.user_set.remove(request_selected.requester)
+
     if request_selected.role == PROFESOR:
         new_user_info = UserInfo.objects.create(
             user=request_selected.requester, 
             phone=request_selected.phone
-            )
+        )
         new_user_info.save()
     elif request_selected.role == ENTIDADPUBLICOPRIVADA:
         new_user_info = UserInfo.objects.create(
-            user=request_selected.user, 
-            phone=request_selected.telefono, 
-            organization_name=request_selected.org
-            )
+            user=request_selected.requester, 
+            phone=request_selected.phone, 
+            organization_name=request_selected.organization_name
+        )
         new_user_info.save()
     """if role == ADMINISTRADOR:
         requester.is_superuser = True
@@ -74,11 +78,11 @@ def createRequest(request, requestType):
         role = PROFESOR
         #new_user_info = UserInfo.objects.create(user=request.user, phone=telefono)
         new_request = Request_permissions.objects.create(
-        requester = request.user, 
-        role = role, 
-        requester_name = request.user.first_name, 
-        requester_email = request.user.email,
-        phone = telefono
+            requester = request.user, 
+            role = role, 
+            requester_name = request.user.first_name, 
+            requester_email = request.user.email,
+            phone = telefono
         )
     else:
         org = request.POST["org"]
@@ -91,7 +95,7 @@ def createRequest(request, requestType):
             requester_email = request.user.email,
             phone = telefono,
             organization_name = org
-            )
+        )
     #new_user_info.save()
     new_request.save()
 

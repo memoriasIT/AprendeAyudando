@@ -32,7 +32,7 @@ class AdminRequestPermissions(admin.ModelAdmin):
 
     change_form_template = "permissionsForm.html"
     change_list_results_template = "test.html"
-    list_display=("requester","requester_name","pub_date", "role")
+    list_display=("requester","requester_name","pub_date", "role","organization_name")
     search_fields=("requester",)   #Para realizar barra de busqueda
     date_hierarchy="pub_date"
     actions=[aceptarPeticion, denegarPeticion]
