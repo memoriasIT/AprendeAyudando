@@ -76,7 +76,6 @@ def createRequest(request, requestType):
     telefono = request.POST["telefono"]
     if requestType == PROFESOR:
         role = PROFESOR
-        #new_user_info = UserInfo.objects.create(user=request.user, phone=telefono)
         new_request = Request_permissions.objects.create(
             requester = request.user, 
             role = role, 
@@ -86,7 +85,6 @@ def createRequest(request, requestType):
         )
     else:
         org = request.POST["org"]
-        #new_user_info = UserInfo.objects.create(user=request.user, phone=telefono, organization_name=org)
         role = ENTIDADPUBLICOPRIVADA
         new_request = Request_permissions.objects.create(
             requester = request.user, 
@@ -96,7 +94,6 @@ def createRequest(request, requestType):
             phone = telefono,
             organization_name = org
         )
-    #new_user_info.save()
     new_request.save()
 
     return render(request, 'landingpage/account.html')
