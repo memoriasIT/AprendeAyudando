@@ -35,7 +35,8 @@
     <li>
       <a href="#sobre-el-proyecto">Sobre el proyecto</a>
       <ul>
-        <li><a href="#built-with">Tecnologías utilizadas</a></li>
+        <li><a href="#descripción-del-producto">Descripción del producto</a></li>
+        <li><a href="#tecnologías-utilizadas">Tecnologías utilizadas</a></li>
       </ul>
     </li>
     <li>
@@ -59,25 +60,28 @@
 <!-- ABOUT THE PROJECT -->
 ## Sobre el proyecto
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Screenshot][screenshot]](https://aprendeayudando.herokuapp.com)
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+El principal motivo que impulsa este proyecto es la unión de dos problemas; la gran dificultad que existe para poder organizar eventos solidarios y la ausencia de una plataforma gratuita y libre que proporcione soporte para el aprendizaje por medio de servicios a estudiantes en diversos sectores como la medicina o enfermería. A partir de aquí nace Aprende Ayudando, una plataforma gratuita capaz de organizar eventos solidarios y cursos en los que podrán participar los usuarios pertenecientes a la misma.
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
+Otro problema que se quiere solucionar es que en el ámbito de estudio científico-técnico la actitud está fuertemente ligada a la competitividad y existe la ausencia de asignaturas relacionadas con la ética. Con este proyecto queremos mejorar la interacción en estos sectores, humanizando la relación entre los estudiantes y la sociedad.
 
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
+### Descripción del producto
 
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+Aprende Ayudando es un software que permitirá de forma sencilla organizar cursos y eventos solidarios establecidos por la administración del sistema (p. ej. profesores, ONG's, otras entidades públicas/privadas, etc). Asimismo, podrán participar en estos  todas aquellas personas que deseen tomar parte en cursos de servicio social. Nuestro producto proporciona una solución gratuita y cercana a estos asuntos.
 
-### Built With
+Los objetivos principales del sistema son:
+\begin{itemize}
+\item Funcionar como plataforma de aprendizaje y formación para cursos de ayuda social
+\item Conectar organismos de servicio social con personas interesadas en participar en sus actividades y eventos
+\item Proporcionar chats y foros para que distintos grupos de usuarios puedan comunicarse con facilidad
 
-This section should list any major frameworks that you built your project using. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
-* [Laravel](https://laravel.com)
+### Tecnologías utilizadas
+
+El proyecto se ha desarrollado con herramientas y lenguaje de libre uso. Las tecnologías utilizadas han sido:
+* [Python](https://www.python.org/)
+* [Django](https://www.djangoproject.com/)
+
 
 
 
