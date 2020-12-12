@@ -85,23 +85,21 @@ El proyecto se ha desarrollado con herramientas y lenguaje de libre uso. Las tec
 
 ### Demo
 
-Es posible acceder a una demostración de la aplicación, puede utilizar los credenciales que se muestran a continuación.
-[Demo](https://aprendeayudando.herokuapp.com/)
+Es posible acceder a una [demostración de la aplicación](https://aprendeayudando.herokuapp.com/), puede utilizar los credenciales que se muestran a continuación.
 
-## Usuarios demo
-### Superusuario
+#### Superusuario
 admin:admin
 
-### Administrador de la plataforma
+#### Administrador de la plataforma
 administradorDemo:aprendeayudando
 
-### Entidad Público Privada
+#### Entidad Público Privada
 entidadDemo:aprendeayudando
 
-### Alumno
+#### Alumno
 alumnoDemo:aprendeayudando
 
-### PeticionDemo
+#### PeticionDemo
 peticionDemo:aprendeayudando
 
 
