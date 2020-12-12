@@ -72,10 +72,9 @@ Otro problema que se quiere solucionar es que en el ámbito de estudio científi
 Aprende Ayudando es un software que permitirá de forma sencilla organizar cursos y eventos solidarios establecidos por la administración del sistema (p. ej. profesores, ONG's, otras entidades públicas/privadas, etc). Asimismo, podrán participar en estos  todas aquellas personas que deseen tomar parte en cursos de servicio social. Nuestro producto proporciona una solución gratuita y cercana a estos asuntos.
 
 Los objetivos principales del sistema son:
-\begin{itemize}
-\item Funcionar como plataforma de aprendizaje y formación para cursos de ayuda social
-\item Conectar organismos de servicio social con personas interesadas en participar en sus actividades y eventos
-\item Proporcionar chats y foros para que distintos grupos de usuarios puedan comunicarse con facilidad
+* Funcionar como plataforma de aprendizaje y formación para cursos de ayuda social
+* Conectar organismos de servicio social con personas interesadas en participar en sus actividades y eventos
+* Proporcionar chats y foros para que distintos grupos de usuarios puedan comunicarse con facilidad
 
 ### Tecnologías utilizadas
 
@@ -87,20 +86,13 @@ El proyecto se ha desarrollado con herramientas y lenguaje de libre uso. Las tec
 
 Es posible acceder a una [demostración de la aplicación](https://aprendeayudando.herokuapp.com/), puede utilizar los credenciales que se muestran a continuación.
 
-#### Superusuario
-admin:admin
 
-#### Administrador de la plataforma
-administradorDemo:aprendeayudando
-
-#### Entidad Público Privada
-entidadDemo:aprendeayudando
-
-#### Alumno
-alumnoDemo:aprendeayudando
-
-#### PeticionDemo
-peticionDemo:aprendeayudando
+| Tipo de usuario                | Credenciales (usuario:contraseña) |
+|--------------------------------|-----------------------------------|
+| Administrador de la plataforma | administradorDemo:aprendeayudando |
+| Entidad Público Privada        | entidadDemo:aprendeayudando       |
+| Alumno                         | alumnoDemo:aprendeayudando        |
+| PeticionDemo                   | peticionDemo:aprendeayudando      |
 
 
 <!-- GETTING STARTED -->
