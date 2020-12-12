@@ -8,6 +8,8 @@ from django.shortcuts import get_object_or_404
 from user_info.models import UserInfo
 from django.utils import timezone
 from .models import PROFESOR, ENTIDADPUBLICOPRIVADA, ADMINISTRADOR, ESTUDIANTE
+from courses.models import Course
+from activity.models import Activity
 
 @login_required
 @permission_required('request_permissions.add_request_permissions', raise_exception=True)
@@ -39,6 +41,15 @@ def accept(request, request_id):
     #Quitamos el rol de alumno
     student_group = Group.objects.get(name=ESTUDIANTE)
     student_group.user_set.remove(request_selected.requester)
+
+    #Quitamos sus cursos asociados y sus actividades con acceso restringido asociados
+    listCourses = Course.objects.filter(enrolled_users=request_selected.requester)
+    for course in listCourses:
+        course.enrolled_users.remove(request_selected.requester)
+    listActivities = Activity.objects.filter(enrolled_users=request_selected.requester, restricted_entry=True)
+    for activity in listActivities:
+        activity.enrolled_users.remove(request_selected.requester)
+
 
     if request_selected.role == PROFESOR:
         new_user_info = UserInfo.objects.create(
