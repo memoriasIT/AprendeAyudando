@@ -795,6 +795,7 @@
 	input[type="submit"],
 	input[type="reset"],
 	input[type="button"],
+	a[type="submit"],
 	.button {
 		-moz-appearance: none;
 		-webkit-appearance: none;

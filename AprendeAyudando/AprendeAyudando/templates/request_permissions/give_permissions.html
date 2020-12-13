@@ -1,11 +1,15 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Proporcionar permisos{% endblock %}
 
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
+{% endblock %}
+
 {% block content %}
 
 <section class="wrapper align-center login">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
 
     <div class="container 100%">
         <h2>Proporcionar permisos</h2>
@@ -13,21 +17,34 @@
         <h3>Solicitudes</h3>
         <br>
         {% if permission_requests %}
-            <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <ol id="prettyList" style="width:92%;">
-                {% for request in permission_requests %}
-                <li id="prettyListItem" style="padding-top: 20px; padding-bottom: 20px">Solicitud de: {{ request.requester.username }} 
-                    <br><br>
-                    <div class="clear_right"></div>
-                    <a href="{% url 'request_permissions:deny' request.id %}" class="button" type="submit" name="deny">Denegar</a>
-                    <a href="{% url 'request_permissions:accept' request.id %}" class="button pink" type="submit" name="accept">Aceptar</a>
-                </li>
-						
-                {% endfor %}
-            </ol>
-            </form>
+            <table class="alt">
+            <thead>
+                <tr>
+                    <th style="text-align:center;"><strong style="font-size:20px">Nombre usuario</strong></th>
+                    <th style="text-align:center;"><strong style="font-size:20px">Rol deseado</strong></th>
+                    <th style="text-align:center;"><strong style="font-size:20px">Acción</strong></th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for selected_request in permission_requests %}
+                <tr>
+                    <td><strong>{{ selected_request.requester.username }}</strong></td>
+                    <td><strong>{{ selected_request.role }}</strong></td>
+                    <td style="text-align:center;">
+                        <ul class="actions" style="margin-top: 25px;">
+                            <li style="margin-left: 20%;">
+                                <a href="{% url 'request_permissions:deny' selected_request.id %}" class="button special" type="submit" name="deny">Denegar</a>
+                            </li>
+                            <li style="margin-left: 20%;">
+                                <a href="{% url 'request_permissions:accept' selected_request.id %}" class="letraEnBlanco" type="submit" name="accept">Aceptar</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
         {% else %}
             <p>No hay solicitudes de permisos disponibles.</p>
         {% endif %}

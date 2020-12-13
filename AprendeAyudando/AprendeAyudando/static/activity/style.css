@@ -76,7 +76,8 @@
     border-left-color: #fa8072;             
 }
 
-input[type="submit"].letraEnBlanco{
+input[type="submit"].letraEnBlanco,
+a[type="submit"].letraEnBlanco{
     color: #FFFFFF !important;
 }
 
