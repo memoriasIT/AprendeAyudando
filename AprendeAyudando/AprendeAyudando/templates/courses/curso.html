@@ -11,11 +11,11 @@
 <section class="wrapper login">
     
     <div class="container 100%">
-        <h1 class="courseTitle">{{ course.title }}</h1>
+        <h1 style="padding-left: 0px;" class="courseTitle">{{ course.title }}</h1>
 
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-        <!-- DESCRIPCIÖN -->
+        <!-- DESCRIPCION -->
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 {% if isOwner %}
@@ -75,7 +75,7 @@
                 {% if resourceListCourse %}
                         <ol id="prettyList" style="width:92%;">
                             {% for resource in resourceListCourse %}
-                                <li id="prettyListItem"><a href="{{ resource.resourceLink }}">{{ resource.resourceText }}</a></li>
+                                <li id="prettyListItem"><a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a></li>
                             {% endfor %}
                         </ol>
                     {% else %}

@@ -4,6 +4,27 @@
 {% block content %}
 <div class="container 75% align-center minHeight">
     <h1 class="bigger">Crear un recurso nuevo</h1>
+    <p>AprendeAyudando recomienda los siguientes links de acceso gratuito, sin embargo, puede colocar cualquier link</p>
+    <table class="alt">
+        <thead>
+            <tr>
+                <th style="text-align:center;"><strong style="font-size:20px">Tipo de recurso</strong></th>
+                <th style="text-align:center;"><strong style="font-size:20px">Página</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Videoconferencias, Seminarios, Eventos</strong></td>
+                <td><a href="https://meet.google.com/" target="_blank" style="color:#0070FF">Google Meet</a></td>
+            </tr>
+            <tr>
+                <td><strong>Talleres</strong></td>
+                <td><a href="#" target="_blank" style="color:#0070FF">Algun sitio</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr class="major">
+    
     <form action="{% url 'courses:createResource' activityCourseFk %}" method="POST">
         {% csrf_token %}
         <p>Nombre del recurso: <input type="text" name="new_resource_name" id=""></p>
