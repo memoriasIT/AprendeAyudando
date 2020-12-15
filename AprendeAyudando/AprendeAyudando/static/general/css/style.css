@@ -1063,6 +1063,17 @@
 			padding: 12em 0em 12em;
 		}
 
+		
+
+		.minimumHeight {
+			min-height: 500px;
+			max-height: auto;
+		}
+
+		.marginSpace {
+			margin-top: 20px;
+		}
+
 		.minHeightSmaller {
 			padding: 8.5em 0em 8.5em;
 		}
