@@ -92,8 +92,6 @@ Es posible acceder a una [demostración de la aplicación](https://aprendeayudan
 <!-- GETTING STARTED -->
 ## Getting started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
 ### Instalación
 
@@ -106,7 +104,7 @@ To get a local copy up and running follow these simple example steps.
 <!-- USAGE EXAMPLES -->
 ## Uso
 
-Coloquese en la carpeta de la aplicación django, después utilice el script manage.py para correr un servidor local.
+Colóquese en la carpeta de la aplicación django, después utilice el script manage.py para correr un servidor local.
 
    ```sh
    cd AprendeAyudando
