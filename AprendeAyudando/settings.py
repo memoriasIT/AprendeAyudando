@@ -118,9 +118,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'AprendeAyudando/static')
-STATICFILES_DIRS = [
-    str(BASE_DIR.joinpath('AprendeAyudando/static')),
-]
+# STATICFILES_DIRS = [
+#     str(BASE_DIR.joinpath('AprendeAyudando/static')),
+# ]
 
 LOGIN_REDIRECT_URL = '/account/'
 LOGOUT_REDIRECT_URL = '/'
