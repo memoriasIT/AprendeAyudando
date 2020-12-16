@@ -121,7 +121,7 @@ USE_TZ = True
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-STATIC_ROOT = '/static/' #os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') #os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [
     str(BASE_DIR.joinpath('AprendeAyudando/static')),
 ]
