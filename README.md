@@ -55,7 +55,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Sobre el proyecto
-![!Screenshot](https://raw.githubusercontent.com/memoriasIT/AprendeAyudando/main/AprendeAyudando/AprendeAyudando/static/general/images/apay.PNG)
+![!Screenshot](https://github.com/memoriasIT/AprendeAyudando/blob/v0.1/AprendeAyudando/static/general/images/apay.PNG)
 
 El principal motivo que impulsa este proyecto es la unión de dos problemas; la gran dificultad que existe para poder organizar eventos solidarios y la ausencia de una plataforma gratuita y libre que proporcione soporte para el aprendizaje por medio de servicios a estudiantes en diversos sectores como la medicina o enfermería. A partir de aquí nace Aprende Ayudando, una plataforma gratuita capaz de organizar eventos solidarios y cursos en los que podrán participar los usuarios pertenecientes a la misma.
 
