@@ -7,7 +7,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://raw.githubusercontent.com/majochaves/AprendeAyudando/main/AprendeAyudando/AprendeAyudando/static/general/images/logoTransparent.png?token=AHVEJZXR5QD43OXQLA2VK6K73XW2C" alt="Aprende Ayudando" width="380" height="380">
+    <img src="https://github.com/memoriasIT/AprendeAyudando/blob/main/AprendeAyudando/AprendeAyudando/static/general/images/logoTransparent.png" alt="Aprende Ayudando" width="380" >
   </a>
 
   <p align="center">
@@ -15,14 +15,14 @@
   <br />
   organizar cursos y eventos solidarios.
     <br />
-    <a href="https://github.com/majochaves/AprendeAyudando/"><strong>Documentación »</strong></a>
+    <a href="https://github.com/memoriasIT/AprendeAyudando/"><strong>Documentación »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/majochaves/AprendeAyudando/">Demo</a>
+    <a href="https://aprendeayudando.herokuapp.com/">Demo</a>
     ·
-    <a href="https://github.com/majochaves/AprendeAyudando/">Reportar Bug</a>
+    <a href="https://github.com/memoriasIT/AprendeAyudando/issues">Reportar Bug</a>
     ·
-    <a href="https://github.com/majochaves/AprendeAyudando/">Sugerir mejora</a>
+    <a href="https://github.com/memoriasIT/AprendeAyudando/issues">Sugerir mejora</a>
   </p>
 </p>
 
@@ -55,7 +55,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Sobre el proyecto
-![!Screenshot](https://raw.githubusercontent.com/majochaves/AprendeAyudando/main/AprendeAyudando/AprendeAyudando/static/general/images/apay.PNG?token=AHVEJZWNLA43JWMP4CD3RNC74N5LA)
+![!Screenshot](https://raw.githubusercontent.com/memoriasIT/AprendeAyudando/main/AprendeAyudando/AprendeAyudando/static/general/images/apay.PNG?token=AHVEJZQSOCOFTLEGPCBMYDS73JU3K)
 
 El principal motivo que impulsa este proyecto es la unión de dos problemas; la gran dificultad que existe para poder organizar eventos solidarios y la ausencia de una plataforma gratuita y libre que proporcione soporte para el aprendizaje por medio de servicios a estudiantes en diversos sectores como la medicina o enfermería. A partir de aquí nace Aprende Ayudando, una plataforma gratuita capaz de organizar eventos solidarios y cursos en los que podrán participar los usuarios pertenecientes a la misma.
 
@@ -92,8 +92,6 @@ Es posible acceder a una [demostración de la aplicación](https://aprendeayudan
 <!-- GETTING STARTED -->
 ## Getting started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
 ### Instalación
 
@@ -106,7 +104,7 @@ To get a local copy up and running follow these simple example steps.
 <!-- USAGE EXAMPLES -->
 ## Uso
 
-Coloquese en la carpeta de la aplicación django, después utilice el script manage.py para correr un servidor local.
+Colóquese en la carpeta de la aplicación django, después utilice el script manage.py para correr un servidor local.
 
    ```sh
    cd AprendeAyudando
