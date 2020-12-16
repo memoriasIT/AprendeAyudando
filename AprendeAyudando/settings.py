@@ -1,5 +1,4 @@
 from pathlib import Path
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -13,7 +12,7 @@ SECRET_KEY = '5hv1_u%!jnplk_sh8)l9-6ta3_*1sjf6rauhz6f^wxd7$3(4@i'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
- 
+
 ALLOWED_HOSTS = ["*"]
 
 
@@ -117,10 +116,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = str(BASE_DIR.joinpath('AprendeAyudando/static'))
-# STATICFILES_DIRS = [
-#     str(BASE_DIR.joinpath('AprendeAyudando/static')),
-# ]
+STATIC_ROOT = '/staticOutput/'
+STATICFILES_DIRS = [
+    str(BASE_DIR.joinpath('AprendeAyudando/static')),
+]
 
 LOGIN_REDIRECT_URL = '/account/'
 LOGOUT_REDIRECT_URL = '/'
