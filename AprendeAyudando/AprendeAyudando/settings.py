@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'forum',
     'request_permissions',
     'user_info',
+    'quiz',
 ]
 
 MIDDLEWARE = [
