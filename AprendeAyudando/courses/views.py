@@ -144,7 +144,7 @@ def createCourse(request):
 
         context = {
             'course': new_course,
-            'isTeacher': isOwner,
+            'isOwner': isOwner,
         }
         return render(request, 'courses/curso.html',context)
 
@@ -167,3 +167,20 @@ def createResource(request, course_id):
         return join(request, course_id)
 
     return render(request, 'resource/createResource.html', {'activityCourseFk': course_id})
+
+@login_required
+@permission_required('courses.delete_course', raise_exception=True)
+def delete(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    print(course)
+    print(request.method)
+
+    Course.objects.filter(id=course_id).delete()
+    courseList = Course.objects.filter(Q(enrolled_users=request.user) | Q(teacher=request.user))
+    context = {
+        'courseList': courseList,
+        'is_teacher': True,
+        'filtered_by_enrolled': True
+    }
+    return render(request, 'courses/index.html', context)
+

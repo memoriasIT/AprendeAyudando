@@ -209,3 +209,32 @@ def createActivity(request):
         new_activity.save()
         return render(request, 'activity/activity.html',{'activity': new_activity, 'isOwner': True})
     return render(request, 'activity/create.html',{})
+
+@login_required
+@permission_required('activity.delete_activity', raise_exception=True)
+def delete(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+    print(activity)
+    print(request.method)
+
+    Activity.objects.filter(id=activity_id).delete()
+    activityListAux = Activity.objects.order_by('-pub_date')[:5]
+    activityList = []
+    #Miramos si el usuario logeado se encuentra en la actividad o si el usuario logeado es el propietario de la actividad
+    id_activities_list_inscripted = []
+    for activity in activityListAux:
+        if request.user in activity.enrolled_users.all() or request.user==activity.entity:
+            id_activities_list_inscripted.extend([activity.id])
+            activityList.append(activity)
+
+    #Miramos si tiene permisos de añadir actividades(en un principio solo Admins y EntidadesPP) para mostrar o no mostrar el enlace de "crear actividad"
+    is_entity = False
+    if request.user.has_perm('activity.add_activity'):
+        is_entity = True
+    context = {
+        'activityList': activityList,
+        'activities_list_inscripted': id_activities_list_inscripted,
+        'is_entity': is_entity,
+        'filtered_by_enrolled': True,
+    }
+    return render(request, 'activity/index.html', context)

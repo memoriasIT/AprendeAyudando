@@ -81,15 +81,18 @@
                     {% else %}
                         <p>Lo sentimos, no hay recursos disponibles.</p>
                     {% endif %}
-                </div>
             </div> 
         </div> 
 
 <!-- TEST  -->
         {% if isOwner or user.is_superuser %}
-            <a href="{% url 'quiz:createQuizCourse' course.id %}" class="button pink">Crear un Test</a>
+        <div class="courseElement">
+            <div class="courseElementContent">
+                <a href="{% url 'quiz:createQuizCourse' course.id %}" class="button pink">Crear un Test</a>
+                <a href="{% url 'courses:delete' course.id %}" class="button pink">Borrar curso</a>
+            </div>
+        </div>
         {% endif %}
-    
         
 </section>
 {% endblock %}

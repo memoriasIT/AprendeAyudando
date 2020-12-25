@@ -70,6 +70,14 @@
         {% else %}
             <p>Lo sentimos, no hay foros disponibles.</p>
         {% endif %}
+
+        {% if isOwner or user.is_superuser %}
+        <div class="courseElement">
+            <div class="courseElementContent">
+                <a href="{% url 'activity:delete' activity.id %}" class="button pink">Borrar actividad</a>
+            </div>
+        </div>
+        {% endif %}
     </div>
 </section>
 {% endblock %}
