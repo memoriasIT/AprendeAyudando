@@ -1,0 +1,24 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Crear Test{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Crear Test - Preguntas</h1>
+        
+        <form action="{% url 'quiz:createQuestionsCourse' course.id quiz.id number_questions %}" method="POST">
+            {% csrf_token %}
+            <p><strong>Escribe la pregunta:</strong></p> 
+            <p><input type="text" name="new_question_text" id=""></p>
+            <p><strong>Puntuación:</strong></p> 
+            <input type="number" name="new_question_score" id= "" min="0">
+            <br>
+            <br>
+            <input type="submit" value="Crear Test">
+        </form>
+    </div>
+{% endblock %}

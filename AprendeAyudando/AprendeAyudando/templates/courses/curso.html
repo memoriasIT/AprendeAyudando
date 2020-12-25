@@ -85,6 +85,10 @@
             </div> 
         </div> 
 
+<!-- TEST  -->
+        {% if isOwner or user.is_superuser %}
+            <a href="{% url 'quiz:createQuizCourse' course.id %}" class="button pink">Crear un Test</a>
+        {% endif %}
     
         
 </section>

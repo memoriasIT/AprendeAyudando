@@ -15,16 +15,18 @@
             <p><strong>Titulo del test:</strong></p> 
             <p><input type="text" name="new_quiz_title" id=""></p>
             <p><strong>Descripción:</strong></p> 
-            <input type="textarea" class="biggerTextarea" name="new_quiz_description" id= "">
+            <p><input type="textarea" class="biggerTextarea" name="new_quiz_description" id= ""></p>
+            <p><strong>Numero de preguntas:</strong></p>
+            <input type="number" name="number_questions" id= "" min="0" max="100">
             <p>
                 <fieldset>
                     <legend>Desea que el test se pueda repetir varias veces?</legend>
-                
+                    <br>
                     <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="si" id="si_repeatable" checked>
                     <label for="si_repeatable">
                         Sí
                     </label>
-                
+
                     <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="no" id="no_repeatable">
                     <label for="no_repeatable">
                         No
@@ -35,7 +37,7 @@
             <p>
                 <fieldset>
                     <legend>Desea que el usuario pueda ver la calificación de inmediato(tras finalizar el test)?</legend>
-                
+                    <br>
                     <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="si" id="si_show_qualification" checked>
                     <label for="si_show_qualification">
                         Sí

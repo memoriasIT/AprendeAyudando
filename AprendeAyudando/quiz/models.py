@@ -9,6 +9,8 @@ class Quiz(models.Model):
     description = models.CharField(max_length=1000, blank=True, null=True)
     repeatable = models.BooleanField()
     show_qualification = models.BooleanField(default=False)
+    def __str__(self):
+        return self.title
     class Meta:
         abstract = True
 
