@@ -10,14 +10,16 @@ from forum.models import Forum
 from .models import Activity
 from .models import ActivityRequest
 
+#Queries
+from django.db.models import Q
+
 def index(request):
     activityList = Activity.objects.order_by('-pub_date')[:5]
     
-    #Miramos si el usuario logeado se encuentra en la actividad o si el usuario logeado es el propietario de la actividad
-    id_activities_list_inscripted = []
+    """id_activities_list_inscripted = []
     for activity in activityList:
         if request.user in activity.enrolled_users.all() or request.user==activity.entity:
-            id_activities_list_inscripted.extend([activity.id]) 
+            id_activities_list_inscripted.extend([activity.id])""" 
 
     #Miramos si tiene permisos de añadir actividades(en un principio solo Admins y EntidadesPP) para mostrar o no mostrar el enlace de "crear actividad"
     is_entity = False
@@ -25,21 +27,13 @@ def index(request):
         is_entity = True
     context = {
         'activityList': activityList,
-        'activities_list_inscripted': id_activities_list_inscripted,
         'is_entity': is_entity
     }
     return render(request, 'activity/index.html', context)
 
 @login_required
 def enrolled(request):
-    activityListAux = Activity.objects.order_by('-pub_date')[:5]
-    activityList = []
-    #Miramos si el usuario logeado se encuentra en la actividad o si el usuario logeado es el propietario de la actividad
-    id_activities_list_inscripted = []
-    for activity in activityListAux:
-        if request.user in activity.enrolled_users.all() or request.user==activity.entity:
-            id_activities_list_inscripted.extend([activity.id])
-            activityList.append(activity)
+    activityList = Activity.objects.filter(Q(enrolled_users=request.user) | Q(entity=request.user)).distinct()
 
     #Miramos si tiene permisos de añadir actividades(en un principio solo Admins y EntidadesPP) para mostrar o no mostrar el enlace de "crear actividad"
     is_entity = False
@@ -47,7 +41,6 @@ def enrolled(request):
         is_entity = True
     context = {
         'activityList': activityList,
-        'activities_list_inscripted': id_activities_list_inscripted,
         'is_entity': is_entity,
         'filtered_by_enrolled': True,
     }
@@ -218,23 +211,4 @@ def delete(request, activity_id):
     print(request.method)
 
     Activity.objects.filter(id=activity_id).delete()
-    activityListAux = Activity.objects.order_by('-pub_date')[:5]
-    activityList = []
-    #Miramos si el usuario logeado se encuentra en la actividad o si el usuario logeado es el propietario de la actividad
-    id_activities_list_inscripted = []
-    for activity in activityListAux:
-        if request.user in activity.enrolled_users.all() or request.user==activity.entity:
-            id_activities_list_inscripted.extend([activity.id])
-            activityList.append(activity)
-
-    #Miramos si tiene permisos de añadir actividades(en un principio solo Admins y EntidadesPP) para mostrar o no mostrar el enlace de "crear actividad"
-    is_entity = False
-    if request.user.has_perm('activity.add_activity'):
-        is_entity = True
-    context = {
-        'activityList': activityList,
-        'activities_list_inscripted': id_activities_list_inscripted,
-        'is_entity': is_entity,
-        'filtered_by_enrolled': True,
-    }
-    return render(request, 'activity/index.html', context)
+    return index(request)
