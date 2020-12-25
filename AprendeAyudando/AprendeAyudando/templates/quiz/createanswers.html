@@ -1,0 +1,33 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Crear Test{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h2 class="bigger">Crear Test - Posibles respuestas</h2>
+        
+        <form action="{% url 'quiz:createAnswersCourse' course.id question.id number_questions number_answers %}" method="POST">
+            {% csrf_token %}
+            <p><strong>Posibles respuestas (selecciona también las respuestas correctas):</strong></p>
+            {% for nn in range_number_answers %}
+                <p>
+                    <input type="checkbox" class="eliminarDefaultCheckBox" id="pregunta{{nn}}" name="new_answer_is_correct[]" value="{{nn}}">
+                    <label for="pregunta{{nn}}">
+                        <input type="text" name="new_answer_text{{nn}}">
+                    </label>
+                </p>
+            {% endfor %}
+            <br>
+            <br>
+            {% if number_questions > 1 %}
+                <input type="submit" value="Siguiente pregunta">
+            {% else %}
+                <input type="submit" value="Terminar Test">
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

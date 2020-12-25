@@ -25,6 +25,8 @@ class Question(models.Model):
     text = models.CharField(max_length=500)
     question_score = models.IntegerField()
     #image = models.ImageField()
+    def __str__(self):
+        return self.text
     class Meta:
         abstract = True
 class QuestionActivity(Question):
@@ -42,7 +44,7 @@ class Answer(models.Model):
 class AnswerActivity(Answer):
     question = models.ForeignKey(QuestionActivity, on_delete=models.CASCADE)
 
-class AnswerCourse(Course):
+class AnswerCourse(Answer):
     question = models.ForeignKey(QuestionCourse, on_delete=models.CASCADE)
 
 
