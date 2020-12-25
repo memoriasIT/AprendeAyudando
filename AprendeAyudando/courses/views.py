@@ -36,7 +36,7 @@ def index(request):
 
 @login_required
 def enrolled(request):
-    courseList = Course.objects.filter(Q(enrolled_users=request.user) | Q(teacher=request.user))
+    courseList = Course.objects.filter(Q(enrolled_users=request.user) | Q(teacher=request.user)).distinct()
     
     #Miramos si tiene permisos de añadir cursos(en un principio solo Admins y Profes) para mostrar o no mostrar el enlace de "crear curso"
     is_teacher = False
@@ -159,11 +159,5 @@ def delete(request, course_id):
     print(request.method)
 
     Course.objects.filter(id=course_id).delete()
-    courseList = Course.objects.filter(Q(enrolled_users=request.user) | Q(teacher=request.user))
-    context = {
-        'courseList': courseList,
-        'is_teacher': True,
-        'filtered_by_enrolled': True
-    }
-    return render(request, 'courses/index.html', context)
+    return index(request)
 
