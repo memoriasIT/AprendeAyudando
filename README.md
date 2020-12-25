@@ -7,7 +7,7 @@
 <br />
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="https://raw.githubusercontent.com/majochaves/AprendeAyudando/main/AprendeAyudando/AprendeAyudando/static/general/images/logoTransparent.png?token=AHVEJZXR5QD43OXQLA2VK6K73XW2C" alt="Aprende Ayudando" width="380" height="380">
+    <img src="https://github.com/memoriasIT/AprendeAyudando/blob/main/AprendeAyudando/AprendeAyudando/static/general/images/logoTransparent.png" alt="Aprende Ayudando" width="380" >
   </a>
 
   <p align="center">
@@ -15,14 +15,14 @@
   <br />
   organizar cursos y eventos solidarios.
     <br />
-    <a href="https://github.com/majochaves/AprendeAyudando/"><strong>Documentación »</strong></a>
+    <a href="https://github.com/memoriasIT/AprendeAyudando/"><strong>Documentación »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/majochaves/AprendeAyudando/">Demo</a>
+    <a href="https://aprendeayudando.herokuapp.com/">Demo</a>
     ·
-    <a href="https://github.com/majochaves/AprendeAyudando/">Reportar Bug</a>
+    <a href="https://github.com/memoriasIT/AprendeAyudando/issues">Reportar Bug</a>
     ·
-    <a href="https://github.com/majochaves/AprendeAyudando/">Sugerir mejora</a>
+    <a href="https://github.com/memoriasIT/AprendeAyudando/issues">Sugerir mejora</a>
   </p>
 </p>
 
@@ -43,16 +43,11 @@
     <li>
       <a href="#getting-started">Instalación rápida</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisitos</a></li>
-        <li><a href="#installation">Instalación</a></li>
+        <li><a href="#instalación">Instalación</a></li>
+        <li><a href="#uso">Deploy</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Deploy</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contribuir al proyecto</a></li>
-    <li><a href="#license">Licencia</a></li>
-    <li><a href="#contact">Contacto</a></li>
-    <li><a href="#acknowledgements">Agradecimientos</a></li>
+    <li><a href="#licencia">Licencia</a></li>
   </ol>
 </details>
 
@@ -60,8 +55,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Sobre el proyecto
-
-[![Screenshot][screenshot]](https://aprendeayudando.herokuapp.com)
+![!Screenshot](https://github.com/memoriasIT/AprendeAyudando/blob/v0.1/AprendeAyudando/static/general/images/apay.PNG)
 
 El principal motivo que impulsa este proyecto es la unión de dos problemas; la gran dificultad que existe para poder organizar eventos solidarios y la ausencia de una plataforma gratuita y libre que proporcione soporte para el aprendizaje por medio de servicios a estudiantes en diversos sectores como la medicina o enfermería. A partir de aquí nace Aprende Ayudando, una plataforma gratuita capaz de organizar eventos solidarios y cursos en los que podrán participar los usuarios pertenecientes a la misma.
 
@@ -96,93 +90,29 @@ Es posible acceder a una [demostración de la aplicación](https://aprendeayudan
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Getting started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
 
-### Prerequisites
+### Instalación
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Install python 3
+2. Install django with pip
    ```sh
-   git clone https://github.com/your_username_/Project-Name.git
+   pip install django
    ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Uso
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Colóquese en la carpeta de la aplicación django, después utilice el script manage.py para correr un servidor local.
 
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-
+   ```sh
+   cd AprendeAyudando
+   python manage.py runserver
+   ```
 
 <!-- LICENSE -->
-## License
+## Licencia
 
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
+Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)
 
