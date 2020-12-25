@@ -1,0 +1,29 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Miembros del curso{% endblock %}
+
+{% block content %}
+<section class="wrapper login">
+    {% load static %}
+    {% load auth_extras %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+
+    <div class="container 100%">
+        <div class="courseElement">
+            <h2 class="courseTitle">Miembros del curso</h2>
+            <div class="courseElementContent">
+                {% if userList %}
+                <ol id="prettyList" style="width:92%;">
+                    {% for u in userList %}
+                            <li id="prettyListItem">{{ u.email}}</a></li>
+                            <a class="button pink" href="{% url 'courses:removeUser' course.id u.id %}">X</a>
+                    {% endfor %}
+                </ol>
+                {% else %}
+                    <p>Lo sentimos, no hay cursos disponibles.</p>
+                {% endif %}
+            </div> 
+        </div> 
+    </div>
+
+</section>
+{% endblock %}

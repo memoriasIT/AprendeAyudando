@@ -27,6 +27,9 @@ def landingpage(request):
     }
     return render(request, 'landingpage/index.html', context)
 
+def news(request):
+    return render(request, 'news/index.html')
+
 @login_required
 def account(request):
     return render(request, 'landingpage/account.html')

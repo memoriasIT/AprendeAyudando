@@ -1,6 +1,7 @@
 # Models
 from .models import Course
 from forum.models import Forum
+from django.contrib.auth.models import User, Group
 from resources.models import Resource
 from AprendeAyudando.templatetags.auth_extras import is_owner
 
@@ -161,3 +162,27 @@ def delete(request, course_id):
     Course.objects.filter(id=course_id).delete()
     return index(request)
 
+@login_required
+@permission_required('courses.add_course', raise_exception=True)
+def users(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    userList = []
+    for u in User.objects.all():
+        if u in course.enrolled_users.all():
+            userList.append(u)
+
+    context = {
+        'course' : course,
+        'userList': userList,
+    }
+
+    return render(request, 'courses/users.html', context)
+
+@login_required
+@permission_required('courses.add_course', raise_exception=True)
+def removeUser(request, course_id, user_id):
+    course = get_object_or_404(Course, pk=course_id)
+    user = get_object_or_404(User, pk=user_id)
+    course.enrolled_users.remove(user)
+    course.banned_users.add(user)
+    return users(request, course_id)

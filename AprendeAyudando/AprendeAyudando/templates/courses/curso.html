@@ -80,7 +80,7 @@
                             {% endfor %}
                         </ol>
                     {% else %}
-                        <p>Lo sentimos, no hay recursos disponibles.</p>
+                        <p>Lo sentimos, no hay usuarios matriculados.</p>
                     {% endif %}
             </div> 
         </div> 
@@ -91,6 +91,7 @@
             <div class="courseElementContent">
                 <a href="{% url 'quiz:createQuizCourse' course.id %}" class="button pink">Crear un Test</a>
                 <a href="{% url 'courses:delete' course.id %}" class="button pink">Borrar curso</a>
+                <a href="{% url 'courses:users' course.id %}" class="button pink">Ver usuarios matriculados</a>
             </div>
         </div>
         {% endif %}
