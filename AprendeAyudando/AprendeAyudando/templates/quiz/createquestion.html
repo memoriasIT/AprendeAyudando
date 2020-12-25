@@ -8,17 +8,24 @@
 
 {% block content %}
     <div class="container 75% align-center minHeight">
-        <h1 class="bigger">Crear Test - Preguntas</h1>
-        
-        <form action="{% url 'quiz:createQuestionsCourse' course.id quiz.id number_questions %}" method="POST">
-            {% csrf_token %}
-            <p><strong>Escribe la pregunta:</strong></p> 
-            <p><input type="text" name="new_question_text" id=""></p>
-            <p><strong>Puntuación:</strong></p> 
-            <input type="number" name="new_question_score" id= "" min="0">
-            <br>
-            <br>
-            <input type="submit" value="Crear Test">
-        </form>
+        {% if number_questions is 0 %}
+            <h2 class="bigger">Creación del test finalizado. Ya ha realizado todas las preguntas.</h2>
+            <a href="{% url 'courses:join' course.id %}" class="button pink">Volver al curso</a>
+        {% else %}
+            <h1 class="bigger">Crear Test - Preguntas</h1>
+            
+            <form action="{% url 'quiz:createQuestionsCourse' course.id quiz.id number_questions %}" method="POST">
+                {% csrf_token %}
+                <p><strong>Escribe la pregunta:</strong></p> 
+                <p><input type="text" name="new_question_text" id=""></p>
+                <p><strong>Puntuación:</strong></p> 
+                <p><input type="number" name="new_question_score" id= "" min="0"></p>
+                <p><strong>Número de respuestas posibles:</strong></p>
+                <input type="number" name="number_answers" id= "" min="0" max="10">
+                <br>
+                <br>
+                <input type="submit" value="Realizar respuestas">
+            </form>
+        {% endif %}
     </div>
 {% endblock %}
