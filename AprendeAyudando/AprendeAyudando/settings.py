@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'request_permissions',
     'user_info',
     'quiz',
+    'resources',
 ]
 
 MIDDLEWARE = [

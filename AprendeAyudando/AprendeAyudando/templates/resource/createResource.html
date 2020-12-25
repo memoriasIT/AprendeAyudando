@@ -25,7 +25,7 @@
     </table>
     <hr class="major">
     
-    <form action="{% url 'courses:createResource' activityCourseFk %}" method="POST">
+    <form action="{% url 'resources:createResource' activityCourseFk %}" method="POST">
         {% csrf_token %}
         <p>Nombre del recurso: <input type="text" name="new_resource_name" id=""></p>
         <p>Link del recurso: <input type="text" name="new_resource_link" id=""></p>

@@ -44,6 +44,7 @@ urlpatterns = [
     path('activity/', include('activity.urls')),
     path('requestpermissions/', include('request_permissions.urls')),
     path('quiz/', include('quiz.urls')),
+    path('resources/', include('resources.urls')),
 ]
 
 admin.site.site_header = 'Administración Aprende Ayudando'

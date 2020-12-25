@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 from AprendeAyudando.views import has_group
 
 from forum.models import Forum
+from resources.models import Resource
 from .models import Activity
 from .models import ActivityRequest
 
@@ -142,7 +143,8 @@ def join(request, activity_id):
         if activity.id == forum.activityCourseFk:   #No se comprueba si "forum" es Type Actividad
             forumListCourse.append(forum)"""
 
-    
+    #-----------------------------------------RECURSOS-----------------------------------------
+    resourceListCourse = Resource.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
 
     #Para mostrarnos el boton de "Desmatricular" o "Desvincular Actividad"
     show_de_enroll = False
@@ -156,8 +158,9 @@ def join(request, activity_id):
         'isOwner': isOwner,
         'show_de_enroll': show_de_enroll,
         'forumListCourse': forumListCourse,
+        'resourceListCourse': resourceListCourse,
     }
-    if (request.method=='POST' and request.user not in activity.enrolled_users.all() and request.user.is_authenticated):
+    if (request.method=='POST' and request.user not in activity.enrolled_users.all() and request.user.is_authenticated and request.user!=activity.entity):
         activity.enrolled_users.add(request.user)
         context['show_de_enroll'] = True
 
