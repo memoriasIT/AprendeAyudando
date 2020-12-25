@@ -1,6 +1,7 @@
 # Models
-from .models import Course, Resource
+from .models import Course
 from forum.models import Forum
+from resources.models import Resource
 from AprendeAyudando.templatetags.auth_extras import is_owner
 
 # Session Handling
@@ -91,7 +92,7 @@ def join(request, course_id):
 
 
     #-----------------------------------------RECURSOS-----------------------------------------
-    resourceListCourse = Resource.objects.filter(course=course)
+    resourceListCourse = Resource.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
 
 
     #-----------------------------------CONTROL DE ELEMENTOS DEL HTML---------------------------
@@ -149,24 +150,6 @@ def createCourse(request):
         return render(request, 'courses/curso.html',context)
 
     return render(request, 'courses/create.html',{})
-
-
-
-@login_required
-@permission_required('courses.add_resource', raise_exception=True)
-def createResource(request, course_id):
-
-    if request.method=="POST":
-        new_resource_name=request.POST["new_resource_name"]
-        new_resource_link=request.POST["new_resource_link"]
-        course = Course.objects.get(pk=course_id)
-        if not new_resource_link.startswith('http://') and not new_resource_link.startswith('https://'):
-            new_resource_link='http://'+new_resource_link
-        new_resource = Resource.objects.create(course = course, resourceText = new_resource_name, resourceLink = new_resource_link)
-        new_resource.save()
-        return join(request, course_id)
-
-    return render(request, 'resource/createResource.html', {'activityCourseFk': course_id})
 
 @login_required
 @permission_required('courses.delete_course', raise_exception=True)

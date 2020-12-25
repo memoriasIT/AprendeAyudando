@@ -68,14 +68,15 @@
             </div>
             <div class="courseElementRight"> 
                 {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'courses:createResource' course.id %}" class="button pink">Crear un recurso</a>
+                    <a href="{% url 'resources:createResource' course.id %}" class="button pink">Crear un recurso</a>
                 {% endif %}
             </div>
             <div class="courseElementContent"> 
                 {% if resourceListCourse %}
                         <ol id="prettyList" style="width:92%;">
                             {% for resource in resourceListCourse %}
-                                <li id="prettyListItem"><a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a></li>
+                            <li id="prettyListItem"><a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
+                                <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a></li>
                             {% endfor %}
                         </ol>
                     {% else %}
@@ -84,7 +85,7 @@
             </div> 
         </div> 
 
-<!-- TEST  -->
+<!-- TEST Y BORRADO (SOLO DUEÑO Y ADMIN) -->
         {% if isOwner or user.is_superuser %}
         <div class="courseElement">
             <div class="courseElementContent">
