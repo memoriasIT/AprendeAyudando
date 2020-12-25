@@ -1,0 +1,53 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Crear Test{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Crear Test</h1>
+
+        <form action="{% url 'quiz:createQuizCourse' course.id %}" method="POST">
+            {% csrf_token %}
+            <p><strong>Titulo del test:</strong></p> 
+            <p><input type="text" name="new_quiz_title" id=""></p>
+            <p><strong>Descripción:</strong></p> 
+            <input type="textarea" class="biggerTextarea" name="new_quiz_description" id= "">
+            <p>
+                <fieldset>
+                    <legend>Desea que el test se pueda repetir varias veces?</legend>
+                
+                    <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="si" id="si_repeatable" checked>
+                    <label for="si_repeatable">
+                        Sí
+                    </label>
+                
+                    <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="no" id="no_repeatable">
+                    <label for="no_repeatable">
+                        No
+                    </label>
+                </fieldset>
+            </p>
+
+            <p>
+                <fieldset>
+                    <legend>Desea que el usuario pueda ver la calificación de inmediato(tras finalizar el test)?</legend>
+                
+                    <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="si" id="si_show_qualification" checked>
+                    <label for="si_show_qualification">
+                        Sí
+                    </label>
+                
+                    <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="no" id="no_show_qualification">
+                    <label for="no_show_qualification">
+                        No
+                    </label>
+                </fieldset>
+            </p>
+        <input type="submit" value="Crear Test">
+    </form>
+</div>
+{% endblock %}
