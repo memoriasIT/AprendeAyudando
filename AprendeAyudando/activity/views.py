@@ -14,12 +14,7 @@ from .models import ActivityRequest
 from django.db.models import Q
 
 def index(request):
-    activityList = Activity.objects.order_by('-pub_date')[:5]
-    
-    """id_activities_list_inscripted = []
-    for activity in activityList:
-        if request.user in activity.enrolled_users.all() or request.user==activity.entity:
-            id_activities_list_inscripted.extend([activity.id])""" 
+    activityList = Activity.objects.order_by('-pub_date')[:5] 
 
     #Miramos si tiene permisos de añadir actividades(en un principio solo Admins y EntidadesPP) para mostrar o no mostrar el enlace de "crear actividad"
     is_entity = False
