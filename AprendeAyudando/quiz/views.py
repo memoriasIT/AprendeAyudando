@@ -16,7 +16,7 @@ from courses.models import Course
 from quiz.models import Quiz, QuizCourse, QuestionCourse
 
 @login_required
-@permission_required('quiz.add_quiz', raise_exception=True)
+@permission_required('quiz.add_quizcourse', raise_exception=True)
 def createQuizCourse(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
@@ -53,7 +53,7 @@ def createQuizCourse(request, course_id):
     return render(request, 'quiz/createquiz.html', ctx)#HttpResponse("Esta es la futura pagina de crear QUIZ para el curso: %s." %course.title)
 
 @login_required
-@permission_required('quiz.add_quiz', raise_exception=True)
+@permission_required('quiz.add_questioncourse', raise_exception=True)
 def createQuestionsCourse(request, course_id, quiz_course_id, number_questions):
     course = get_object_or_404(Course, pk=course_id)
     quiz = get_object_or_404(QuizCourse, pk=quiz_course_id)
