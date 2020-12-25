@@ -40,17 +40,15 @@ def delete(request, forum_id):
     forum = get_object_or_404(Forum, pk=forum_id)
     print(forum)
     print(request.method)
-
+    isOwner = True
     if forum.activityCourseType == 'Course':
         course = get_object_or_404(Course, pk=forum.activityCourseFk)
-        isTeacher = True
         context = {
             'course': course,
-            'isTeacher': isTeacher,
+            'isOwner': isOwner,
         }
     else:
         activity =get_object_or_404(Activity, pk=forum.activityCourseFk)
-        isOwner = True
         context = {
             'activity': activity,
             'isOwner': isOwner,
