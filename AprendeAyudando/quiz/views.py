@@ -97,7 +97,7 @@ def createQuestionsCourse(request, course_id, quiz_course_id, number_questions):
     return render(request, 'quiz/createquestion.html', ctx)
 
 @login_required
-@permission_required('quiz.add_questioncourse', raise_exception=True)
+@permission_required('quiz.add_answercourse', raise_exception=True)
 def createAnswersCourse(request, course_id, question_course_id, number_questions, number_answers):
     course = get_object_or_404(Course, pk=course_id)
     question = get_object_or_404(QuestionCourse, pk=question_course_id)
