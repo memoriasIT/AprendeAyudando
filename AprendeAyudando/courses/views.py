@@ -1,8 +1,9 @@
 # Models
 from .models import Course
 from forum.models import Forum
-from django.contrib.auth.models import User, Group
 from resources.models import Resource
+from quiz.models import QuizCourse
+from django.contrib.auth.models import User, Group
 from AprendeAyudando.templatetags.auth_extras import is_owner
 
 # Session Handling
@@ -95,8 +96,10 @@ def join(request, course_id):
     #-----------------------------------------RECURSOS-----------------------------------------
     resourceListCourse = Resource.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
 
+    #-------------------------------------------TEST-------------------------------------------
+    quizListCourse = QuizCourse.objects.filter(course=course)
 
-    #-----------------------------------CONTROL DE ELEMENTOS DEL HTML---------------------------
+    #-----------------------------------CONTROL DE ELEMENTOS DEL HTML--------------------------
     #Para mostrarnos el boton de "Desmatricular"
     show_de_enroll = False
     if request.user in course.enrolled_users.all():
@@ -110,6 +113,7 @@ def join(request, course_id):
         'show_de_enroll':show_de_enroll,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
+        'quizListCourse': quizListCourse
     }
 
     return render(request, 'courses/curso.html', context)
