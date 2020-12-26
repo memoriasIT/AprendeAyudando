@@ -1,0 +1,14 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Crear Debate{% endblock %}
+
+{% block content %}
+<div class="container 75% align-center minHeight">
+    <h1 class="bigger">Tu nuevo debate</h1>
+    <form action="{% url 'forum:createDebate' forum.id %}" method="POST">
+        {% csrf_token %}
+        <p>Asunto*: <input type="text" name="initial_message_subject"></p>
+        <p>Mensaje*: <input type="textarea" class="biggerTextarea" name="initial_message_content"></p>
+        <input type="submit" value="Enviar">
+    </form>
+</div>
+{% endblock %}

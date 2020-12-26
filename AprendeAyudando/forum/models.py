@@ -16,3 +16,32 @@ class Forum(models.Model):
         # Como se muestra en la web de admin
         verbose_name = "Foro"
         verbose_name_plural = "Foros"
+
+
+class Debate(models.Model):
+    title = models.CharField(max_length=200)
+    author = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
+    forum = models.ForeignKey(Forum, on_delete=models.CASCADE)
+    def __str__(self):
+        return self.title
+    
+    class Meta:
+        # Como se muestra en la web de admin
+        verbose_name = "Debate"
+        verbose_name_plural = "Debates"
+
+class Message(models.Model):
+    author = models.ForeignKey(get_user_model(), null=True, on_delete=models.CASCADE)
+    subject = models.CharField(max_length=200)
+    content = models.CharField(max_length=2000, blank=True)
+    pub_date = models.DateTimeField(verbose_name="date published", auto_now_add=True)
+    debate = models.ForeignKey(Debate, on_delete=models.CASCADE)
+    initial = models.BooleanField(null=True)
+    replies = models.ManyToManyField('self', related_name="respuestas", blank=True)
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        # Como se muestra en la web de admin
+        verbose_name = "Mensaje"
+        verbose_name_plural = "Mensajes"
