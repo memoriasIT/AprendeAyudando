@@ -170,10 +170,10 @@ def doQuizCourse(request, quiz_id):
 
     #Habria que mirar si el usuario actual pertenece al curso(CONTROL DE ACCESO)
 
+    #---------------------SELECCION DE UNA PREGUNTA NO REALIZADA ANTERIORMENTE----------------
     try:
         qualification = QualificationCourse.objects.get(user=request.user, quiz=quiz)
     except QualificationCourse.DoesNotExist:
-        #print("El usuario no tiene aun qualification")
         qualification = QualificationCourse.objects.create(
             user=request.user,
             total_score=0,
@@ -188,12 +188,14 @@ def doQuizCourse(request, quiz_id):
     else:
         list_questions = QuestionCourse.objects.filter(quiz=quiz)
     
-
+    #---------------------------CONTROL PARA LA FINALIZACION DEL TEST-------------------------
     finish = list_questions.count() == 0
 
     question = list_questions.first() #Escogemos la primera pregunta(En un futuro se podria poner de forma aleatoria por ej)
     answers = AnswerCourse.objects.filter(question=question)
     is_last_answer = list_questions.count() <= 1
+
+    #-----------------------------------ELEMENTOS PARA HTML-----------------------------------
     ctx = {
         'course':course,
         'quiz':quiz,
@@ -204,13 +206,15 @@ def doQuizCourse(request, quiz_id):
     }
 
     return render(request, 'quiz/doquiz.html', ctx)
-    
+
+
 @login_required
 def doQuizCourseQuestionAsked(request, question_id):
     question = get_object_or_404(QuestionCourse, pk=question_id)
     possible_answers = AnswerCourse.objects.filter(question=question)
     quiz = question.quiz
 
+    #------------PUNTUACION DE LA PREGUNTA Y ALMACENAMIENTO DE PREGUNTA REALIZADA----------
     if request.method == 'POST':
         checked_values = request.POST.getlist('list_answers[]')
         total_score = 0
