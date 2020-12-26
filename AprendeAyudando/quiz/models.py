@@ -53,13 +53,45 @@ class AnswerCourse(Answer):
 class Qualification(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     total_score = models.FloatField()
-    correct_answers = models.IntegerField()
-
+    
     class Meta:
         abstract = True
 
 class QualificationActivity(Qualification):
     quiz = models.ForeignKey(QuestionActivity, on_delete=models.CASCADE)
+    questions_asked = models.ManyToManyField(
+        QuestionActivity,
+        through='QuestionAskedActivity',
+        through_fields=('qualificationActivity', 'questionActivity'),
+        related_name='questions_asked_qualification'
+    )
 
 class QualificationCourse(Qualification):
     quiz = models.ForeignKey(QuestionCourse, on_delete=models.CASCADE)
+    questions_asked = models.ManyToManyField(
+        QuestionCourse,
+        through='QuestionAskedCourse',
+        through_fields=('qualificationCourse', 'questionCourse'),
+        related_name='questions_asked_qualification'
+    )
+
+#------------------Questions Asked-----------------
+class QuestionAskedActivity(models.Model):
+    qualificationActivity = models.ForeignKey(
+        QualificationActivity, 
+        on_delete=models.CASCADE
+    )
+    questionActivity = models.ForeignKey(
+        QuestionActivity,
+        on_delete=models.CASCADE
+    )
+
+class QuestionAskedCourse(models.Model):
+    qualificationCourse = models.ForeignKey(
+        QualificationCourse,
+        on_delete=models.CASCADE
+    )
+    questionCourse = models.ForeignKey(
+        QuestionCourse,
+        on_delete=models.CASCADE
+    )

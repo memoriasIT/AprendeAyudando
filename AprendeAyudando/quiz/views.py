@@ -13,8 +13,17 @@ from django.http import HttpResponseForbidden
 
 #Models
 from courses.models import Course
-from quiz.models import Quiz, QuizCourse, QuestionCourse, AnswerCourse
+from quiz.models import Quiz, QuizCourse, QuestionCourse, AnswerCourse, QualificationCourse
 
+#Random
+from random import random, randint
+
+#Queries
+from django.db.models import Q
+
+
+
+#-----------------------------------------CREACIÓN DE TESTS---------------------------------------------
 @login_required
 @permission_required('quiz.add_quizcourse', raise_exception=True)
 def createQuizCourse(request, course_id):
@@ -141,4 +150,41 @@ def createAnswersCourse(request, course_id, question_course_id, number_questions
 
     return render(request, 'quiz/createanswers.html', ctx)
 
+
+
+
+
+#---------------------------------------------------HACER TESTS--------------------------------------------------
+"""@login_required
+def doQuizCourse(request, quiz_id):
+    quiz = get_object_or_404(QuizCourse, pk=quiz_id)
+    course = quiz.course
+
+    #Habria que mirar si el usuario actual pertenece al curso
+
+    #list_questions = QuestionCourse.objects.filter(quiz=quiz)
+
+    qualification = QualificationCourse.objects.filter(user=request.user, quiz=quiz)
+    if not qualification:
+        qualification = QualificationCourse.objects.create(
+            user=request.user,
+            total_score=0,
+            quiz=quiz
+        )
+        qualification.save()
+
+        list_questions = QuestionCourse.objects.filter(quiz=quiz)
+    else:
+        list_correct_answers = qualification.correct_answers
+        list_wrong_answers = qualification.wrong_answers
+        list_questions = QuestionCourse.objects.filter(quiz=quiz).exclude(Q())
+        #Ya realizo el test(o lo realizo parcialmente - por ahora esto lo ignoro)
+        return HttpResponse("Ya hiciste el test o lo dejaste parcialmente realizado")
     
+    question = list_questions.first
+
+    ctx = {
+        'quiz':quiz,
+        'question':question,
+    }
+    return render(request, '.html', ctx)"""
