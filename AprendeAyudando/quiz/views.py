@@ -160,18 +160,27 @@ def startQuiz(request, quiz_id):
     quiz = get_object_or_404(QuizCourse, pk=quiz_id)
     course = quiz.course
 
-    exist_qualification = None
+    exist_finished_qualification = None
+    exist_started_qualification = None
     #Hay k saber si debe seguir o no el test k dejo a medias
-    q = QualificationCourse.objects.filter(user=request.user, quiz=quiz, finish=True)
-    if q:
-        exist_qualification = True
+    list_finished_qualification = QualificationCourse.objects.filter(user=request.user, quiz=quiz, finish=True)
+    list_started_qualification = QualificationCourse.objects.filter(user=request.user, quiz=quiz, finish=False)
+
+    if list_finished_qualification:
+        exist_finished_qualification = True
     else:
-        exist_qualification = False
+        exist_finished_qualification = False
+    
+    if list_started_qualification:
+        exist_started_qualification = True
+    else:
+        exist_started_qualification = False
     
     ctx = {
+        'course':course,
         'quiz':quiz,
-        'exist_qualification':exist_qualification,
-        'course':course
+        'exist_finished_qualification':exist_finished_qualification,
+        'exist_started_qualification':exist_started_qualification
     }
     return render(request, 'quiz/startquiz.html', ctx)
 
