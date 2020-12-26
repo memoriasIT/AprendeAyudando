@@ -160,9 +160,10 @@ def startQuiz(request, quiz_id):
     quiz = get_object_or_404(QuizCourse, pk=quiz_id)
     course = quiz.course
 
+    #----------------------------COMPROBACION DE REPETICION DEL TEST----------------------
     exist_finished_qualification = None
     exist_started_qualification = None
-    #Hay k saber si debe seguir o no el test k dejo a medias
+    
     list_finished_qualification = QualificationCourse.objects.filter(user=request.user, quiz=quiz, finish=True)
     list_started_qualification = QualificationCourse.objects.filter(user=request.user, quiz=quiz, finish=False)
 
@@ -239,6 +240,7 @@ def doQuizCourseQuestionAsked(request, question_id):
     quiz = question.quiz
 
     #------------PUNTUACION DE LA PREGUNTA Y ALMACENAMIENTO DE PREGUNTA REALIZADA----------
+    #Bug - El usuario puede volver atrás y sumar otra vez la respuesta correcta
     if request.method == 'POST':
         checked_values = request.POST.getlist('list_answers[]')
         total_score = 0
@@ -246,15 +248,19 @@ def doQuizCourseQuestionAsked(request, question_id):
             if str(answer.id) in checked_values and answer.correct:
                 total_score = total_score + question.question_score
             #QUE HACEMOS CUANDO ESTA MAL LA PREGUNTA?? Restar?? Por ahora no hace nada
+
         qualification = QualificationCourse.objects.get(user=request.user, quiz=quiz, finish=False)
+        #Por si el usuario intenta volver atras(se ignora)
+        try:
+            question_asked = QuestionAskedCourse.objects.create(
+                qualification_course=qualification,
+                question_course=question
+            )
+            question_asked.save()
+        except:
+            return doQuizCourse(request, quiz.id)
         qualification.total_score = qualification.total_score + total_score
         qualification.save()
-
-        question_asked = QuestionAskedCourse.objects.create(
-            qualification_course=qualification,
-            question_course=question
-        )
-        question_asked.save()
         return doQuizCourse(request, quiz.id)
     else:
         return HttpResponseForbidden()
