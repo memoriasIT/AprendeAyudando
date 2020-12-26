@@ -1,0 +1,18 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Debate{% endblock %}
+
+{% block content %}
+<!------DESCRIPCION----->
+<div class="container 125% align-center minHeight">
+    <h1>{{ debate.title}}</h1>
+<!------BORRAR DEBATE----->
+    {% if isAuthor is True %}
+    <a style="margin-bottom: 50px;" href="{% url 'forum:deleteDebate' debate.id %}" class="button big pink">Borrar debate</a>
+    {% endif %}
+    
+<!------MENSAJES---->
+
+<!------VOLVER A FORO----->
+    <a style="margin-bottom: 50px;" href="{% url 'forum:join' forum.id %}" class="button big">Volver a foro</a>
+</div>
+{% endblock %}

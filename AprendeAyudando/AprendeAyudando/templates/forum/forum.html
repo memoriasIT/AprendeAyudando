@@ -1,7 +1,13 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Foro{% endblock %}
 
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+{% endblock %}
+
 {% block content %}
+<!------DESCRIPCION----->
 <div class="container 125% align-center minHeight">
     <h1>{{ forum.title }}</h1>
 
@@ -20,6 +26,30 @@
     {% endif %}
     {% endif %}
 {% endif %}
+
+<!-- DEBATES -->
+<div class="courseElement">
+    <div class="courseElementLeft"> 
+        <h1>DEBATES:</h1>
+    </div>
+    <div class="courseElementRight"> 
+        <a style="margin-bottom: 50px;" href="{% url 'forum:createDebate' forum.id %}" class="button small">Añadir un nuevo debate</a>
+    </div>
+    <div class="courseElementContent"> 
+        <p>{% if debatesList %}
+            <ol id="prettyList" style="width:92%;">
+                {% for debate in debatesList %}
+                    <li id="prettyListItem"><a href="{% url 'forum:viewDebate' debate.id %}">{{ debate.title }}</a></li>
+                {% endfor %}
+            </ol>
+        {% else %}
+            <p>Lo sentimos, no hay debates disponibles.</p>
+        {% endif %}</p>
+    </div> 
+</div> 
+
+<!------VOLVER A CURSO/ACTIVIDAD----->
+
 {% if forum.activityCourseType == 'Course' %}
     <a style="margin-bottom: 50px;" href="{% url 'courses:join' forum.activityCourseFk %}" class="button big">Volver a curso</a>
 {% else %}
