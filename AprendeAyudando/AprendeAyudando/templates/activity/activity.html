@@ -97,26 +97,25 @@
             </div>
             <div class="courseElementContent"> 
                 {% if resourceListCourse %}
-                        <ol id="prettyList" style="width:92%;">
-                            {% for resource in resourceListCourse %}
-                                <li id="prettyListItem"><a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
-                                    <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a></li>
-                            {% endfor %}
-                        </ol>
-                    {% else %}
-                        <p>Lo sentimos, no hay recursos disponibles.</p>
-                    {% endif %}
+                    <ol id="prettyList" style="width:92%;">
+                        {% for resource in resourceListCourse %}
+                            <li id="prettyListItem"><a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
+                                <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a></li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p>Lo sentimos, no hay recursos disponibles.</p>
+                {% endif %}
             </div> 
         </div> 
         <!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
-        {% if isOwner or user.is_superuser %}
         <div class="courseElement">
+            {% if isOwner or user.is_superuser %}
             <div class="courseElementContent">
                 <a href="{% url 'activity:delete' activity.id %}" class="button pink">Borrar actividad</a>
             </div>
+            {% endif %}
         </div>
-        {% endif %}
-        {% endif %}
     </div>
 </section>
 {% endblock %}
