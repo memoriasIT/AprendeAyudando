@@ -64,8 +64,11 @@ def inscription(request, course_id):
 
     if request.method=='POST':
         if is_Estudiante_or_superuser:
-            course.enrolled_users.add(request.user)
-            return join(request, course_id)
+            if request.user in course.banned_users.all():
+                return banned(request, course_id)
+            else:
+                course.enrolled_users.add(request.user)
+                return join(request, course_id)
         else:
             return HttpResponse("ERROR: Solo un estudiante puede realizar una inscripcion a este curso")    #Nunca deberia de entrar aqui
 
@@ -76,6 +79,14 @@ def inscription(request, course_id):
     return render(request, 'courses/inscription.html', context)
 
 @login_required
+def banned(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    context = {
+        'course': course
+    }
+    return render(request, 'courses/banned.html', context)
+
+@login_required
 def join(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
 
@@ -84,7 +95,7 @@ def join(request, course_id):
     isOwner = is_owner(request.user, course.teacher)
 
     # Si request.user intenta acceder a la pagina directamente con el id, nos redirige a la pagina de inscripcion
-    if request.user not in course.enrolled_users.all() and not isOwner:
+    if request.user not in course.enrolled_users.all() and not isOwner :
         return inscription(request, course_id) 
 
 

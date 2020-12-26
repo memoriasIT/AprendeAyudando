@@ -26,6 +26,7 @@
                 {% endif %}
                 {% if activity.restricted_entry and isOwner%}
                     <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
+                    <a href="{% url 'activity:users' activity.id %}" class="button small pink">Ver usuarios inscritos</a>
                 {% endif %}
             </div>
 

@@ -1,5 +1,5 @@
 {% extends "registration/base.html" %}
-{% block title %}AprendeAyudando - Miembros del curso{% endblock %}
+{% block title %}AprendeAyudando - Usuarios inscritos{% endblock %}
 
 {% block content %}
 <section class="wrapper login">
@@ -9,17 +9,17 @@
 
     <div class="container 100%">
         <div class="courseElement">
-            <h2 class="courseTitle">Miembros del curso</h2>
+            <h2 class="courseTitle">Usuarios inscritos</h2>
             <div class="courseElementContent">
                 {% if userList %}
                 <ol id="prettyList" style="width:92%;">
                     {% for u in userList %}
                             <li id="prettyListItem">{{ u.email}}</a></li>
-                            <a class="button pink" href="{% url 'courses:removeUser' course.id u.id %}">X</a>
+                            <a class="button pink" href="{% url 'activity:removeUser' activity.id u.id %}">X</a>
                     {% endfor %}
                 </ol>
                 {% else %}
-                    <p>No hay usuarios matriculados todavía.</p>
+                    <p>No hay usuarios inscritos todavía.</p>
                 {% endif %}
             </div> 
         </div> 

@@ -1,0 +1,21 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Haz sido expulsado del curso {% endblock %}
+
+{% block content %}
+<section class="wrapper login">
+    {% load static %}
+    {% load auth_extras %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+
+    <div class="container 100%">
+        <div class="courseElement">
+            <h2 class="courseTitle">No te puedes inscribir</h2>
+            <div class="courseElementContent">
+                <p>Has sido expulsado de <b>{{activity.title}}</b></p>
+                <a href="/activity/enrolled" class="button big">Volver a mis actividades</a>
+            </div> 
+        </div> 
+    </div>
+
+</section>
+{% endblock %}

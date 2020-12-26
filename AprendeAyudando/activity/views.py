@@ -67,9 +67,12 @@ def inscription(request, activity_id):
     
     if request.method=='POST' and activity.restricted_entry:
         if has_group(request.user, 'Estudiante'):
-            new_activity_request = ActivityRequest.objects.create(requester=request.user, activity=activity)
-            new_activity_request.save()
-            context['exist_activity_request'] = True
+            if request.user not in activity.banned_users.all():
+                new_activity_request = ActivityRequest.objects.create(requester=request.user, activity=activity)
+                new_activity_request.save()
+                context['exist_activity_request'] = True
+            else:
+                return banned(request, activity_id)
         elif request.user.is_superuser:
             activity.enrolled_users.add(request.user)
             return join(request, activity_id)
@@ -210,3 +213,36 @@ def delete(request, activity_id):
 
     Activity.objects.filter(id=activity_id).delete()
     return index(request)
+
+@login_required
+@permission_required('activity.add_activity', raise_exception=True)
+def users(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+    userList = []
+    for u in User.objects.all():
+        if u in activity.enrolled_users.all():
+            userList.append(u)
+
+    context = {
+        'activity' : activity,
+        'userList': userList,
+    }
+
+    return render(request, 'activity/users.html', context)
+
+@login_required
+@permission_required('activity.add_activity', raise_exception=True)
+def removeUser(request, activity_id, user_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+    user = get_object_or_404(User, pk=user_id)
+    activity.enrolled_users.remove(user)
+    activity.banned_users.add(user)
+    return users(request, activity_id)
+
+@login_required
+def banned(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+    context = {
+        'activity': activity
+    }
+    return render(request, 'activity/banned.html', context)
