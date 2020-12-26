@@ -12,7 +12,7 @@ from activity.views import join as activity
 
 # Create your views here.
 @login_required
-#@permission_required('resource.add_resource', raise_exception=True)
+@permission_required('resources.add_resource', raise_exception=True)
 def createResource(request, activityCourseFk):
 
     if request.method=="POST":
@@ -38,7 +38,7 @@ def createResource(request, activityCourseFk):
     return render(request, 'resource/createResource.html', {'activityCourseFk': activityCourseFk})
 
 @login_required
-#@permission_required('resource.delete_resource', raise_exception=True)
+@permission_required('resources.delete_resource', raise_exception=True)
 def delete(request, resource_id):
 
     resource = get_object_or_404(Resource, pk=resource_id)
