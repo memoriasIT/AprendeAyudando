@@ -1,18 +1,40 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Debate{% endblock %}
 
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
+{% endblock %}
+
 {% block content %}
+{% load static %}
 <!------DESCRIPCION----->
 <div class="container 125% align-center minHeight">
-    <h1>{{ debate.title}}</h1>
-<!------BORRAR DEBATE----->
+    <h1 class="courseTitle">{{ debate.title}}</h1>
+<!------MENSAJES---->
+<div class="container">
+    <div class="row 150%">
+        <div class="12u 15u$(large)">
+            <section class="box" style="text-align: left;">
+                <div style="flex: left; border-bottom: 1px black;">
+                    <img src="{% static 'general/images/profile/user_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;">
+                    <h3>{{initialMessage.subject}}</h3>
+                    <p>de <span style="color:rgb(20, 76, 160);"> {{initialMessage.author.email}} </span> - {{initialMessage.pub_date}}</p>
+                </div>
+                <div style="background-color: rgb(242, 235, 241); padding: 10px;">
+                    <p>{{initialMessage.content}}</p>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<!------VOLVER A FORO----->
+    <a style="margin-bottom: 50px;" href="{% url 'forum:join' forum.id %}" class="button big">Volver a foro</a>
+    <!------BORRAR DEBATE----->
     {% if isAuthor is True %}
     <a style="margin-bottom: 50px;" href="{% url 'forum:deleteDebate' debate.id %}" class="button big pink">Borrar debate</a>
     {% endif %}
     
-<!------MENSAJES---->
-
-<!------VOLVER A FORO----->
-    <a style="margin-bottom: 50px;" href="{% url 'forum:join' forum.id %}" class="button big">Volver a foro</a>
 </div>
 {% endblock %}
