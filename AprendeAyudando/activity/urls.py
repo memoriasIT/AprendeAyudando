@@ -12,4 +12,7 @@ urlpatterns = [
     path('enrolled/', views.enrolled, name='enrolled'),
     path('<int:activity_id>/activityrequest/', views.view_activity_request, name='activityrequest'),
     path('<int:activity_id>/action_activity_request/', views.action_activity_request, name='action_activity_request'),
+    path('users/<int:activity_id>/', views.users, name='users'), # /activity/users/1/
+    path('removeUser/<int:activity_id>/<int:user_id>/', views.removeUser, name='removeUser'), 
+    path('banned/<int:activity_id>/', views.banned, name='banned'), # /activity/banned/1/ 
 ]
