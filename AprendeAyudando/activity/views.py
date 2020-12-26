@@ -14,6 +14,7 @@ from .models import ActivityRequest
 #Queries
 from django.db.models import Q
 
+
 def index(request):
     activityList = Activity.objects.order_by('-pub_date')[:5] 
 
@@ -126,7 +127,6 @@ def join(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
 
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
-    #Mantenemos un control de quien entra aqui(si la actividad estra restringida)
     if activity.restricted_entry and not request.user.is_authenticated:
         return inscription(request, activity_id)
     
@@ -149,7 +149,6 @@ def join(request, activity_id):
         show_de_enroll = True
 
     context = {
-        #'grupo': grupo,
         'activity': activity,
         'usuario': request.user,
         'isOwner': isOwner,
@@ -162,9 +161,6 @@ def join(request, activity_id):
         context['show_de_enroll'] = True
 
     return render(request, 'activity/activity.html',context)
-
-    # Return to course
-    # return render(request, 'courses/detail.html', {'course': course})
 
 
 

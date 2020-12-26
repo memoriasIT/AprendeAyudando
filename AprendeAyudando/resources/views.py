@@ -10,7 +10,7 @@ from resources.models import Resource
 from courses.views import join as curso
 from activity.views import join as activity
 
-# Create your views here.
+
 @login_required
 @permission_required('resources.add_resource', raise_exception=True)
 def createResource(request, activityCourseFk):
