@@ -138,13 +138,7 @@ def join(request, activity_id):
         return inscription(request, activity_id)
 
     #-----------------------------------------FOROS-----------------------------------------
-    #Miramos los foros que pertenecen a la actividad
-    #forumListAux = Forum.objects.all()
     forumListCourse = Forum.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
-    """forumListCourse = []
-    for forum in forumListAux:
-        if activity.id == forum.activityCourseFk:   #No se comprueba si "forum" es Type Actividad
-            forumListCourse.append(forum)"""
 
     #-----------------------------------------RECURSOS-----------------------------------------
     resourceListCourse = Resource.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
