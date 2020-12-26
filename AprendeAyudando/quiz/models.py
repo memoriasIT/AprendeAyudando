@@ -53,6 +53,7 @@ class AnswerCourse(Answer):
 class Qualification(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     total_score = models.IntegerField()
+    finish = models.BooleanField(default=False)
     def __str__(self):
         return self.user.username
         #return str(self.id)

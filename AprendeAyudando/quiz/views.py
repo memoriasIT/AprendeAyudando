@@ -158,8 +158,29 @@ def createAnswersCourse(request, course_id, question_course_id, number_questions
 @login_required
 def startQuiz(request, quiz_id):
     quiz = get_object_or_404(QuizCourse, pk=quiz_id)
+    course = quiz.course
+
+    exist_finished_qualification = None
+    exist_started_qualification = None
+    #Hay k saber si debe seguir o no el test k dejo a medias
+    list_finished_qualification = QualificationCourse.objects.filter(user=request.user, quiz=quiz, finish=True)
+    list_started_qualification = QualificationCourse.objects.filter(user=request.user, quiz=quiz, finish=False)
+
+    if list_finished_qualification:
+        exist_finished_qualification = True
+    else:
+        exist_finished_qualification = False
+    
+    if list_started_qualification:
+        exist_started_qualification = True
+    else:
+        exist_started_qualification = False
+    
     ctx = {
-        'quiz':quiz
+        'course':course,
+        'quiz':quiz,
+        'exist_finished_qualification':exist_finished_qualification,
+        'exist_started_qualification':exist_started_qualification
     }
     return render(request, 'quiz/startquiz.html', ctx)
 
@@ -169,15 +190,15 @@ def doQuizCourse(request, quiz_id):
     course = quiz.course
 
     #Habria que mirar si el usuario actual pertenece al curso(CONTROL DE ACCESO)
-
     #---------------------SELECCION DE UNA PREGUNTA NO REALIZADA ANTERIORMENTE----------------
     try:
-        qualification = QualificationCourse.objects.get(user=request.user, quiz=quiz)
+        qualification = QualificationCourse.objects.get(user=request.user, quiz=quiz, finish=False)
     except QualificationCourse.DoesNotExist:
         qualification = QualificationCourse.objects.create(
             user=request.user,
             total_score=0,
-            quiz=quiz
+            quiz=quiz,
+            finish=False
         )
         qualification.save()
     
@@ -189,8 +210,12 @@ def doQuizCourse(request, quiz_id):
         list_questions = QuestionCourse.objects.filter(quiz=quiz)
     
     #---------------------------CONTROL PARA LA FINALIZACION DEL TEST-------------------------
-    finish = list_questions.count() == 0
-
+    end_quiz = list_questions.count() == 0
+    if end_quiz:
+        qualification.finish = True 
+        qualification.save()
+        return startQuiz(request, quiz.id)
+    
     question = list_questions.first() #Escogemos la primera pregunta(En un futuro se podria poner de forma aleatoria por ej)
     answers = AnswerCourse.objects.filter(question=question)
     is_last_answer = list_questions.count() <= 1
@@ -201,8 +226,7 @@ def doQuizCourse(request, quiz_id):
         'quiz':quiz,
         'question':question,
         'possible_answers':answers,
-        'is_last_answer':is_last_answer,
-        'finish':finish
+        'is_last_answer':is_last_answer
     }
 
     return render(request, 'quiz/doquiz.html', ctx)
@@ -222,7 +246,7 @@ def doQuizCourseQuestionAsked(request, question_id):
             if str(answer.id) in checked_values and answer.correct:
                 total_score = total_score + question.question_score
             #QUE HACEMOS CUANDO ESTA MAL LA PREGUNTA?? Restar?? Por ahora no hace nada
-        qualification = QualificationCourse.objects.get(user=request.user, quiz=quiz)
+        qualification = QualificationCourse.objects.get(user=request.user, quiz=quiz, finish=False)
         qualification.total_score = qualification.total_score + total_score
         qualification.save()
 
