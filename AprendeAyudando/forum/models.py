@@ -37,11 +37,22 @@ class Message(models.Model):
     pub_date = models.DateTimeField(verbose_name="date published", auto_now_add=True)
     debate = models.ForeignKey(Debate, on_delete=models.CASCADE)
     initial = models.BooleanField(null=True)
-    replies = models.ManyToManyField('self', related_name="respuestas", blank=True)
     def __str__(self):
-        return self.title
+        return self.subject + ' by ' + self.author.email
 
     class Meta:
         # Como se muestra en la web de admin
         verbose_name = "Mensaje"
         verbose_name_plural = "Mensajes"
+
+class Reply(models.Model):
+    originalMessage = models.ForeignKey(Message, related_name='originalMessage', on_delete=models.CASCADE)
+    replyMessage = models.ForeignKey(Message, related_name='replyMessage', on_delete=models.CASCADE)
+
+    def __str__(self):
+        return 'OM: ' + self.originalMessage.subject + ', RM: ' + self.replyMessage.subject
+
+    class Meta:
+        # Como se muestra en la web de admin
+        verbose_name = "Respuesta"
+        verbose_name_plural = "Respuestas"

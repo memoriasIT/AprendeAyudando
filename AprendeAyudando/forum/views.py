@@ -5,7 +5,9 @@ from django.contrib.auth.decorators import permission_required
 
 from courses.models import Course
 from activity.models import Activity
-from forum.models import Forum, Debate, Message
+from forum.models import Forum, Debate, Message, Reply
+
+#-----------------------------------------FOROS------------------------------------------
 
 @login_required
 @permission_required('forum.add_forum', raise_exception=True)
@@ -87,6 +89,8 @@ def join(request, forum_id):
 
     return render(request, 'forum/forum.html',context)
 
+
+#-----------------------------------------DEBATES------------------------------------------
 @login_required
 def createDebate(request, forum_id):
     forum = get_object_or_404(Forum, pk=forum_id)
@@ -114,6 +118,11 @@ def viewDebate(request, debate_id):
     forum = debate.forum
         #-----------------------------------------MENSAJES-------------------------------------------
     initialMessage = Message.objects.filter(debate = debate, initial = True).first()
+    replies = Reply.objects.filter(originalMessage=initialMessage)
+    repliesList = []
+    for r in replies:
+        repliesList.append(r.replyMessage)
+    
         #---------------------------------------INFO CONTROL-------------------------------------------
     isAuthor = request.user == forum.author
     context = {
@@ -121,6 +130,7 @@ def viewDebate(request, debate_id):
         'initialMessage' : initialMessage,
         'forum' : forum,
         'isAuthor': isAuthor,
+        'repliesList': repliesList,
     }
     return render(request, 'forum/debate.html', context)
 
@@ -134,3 +144,23 @@ def deleteDebate(request, debate_id):
     Debate.objects.filter(id=debate_id).delete()
     
     return join(request, forum.id)
+
+#-----------------------------------------MENSAJES------------------------------------------
+def reply(request, message_id):
+    originalMessage = get_object_or_404(Message, pk=message_id)
+    if request.method=="POST":
+
+        #Obtenemos el contenido de la respuesta
+        message_subject=request.POST["message_subject"]
+        message_content=request.POST["message_content"]
+
+        #Creamos el mensaje
+        replyMessage = Message.objects.create(author=request.user, subject = message_subject, 
+            content=message_content, debate = originalMessage.debate, initial=False)
+        replyMessage.save()
+
+        reply = Reply.objects.create(originalMessage=originalMessage, replyMessage = replyMessage)
+        reply.save()
+
+        return viewDebate(request, originalMessage.debate.id)
+    return render(request, 'forum/reply.html', {'originalMessage': originalMessage})
