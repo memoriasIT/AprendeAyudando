@@ -1,0 +1,15 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Realizar Test{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h2 class="bigger">Test</h2>
+        <p>Esta seguro de inicializar el test <strong>{{quiz.title}}</strong>?</p>
+        <a href="{% url 'quiz:doQuizCourse' quiz.id %}" class="button pink">Empezar Test</a>
+    </div>
+{% endblock %}

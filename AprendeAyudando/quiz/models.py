@@ -52,46 +52,48 @@ class AnswerCourse(Answer):
 #-------------------------Qualification--------------
 class Qualification(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    total_score = models.FloatField()
-    
+    total_score = models.IntegerField()
+    def __str__(self):
+        return self.user.username
+        #return str(self.id)
     class Meta:
         abstract = True
 
 class QualificationActivity(Qualification):
-    quiz = models.ForeignKey(QuestionActivity, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(QuizActivity, on_delete=models.CASCADE)
     questions_asked = models.ManyToManyField(
         QuestionActivity,
         through='QuestionAskedActivity',
-        through_fields=('qualificationActivity', 'questionActivity'),
+        through_fields=('qualification_activity', 'question_activity'),
         related_name='questions_asked_qualification'
     )
 
 class QualificationCourse(Qualification):
-    quiz = models.ForeignKey(QuestionCourse, on_delete=models.CASCADE)
+    quiz = models.ForeignKey(QuizCourse, on_delete=models.CASCADE)
     questions_asked = models.ManyToManyField(
         QuestionCourse,
         through='QuestionAskedCourse',
-        through_fields=('qualificationCourse', 'questionCourse'),
+        through_fields=('qualification_course', 'question_course'),
         related_name='questions_asked_qualification'
     )
 
 #------------------Questions Asked-----------------
 class QuestionAskedActivity(models.Model):
-    qualificationActivity = models.ForeignKey(
+    qualification_activity = models.ForeignKey(
         QualificationActivity, 
         on_delete=models.CASCADE
     )
-    questionActivity = models.ForeignKey(
+    question_activity = models.ForeignKey(
         QuestionActivity,
         on_delete=models.CASCADE
     )
 
 class QuestionAskedCourse(models.Model):
-    qualificationCourse = models.ForeignKey(
+    qualification_course = models.ForeignKey(
         QualificationCourse,
         on_delete=models.CASCADE
     )
-    questionCourse = models.ForeignKey(
+    question_course = models.ForeignKey(
         QuestionCourse,
         on_delete=models.CASCADE
     )

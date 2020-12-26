@@ -73,18 +73,35 @@
             </div>
             <div class="courseElementContent"> 
                 {% if resourceListCourse %}
-                        <ol id="prettyList" style="width:92%;">
-                            {% for resource in resourceListCourse %}
-                            <li id="prettyListItem"><a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
-                                <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a></li>
-                            {% endfor %}
-                        </ol>
-                    {% else %}
-                        <p>Lo sentimos, no hay usuarios matriculados.</p>
-                    {% endif %}
+                    <ol id="prettyList" style="width:92%;">
+                        {% for resource in resourceListCourse %}
+                        <li id="prettyListItem"><a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
+                            <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a></li>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p>Lo sentimos, no hay recusos disponibles.</p>
+                {% endif %}
             </div> 
-        </div> 
+        </div>
 
+<!-- Test -->
+        <div class="courseElement">
+            <div class="courseElementLeft">
+                <h4>Tests:</h4>
+            </div>
+            <div class="courseElementContent">
+                {% if quizListCourse %}
+                    <ol id="prettyList" style="width:92%;">
+                        {% for quiz in quizListCourse %}
+                            <li id="prettyListItem"><a href="{% url 'quiz:startQuiz' quiz.id %}">{{ quiz.title }}</a>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p>Lo sentimos, no hay tests disponibles.</p>
+                {% endif %}
+            </div> 
+        </div>
 <!-- TEST Y BORRADO (SOLO DUEÑO Y ADMIN) -->
         {% if isOwner or user.is_superuser %}
         <div class="courseElement">

@@ -13,7 +13,7 @@ from django.http import HttpResponseForbidden
 
 #Models
 from courses.models import Course
-from quiz.models import Quiz, QuizCourse, QuestionCourse, AnswerCourse, QualificationCourse
+from quiz.models import Quiz, QuizCourse, QuestionCourse, AnswerCourse, QualificationCourse, QuestionAskedCourse
 
 #Random
 from random import random, randint
@@ -155,36 +155,78 @@ def createAnswersCourse(request, course_id, question_course_id, number_questions
 
 
 #---------------------------------------------------HACER TESTS--------------------------------------------------
-"""@login_required
+@login_required
+def startQuiz(request, quiz_id):
+    quiz = get_object_or_404(QuizCourse, pk=quiz_id)
+    ctx = {
+        'quiz':quiz
+    }
+    return render(request, 'quiz/startquiz.html', ctx)
+
+@login_required
 def doQuizCourse(request, quiz_id):
     quiz = get_object_or_404(QuizCourse, pk=quiz_id)
     course = quiz.course
 
-    #Habria que mirar si el usuario actual pertenece al curso
+    #Habria que mirar si el usuario actual pertenece al curso(CONTROL DE ACCESO)
 
-    #list_questions = QuestionCourse.objects.filter(quiz=quiz)
-
-    qualification = QualificationCourse.objects.filter(user=request.user, quiz=quiz)
-    if not qualification:
+    try:
+        qualification = QualificationCourse.objects.get(user=request.user, quiz=quiz)
+    except QualificationCourse.DoesNotExist:
+        #print("El usuario no tiene aun qualification")
         qualification = QualificationCourse.objects.create(
             user=request.user,
             total_score=0,
             quiz=quiz
         )
         qualification.save()
-
-        list_questions = QuestionCourse.objects.filter(quiz=quiz)
-    else:
-        list_correct_answers = qualification.correct_answers
-        list_wrong_answers = qualification.wrong_answers
-        list_questions = QuestionCourse.objects.filter(quiz=quiz).exclude(Q())
-        #Ya realizo el test(o lo realizo parcialmente - por ahora esto lo ignoro)
-        return HttpResponse("Ya hiciste el test o lo dejaste parcialmente realizado")
     
-    question = list_questions.first
 
+    list_questions_asked = QuestionAskedCourse.objects.values_list('question_course', flat=True).filter(qualification_course=qualification)
+    if list_questions_asked:
+        list_questions = QuestionCourse.objects.filter(quiz=quiz).exclude(Q(id__in=list_questions_asked)).distinct()
+    else:
+        list_questions = QuestionCourse.objects.filter(quiz=quiz)
+    
+
+    finish = list_questions.count() == 0
+
+    question = list_questions.first() #Escogemos la primera pregunta(En un futuro se podria poner de forma aleatoria por ej)
+    answers = AnswerCourse.objects.filter(question=question)
+    is_last_answer = list_questions.count() <= 1
     ctx = {
+        'course':course,
         'quiz':quiz,
         'question':question,
+        'possible_answers':answers,
+        'is_last_answer':is_last_answer,
+        'finish':finish
     }
-    return render(request, '.html', ctx)"""
+
+    return render(request, 'quiz/doquiz.html', ctx)
+    
+@login_required
+def doQuizCourseQuestionAsked(request, question_id):
+    question = get_object_or_404(QuestionCourse, pk=question_id)
+    possible_answers = AnswerCourse.objects.filter(question=question)
+    quiz = question.quiz
+
+    if request.method == 'POST':
+        checked_values = request.POST.getlist('list_answers[]')
+        total_score = 0
+        for answer in possible_answers:
+            if str(answer.id) in checked_values and answer.correct:
+                total_score = total_score + question.question_score
+            #QUE HACEMOS CUANDO ESTA MAL LA PREGUNTA?? Restar?? Por ahora no hace nada
+        qualification = QualificationCourse.objects.get(user=request.user, quiz=quiz)
+        qualification.total_score = qualification.total_score + total_score
+        qualification.save()
+
+        question_asked = QuestionAskedCourse.objects.create(
+            qualification_course=qualification,
+            question_course=question
+        )
+        question_asked.save()
+        return doQuizCourse(request, quiz.id)
+    else:
+        return HttpResponseForbidden()
