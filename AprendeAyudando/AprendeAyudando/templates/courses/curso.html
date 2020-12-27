@@ -91,7 +91,7 @@
             </div>
             <div class="courseElementRight"> 
                 {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'quiz:createQuizCourse' courseOrActivity course.id %}" class="button small">Crear un Test</a>
+                    <a href="{% url 'quiz:createQuiz' courseOrActivity course.id %}" class="button small">Crear un Test</a>
                 {% endif %}
             </div>
             <div class="courseElementContent">

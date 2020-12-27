@@ -29,7 +29,7 @@ from AprendeAyudando.templatetags.auth_extras import ACTIVITY, COURSE
 #-----------------------------------------CREACIÓN DE TESTS---------------------------------------------
 @login_required
 @permission_required('quiz.add_quizcourse', raise_exception=True)
-def createQuizCourse(request, courseOrActivity, courseOrActivity_id):
+def createQuiz(request, courseOrActivity, courseOrActivity_id):
 
     if(courseOrActivity == COURSE):
         course = get_object_or_404(Course, pk=courseOrActivity_id)
@@ -81,7 +81,7 @@ def createQuizCourse(request, courseOrActivity, courseOrActivity_id):
 
 @login_required
 @permission_required('quiz.add_questioncourse', raise_exception=True)
-def createQuestionsCourse(request, courseOrActivity, courseOrActivity_id, quiz_id, number_questions):
+def createQuestions(request, courseOrActivity, courseOrActivity_id, quiz_id, number_questions):
 
     #----------------------------------ACTIVIDAD O CURSO?------------------------------------
     if(courseOrActivity == COURSE):
@@ -129,7 +129,7 @@ def createQuestionsCourse(request, courseOrActivity, courseOrActivity_id, quiz_i
 
 @login_required
 @permission_required('quiz.add_answercourse', raise_exception=True)
-def createAnswersCourse(request, courseOrActivity, courseOrActivity_id, question_id, number_questions, number_answers):
+def createAnswers(request, courseOrActivity, courseOrActivity_id, question_id, number_questions, number_answers):
     if(courseOrActivity == COURSE):
         course = get_object_or_404(Course, pk=courseOrActivity_id)
         question = get_object_or_404(Question, pk=question_id)
@@ -209,7 +209,7 @@ def startQuiz(request, quiz_id):
     return render(request, 'quiz/startquiz.html', ctx)
 
 @login_required
-def doQuizCourse(request, quiz_id):
+def doQuiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
 
     #Habria que mirar si el usuario actual pertenece al curso o actividad (CONTROL DE ACCESO)
@@ -256,7 +256,7 @@ def doQuizCourse(request, quiz_id):
 
 
 @login_required
-def doQuizCourseQuestionAsked(request, question_id):
+def doQuizQuestionAsked(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     possible_answers = Answer.objects.filter(question=question)
     quiz = question.quiz
@@ -279,9 +279,9 @@ def doQuizCourseQuestionAsked(request, question_id):
             )
             question_asked.save()
         except:
-            return doQuizCourse(request, quiz.id)
+            return doQuiz(request, quiz.id)
         qualification.total_score = qualification.total_score + total_score
         qualification.save()
-        return doQuizCourse(request, quiz.id)
+        return doQuiz(request, quiz.id)
     else:
         return HttpResponseForbidden()

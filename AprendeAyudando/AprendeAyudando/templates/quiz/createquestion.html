@@ -18,7 +18,7 @@
         {% else %}
             <h1 class="bigger">Crear Test - Preguntas</h1>
             
-            <form action="{% url 'quiz:createQuestionsCourse' courseOrActivity courseOrActivity_id quiz.id number_questions %}" method="POST">
+            <form action="{% url 'quiz:createQuestions' courseOrActivity courseOrActivity_id quiz.id number_questions %}" method="POST">
                 {% csrf_token %}
                 <p><strong>Escribe la pregunta:</strong></p> 
                 <p><input type="text" name="new_question_text" id=""></p>
