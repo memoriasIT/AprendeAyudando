@@ -98,3 +98,5 @@ class QuestionAskedCourse(models.Model):
         QuestionCourse,
         on_delete=models.CASCADE
     )
+    class Meta:
+        unique_together = ('qualification_course','question_course')
