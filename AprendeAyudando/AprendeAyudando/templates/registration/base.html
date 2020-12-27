@@ -3,117 +3,80 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{% block title %} AprendeAyudando {% endblock %}</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'general/css/skel.css' %}" />
-	<link rel="stylesheet" type="text/css" href="{% static 'general/css/style.css' %}" />
-	<link rel="stylesheet" type="text/css" href="{% static 'general/css/style-xlarge.css' %}"/>
+	<title>{% block title %} AprendeAyudando {% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{% static 'general/bs5/css/bootstrap.css' %}" />
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="icon" type="icon" href="/static/general/images/logoTransparent.png">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	
+	
 	{% block style %}
     {% endblock %}
   </head>
-  <body class="landing">
-		<!-- Header -->
-			<header id="header">
-				<div class="left">
-					<img style="height: 65px;margin-top: 10px;" src="/static/general/images/logo-NoText.png" alt="">
+  <body>
+	<div class="row align-items-center bg-light border-bottom shadow-sm">
+		<nav class="row navbar">
+			<a class="col px-5" href="/"><img style="height: 65px;" src="/static/general/images/logo-NoText.png" alt=""></a>
+			<div class="col py-3">
+				<div class="row justify-content-center align-self-center">
+					<a class="col nav-link" href="/">Inicio <span class="sr-only">(current)</span></a>
+					<a class="col nav-link" href="/news">Noticias</a>
+					<a class="col nav-link" href="/courses">Cursos</a>
+					<a class="col nav-link" href="/activity">Actividades</a>
+				{% if not user.is_authenticated %}
+					<a class="col nav-link" href="/register" >Registro</a>
+					<a class="col btn btn-outline-primary" href="/accounts/login" class="button special" >Login</a>
+				{% else %}
+					<a class="col nav-link" href="/account" >Mi perfil</a>
+					<a class="col btn btn-outline-primary" href="{% url 'logout' %}" class="button special" >Cerrar sesion</a>
+				{% endif %}
 				</div>
-				<nav id="nav">
-					<div class="right">
-						<ul>
-							<li><a href="/">Inicio</a></li>
-							<li><a href="/news">Noticias</a></li>
-							<li><a href="/courses">Cursos</a></li>
-							<li><a href="/activity">Actividades</a></li>
-							{% if not user.is_authenticated %}
-								<li><a href="/register" >Registro</a></li>
-								<li><a href="/accounts/login" class="button special" >Login</a></li>
-							{% else %}
-								<li><a href="/account" >Mi perfil</a></li>
-								<li><a href="{% url 'logout' %}" class="button special" >Cerrar sesion</a></li>
-							{% endif %}
-						</ul>
-					</div>
-					
-				</nav>
-            </header>
-            
-            {% block content %}
-            {% endblock %}
+			</div>
+			
+		</nav>
+	</div>
+	
+		
+		{% block content %}
+		{% endblock %}
 
-		<!-- Footer -->
-			<footer id="footer">
-				<div class="container">
-					<section class="links">
-						<div class="row">
-							<section class="3u 6u(medium) 12u$(small)">
-								<h3>Lorem ipsum dolor</h3>
-								<ul class="unstyled">
-									<li><a href="#">Lorem ipsum dolor sit</a></li>
-									<li><a href="#">Nesciunt itaque, alias possimus</a></li>
-									<li><a href="#">Optio rerum beatae autem</a></li>
-									<li><a href="#">Nostrum nemo dolorum facilis</a></li>
-									<li><a href="#">Quo fugit dolor totam</a></li>
-								</ul>
-							</section>
-							<section class="3u 6u$(medium) 12u$(small)">
-								<h3>Culpa quia, nesciunt</h3>
-								<ul class="unstyled">
-									<li><a href="#">Lorem ipsum dolor sit</a></li>
-									<li><a href="#">Reiciendis dicta laboriosam enim</a></li>
-									<li><a href="#">Corporis, non aut rerum</a></li>
-									<li><a href="#">Laboriosam nulla voluptas, harum</a></li>
-									<li><a href="#">Facere eligendi, inventore dolor</a></li>
-								</ul>
-							</section>
-							<section class="3u 6u(medium) 12u$(small)">
-								<h3>Neque, dolore, facere</h3>
-								<ul class="unstyled">
-									<li><a href="#">Lorem ipsum dolor sit</a></li>
-									<li><a href="#">Distinctio, inventore quidem nesciunt</a></li>
-									<li><a href="#">Explicabo inventore itaque autem</a></li>
-									<li><a href="#">Aperiam harum, sint quibusdam</a></li>
-									<li><a href="#">Labore excepturi assumenda</a></li>
-								</ul>
-							</section>
-							<section class="3u$ 6u$(medium) 12u$(small)">
-								<h3>Illum, tempori, saepe</h3>
-								<ul class="unstyled">
-									<li><a href="#">Lorem ipsum dolor sit</a></li>
-									<li><a href="#">Recusandae, culpa necessita nam</a></li>
-									<li><a href="#">Cupiditate, debitis adipisci blandi</a></li>
-									<li><a href="#">Tempore nam, enim quia</a></li>
-									<li><a href="#">Explicabo molestiae dolor labore</a></li>
-								</ul>
-							</section>
-						</div>
-					</section>
-					<div class="row">
-						<div class="8u 12u$(medium)">
-							<ul class="copyright">
-								<li>&copy; AprendeAyudando. All rights reserved.</li>
-							</ul>
-						</div>
-						<div class="4u$ 12u$(medium)">
-							<ul class="icons">
-								<li>
-									<a class="icon rounded fa-facebook"><span class="label">Facebook</span></a>
-								</li>
-								<li>
-									<a class="icon rounded fa-twitter"><span class="label">Twitter</span></a>
-								</li>
-								<li>
-									<a class="icon rounded fa-google-plus"><span class="label">Google+</span></a>
-								</li>
-								<li>
-									<a class="icon rounded fa-linkedin"><span class="label">LinkedIn</span></a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</footer>
-
+		<footer class="pt-4 my-md-5 pt-md-5 border-top">
+			<div class="row">
+			  <div class="col-12 col-md">
+				<img class="mb-2" src="/static/general/images/logo-NoText.png" alt="" height="54">
+				<small class="d-block mb-3 text-muted">&copy; 2020-2021</small>
+			  </div>
+			  <div class="col-6 col-md">
+				<h5>Features</h5>
+				<ul class="list-unstyled text-small">
+				  <li><a class="text-muted" href="#">Cool stuff</a></li>
+				  <li><a class="text-muted" href="#">Random feature</a></li>
+				  <li><a class="text-muted" href="#">Team feature</a></li>
+				  <li><a class="text-muted" href="#">Stuff for developers</a></li>
+				  <li><a class="text-muted" href="#">Another one</a></li>
+				  <li><a class="text-muted" href="#">Last time</a></li>
+				</ul>
+			  </div>
+			  <div class="col-6 col-md">
+				<h5>Resources</h5>
+				<ul class="list-unstyled text-small">
+				  <li><a class="text-muted" href="#">Resource</a></li>
+				  <li><a class="text-muted" href="#">Resource name</a></li>
+				  <li><a class="text-muted" href="#">Another resource</a></li>
+				  <li><a class="text-muted" href="#">Final resource</a></li>
+				</ul>
+			  </div>
+			  <div class="col-6 col-md">
+				<h5>About</h5>
+				<ul class="list-unstyled text-small">
+				  <li><a class="text-muted" href="#">Team</a></li>
+				  <li><a class="text-muted" href="#">Locations</a></li>
+				  <li><a class="text-muted" href="#">Privacy</a></li>
+				  <li><a class="text-muted" href="#">Terms</a></li>
+				</ul>
+			  </div>
+			</div>
+		  </footer>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 	</body>
 </html>

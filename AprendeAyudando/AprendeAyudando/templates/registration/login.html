@@ -2,15 +2,18 @@
 {% block title %}AprendeAyudando - Inicio de sesión{% endblock %}
 
 {% block content %}
-<section class="wrapper align-center login">
-    <div class="container 50%">
-        <h2>Log In</h2>
-        <form method="post">
+<section class="bg-primary text-light py-5">
+  <div class="container text-center py-5">
+    <h2>Log In</h2>
+    <div class="col gy-3">
+        <form class="text-center" method="post">
           {% csrf_token %}
           {{ form.as_p }}
-          <button class="button big" type="submit">Log In</button>
+          <div class="col py-1 text-center">
+            <input type="submit" value="Login" class="btn btn-success">
+          </div>
         </form>
     </div>
-</section>
   </div>
+</section>
 {% endblock %}
