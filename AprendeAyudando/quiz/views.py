@@ -82,6 +82,8 @@ def createQuizCourse(request, courseOrActivity, courseOrActivity_id):
 @login_required
 @permission_required('quiz.add_questioncourse', raise_exception=True)
 def createQuestionsCourse(request, courseOrActivity, courseOrActivity_id, quiz_id, number_questions):
+
+    #----------------------------------ACTIVIDAD O CURSO?------------------------------------
     if(courseOrActivity == COURSE):
         course = get_object_or_404(Course, pk=courseOrActivity_id)
         quiz = get_object_or_404(Quiz, pk=quiz_id)
@@ -181,8 +183,6 @@ def createAnswersCourse(request, courseOrActivity, courseOrActivity_id, question
 @login_required
 def startQuiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-
-    #course = quiz.course
     
     #----------------------------COMPROBACION DE REPETICION DEL TEST----------------------
     exist_finished_qualification = None
@@ -202,7 +202,6 @@ def startQuiz(request, quiz_id):
         exist_started_qualification = False
     
     ctx = {
-        #'course':course,
         'quiz':quiz,
         'exist_finished_qualification':exist_finished_qualification,
         'exist_started_qualification':exist_started_qualification
@@ -212,9 +211,9 @@ def startQuiz(request, quiz_id):
 @login_required
 def doQuizCourse(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    #course = quiz.course
 
-    #Habria que mirar si el usuario actual pertenece al curso(CONTROL DE ACCESO)
+    #Habria que mirar si el usuario actual pertenece al curso o actividad (CONTROL DE ACCESO)
+
     #---------------------SELECCION DE UNA PREGUNTA NO REALIZADA ANTERIORMENTE----------------
     try:
         qualification = Qualification.objects.get(user=request.user, quiz=quiz, finish=False)
@@ -247,7 +246,6 @@ def doQuizCourse(request, quiz_id):
 
     #-----------------------------------ELEMENTOS PARA HTML-----------------------------------
     ctx = {
-        #'course':course,
         'quiz':quiz,
         'question':question,
         'possible_answers':answers,
@@ -262,8 +260,8 @@ def doQuizCourseQuestionAsked(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     possible_answers = Answer.objects.filter(question=question)
     quiz = question.quiz
+
     #------------PUNTUACION DE LA PREGUNTA Y ALMACENAMIENTO DE PREGUNTA REALIZADA----------
-    #Bug - El usuario puede volver atrás y sumar otra vez la respuesta correcta
     if request.method == 'POST':
         checked_values = request.POST.getlist('list_answers[]')
         total_score = 0

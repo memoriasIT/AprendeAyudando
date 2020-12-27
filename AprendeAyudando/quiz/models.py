@@ -3,7 +3,7 @@ from activity.models import Activity
 from courses.models import Course
 from django.contrib.auth import get_user_model
 
-#---------------------------Quiz--------------------
+#----------------------------Quiz--------------------
 class Quiz(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=1000, blank=True, null=True)
@@ -15,7 +15,6 @@ class Quiz(models.Model):
     def __str__(self):
         return self.title
     class Meta:
-        #abstract = True
         constraints = [
             models.CheckConstraint(
                 check = (
@@ -27,12 +26,6 @@ class Quiz(models.Model):
             ),
         ]
 
-"""class QuizActivity(Quiz):
-    activity = models.ForeignKey(Activity, on_delete=models.CASCADE)
-
-class QuizCourse(Quiz):
-    course = models.ForeignKey(Course, on_delete=models.CASCADE)"""
-
 #---------------------------Question------------------
 class Question(models.Model):
     text = models.CharField(max_length=500)
@@ -42,12 +35,6 @@ class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
     def __str__(self):
         return self.text
-    """class Meta:
-        abstract = True"""
-"""class QuestionActivity(Question):
-    quiz = models.ForeignKey(QuizActivity, on_delete=models.CASCADE)
-class QuestionCourse(Question):
-    quiz = models.ForeignKey(QuizCourse, on_delete=models.CASCADE)"""
 
 #----------------------------Answer------------------
 class Answer(models.Model):
@@ -55,16 +42,6 @@ class Answer(models.Model):
     correct = models.BooleanField()
 
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    """class Meta:
-        abstract = True"""
-
-"""class AnswerActivity(Answer):
-    question = models.ForeignKey(QuestionActivity, on_delete=models.CASCADE)
-
-class AnswerCourse(Answer):
-    question = models.ForeignKey(QuestionCourse, on_delete=models.CASCADE)"""
-
-
 
 #-------------------------Qualification--------------
 class Qualification(models.Model):
@@ -82,28 +59,8 @@ class Qualification(models.Model):
     def __str__(self):
         return self.user.username
         #return str(self.id)
-    """class Meta:
-        abstract = True"""
 
-"""class QualificationActivity(Qualification):
-    quiz = models.ForeignKey(QuizActivity, on_delete=models.CASCADE)
-    questions_asked = models.ManyToManyField(
-        QuestionActivity,
-        through='QuestionAskedActivity',
-        through_fields=('qualification_activity', 'question_activity'),
-        related_name='questions_asked_qualification'
-    )
-
-class QualificationCourse(Qualification):
-    quiz = models.ForeignKey(QuizCourse, on_delete=models.CASCADE)
-    questions_asked = models.ManyToManyField(
-        QuestionCourse,
-        through='QuestionAskedCourse',
-        through_fields=('qualification_course', 'question_course'),
-        related_name='questions_asked_qualification'
-    )"""
-
-#------------------Questions Asked-----------------
+#------------------------Questions Asked-----------------
 class QuestionAsked(models.Model):
     qualification = models.ForeignKey(
         Qualification, 
@@ -113,51 +70,3 @@ class QuestionAsked(models.Model):
         Question,
         on_delete=models.CASCADE
     )
-
-"""class QuestionAskedActivity(models.Model):
-    qualification_activity = models.ForeignKey(
-        QualificationActivity, 
-        on_delete=models.CASCADE
-    )
-    question_activity = models.ForeignKey(
-        QuestionActivity,
-        on_delete=models.CASCADE
-    )
-
-class QuestionAskedCourse(models.Model):
-    qualification_course = models.ForeignKey(
-        QualificationCourse,
-        on_delete=models.CASCADE
-    )
-    question_course = models.ForeignKey(
-        QuestionCourse,
-        on_delete=models.CASCADE
-    )
-    class Meta:
-        unique_together = ('qualification_course','question_course')"""
-
-"""class Prue(models.Model):
-    texto = models.CharField(max_length=30)
-    quiz_activity = models.ForeignKey(
-        QuizActivity,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
-    )
-    quiz_course = models.ForeignKey(
-        QuizCourse,
-        on_delete=models.CASCADE,
-        null=True,
-        blank=True
-    )
-    class Meta:
-        constraints = [
-            models.CheckConstraint(
-                check = (
-                    models.Q(quiz_activity__isnull = True, quiz_course__isnull = False)
-                    |
-                    models.Q(quiz_activity__isnull = False, quiz_course__isnull = True)
-                ),
-                name='prue_2quiz_are_null_or_notnull'
-            ),
-        ]"""
