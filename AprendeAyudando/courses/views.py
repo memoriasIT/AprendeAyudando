@@ -1,6 +1,7 @@
 # Models
 from .models import Course
 from forum.models import Forum
+from review.models import Review
 from resources.models import Resource
 from quiz.models import QuizCourse
 from django.contrib.auth.models import User, Group
@@ -116,12 +117,17 @@ def join(request, course_id):
     if request.user in course.enrolled_users.all():
         show_de_enroll = True
 
+    show_review = False
+    if Review.objects.all().filter(user=request.user, enrollable_id=course.id).count() <= 0:
+        show_review = True
+
     context = {
         'course': course,
         'success': success,
         'usuario': request.user,
         'isOwner': isOwner,
         'show_de_enroll':show_de_enroll,
+        'show_review' : show_review,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
         'quizListCourse': quizListCourse

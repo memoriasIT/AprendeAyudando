@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
 from AprendeAyudando.views import has_group
+from review.models import Review
 
 from forum.models import Forum
 from resources.models import Resource
@@ -148,11 +149,16 @@ def join(request, activity_id):
     if request.user in activity.enrolled_users.all():
         show_de_enroll = True
 
+    show_review = False
+    if show_de_enroll and Review.objects.all().filter(user=request.user, enrollable_id=activity.id).count() <= 0:
+        show_review = True
+
     context = {
         'activity': activity,
         'usuario': request.user,
         'isOwner': isOwner,
         'show_de_enroll': show_de_enroll,
+        'show_review' : show_review,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
     }

@@ -20,7 +20,7 @@
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 {% if isOwner %}
-                    <p>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></p>
+                    <h1>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></h1>
                 {% else %}
                     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
                 {% endif %}
@@ -109,11 +109,18 @@
                 {% endif %}
             </div> 
         </div> 
+
+        <div style="text-align: center;">
+            {% if not isOwner and show_review %}
+                <a href="{% url 'review:create' activity.id activity.title %}" class="button pink">Puntuar esta actividad</a>
+            {% endif %}
+        </div>
         <!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
-        <div class="courseElement">
+        <div class="courseElement" style="margin-top: 5%; text-align: center;">
             {% if isOwner or user.is_superuser %}
             <div class="courseElementContent">
                 <a href="{% url 'activity:delete' activity.id %}" class="button pink">Borrar actividad</a>
+                <a href="{% url 'review:list' activity.id activity.title %}" class="button pink">Ver encuestas de satisfacción</a>
             </div>
             {% endif %}
         </div>

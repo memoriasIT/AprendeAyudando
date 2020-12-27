@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     'user_info',
     'quiz',
     'resources',
+    'review',
 ]
 
 MIDDLEWARE = [

@@ -1,0 +1,24 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Ver encuestas de satisfacción{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Puntuaciones en: {{ enrollable_title }}</h1>
+        {% if reviews %}
+            <ol id="prettyList">
+            {% for review in reviews %}
+                <li id="prettyListItem"><a href="{% url 'review:details' review.id enrollable_title %}">{{ review.user }}: {{review.rating}} </a></li>
+            {% endfor %}
+            </ol>
+        {% else %}
+            <p style="margin-top: 10%;">Aún nadie ha puntuado esta actividad.</p>
+        {% endif %}
+        
+    </div>
+{% endblock %}

@@ -107,12 +107,19 @@
                 {% endif %}
             </div> 
         </div>
+
+        <div style="text-align: center;">
+            {% if not isOwner and show_review %}
+                <a href="{% url 'review:create' course.id course.title %}" class="button pink">Puntuar este curso</a>
+            {% endif %}
+        </div>
 <!-- TEST Y BORRADO (SOLO DUEÑO Y ADMIN) -->
         {% if isOwner or user.is_superuser %}
-        <div class="courseElement">
+        <div class="courseElement" style="margin-top: 5%; text-align: center;">
             <div class="courseElementContent">
                 <a href="{% url 'courses:delete' course.id %}" class="button pink">Borrar curso</a>
                 <a href="{% url 'courses:users' course.id %}" class="button pink">Ver usuarios matriculados</a>
+                <a href="{% url 'review:list' course.id course.title %}" class="button pink">Ver encuestas de satisfacción</a>
             </div>
         </div>
         {% endif %}
