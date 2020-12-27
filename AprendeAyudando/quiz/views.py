@@ -181,8 +181,9 @@ def createAnswersCourse(request, courseOrActivity, courseOrActivity_id, question
 @login_required
 def startQuiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    course = quiz.course
 
+    #course = quiz.course
+    
     #----------------------------COMPROBACION DE REPETICION DEL TEST----------------------
     exist_finished_qualification = None
     exist_started_qualification = None
@@ -201,7 +202,7 @@ def startQuiz(request, quiz_id):
         exist_started_qualification = False
     
     ctx = {
-        'course':course,
+        #'course':course,
         'quiz':quiz,
         'exist_finished_qualification':exist_finished_qualification,
         'exist_started_qualification':exist_started_qualification
@@ -211,7 +212,7 @@ def startQuiz(request, quiz_id):
 @login_required
 def doQuizCourse(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    course = quiz.course
+    #course = quiz.course
 
     #Habria que mirar si el usuario actual pertenece al curso(CONTROL DE ACCESO)
     #---------------------SELECCION DE UNA PREGUNTA NO REALIZADA ANTERIORMENTE----------------
@@ -227,7 +228,7 @@ def doQuizCourse(request, quiz_id):
         qualification.save()
     
 
-    list_questions_asked = QuestionAsked.objects.values_list('question_course', flat=True).filter(qualification_course=qualification)
+    list_questions_asked = QuestionAsked.objects.values_list('question', flat=True).filter(qualification=qualification)
     if list_questions_asked:
         list_questions = Question.objects.filter(quiz=quiz).exclude(Q(id__in=list_questions_asked)).distinct()
     else:
@@ -246,7 +247,7 @@ def doQuizCourse(request, quiz_id):
 
     #-----------------------------------ELEMENTOS PARA HTML-----------------------------------
     ctx = {
-        'course':course,
+        #'course':course,
         'quiz':quiz,
         'question':question,
         'possible_answers':answers,
@@ -261,7 +262,6 @@ def doQuizCourseQuestionAsked(request, question_id):
     question = get_object_or_404(Question, pk=question_id)
     possible_answers = Answer.objects.filter(question=question)
     quiz = question.quiz
-
     #------------PUNTUACION DE LA PREGUNTA Y ALMACENAMIENTO DE PREGUNTA REALIZADA----------
     #Bug - El usuario puede volver atrás y sumar otra vez la respuesta correcta
     if request.method == 'POST':
@@ -276,8 +276,8 @@ def doQuizCourseQuestionAsked(request, question_id):
         #Por si el usuario intenta volver atras(se ignora)
         try:
             question_asked = QuestionAsked.objects.create(
-                qualification_course=qualification,
-                question_course=question
+                qualification=qualification,
+                question=question
             )
             question_asked.save()
         except:
