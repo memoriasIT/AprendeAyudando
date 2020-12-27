@@ -16,7 +16,7 @@
 
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         
-        <!-- DESCRIPCION -->
+<!-- DESCRIPCION -->
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 {% if isOwner %}
@@ -63,7 +63,7 @@
             </div>
         </div>
 
-        <!-- FOROS -->
+<!-- FOROS -->
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 <h4>FOROS:</h4>
@@ -86,7 +86,7 @@
             </div> 
         </div>
         
-        <!-- RECURSOS -->
+<!-- RECURSOS -->
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 <h4>Recursos:</h4>
@@ -108,7 +108,31 @@
                     <p>Lo sentimos, no hay recursos disponibles.</p>
                 {% endif %}
             </div> 
-        </div> 
+        </div>
+
+<!-- Test -->
+        <div class="courseElement">
+            <div class="courseElementLeft">
+                <h4>Tests:</h4>
+            </div>
+            <div class="courseElementRight"> 
+                {% if isOwner or user.is_superuser %}
+                    <a href="{% url 'quiz:createQuizCourse' courseOrActivity activity.id %}" class="button small">Crear un Test</a>
+                {% endif %}
+            </div>
+            <div class="courseElementContent">
+                {% if quizListActivity %}
+                    <ol id="prettyList" style="width:92%;">
+                        {% for quiz in quizListActivity %}
+                            <li id="prettyListItem"><a href="{% url 'quiz:startQuiz' quiz.id %}">{{ quiz.title }}</a>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p>Lo sentimos, no hay tests disponibles.</p>
+                {% endif %}
+            </div> 
+        </div>
+
         <!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
         <div class="courseElement">
             {% if isOwner or user.is_superuser %}

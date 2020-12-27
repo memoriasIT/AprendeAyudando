@@ -10,7 +10,7 @@
     <div class="container 75% align-center minHeight">
         <h2 class="bigger">Crear Test - Posibles respuestas</h2>
         
-        <form action="{% url 'quiz:createAnswersCourse' course.id question.id number_questions number_answers %}" method="POST">
+        <form action="{% url 'quiz:createAnswersCourse' courseOrActivity courseOrActivity_id question.id number_questions number_answers %}" method="POST">
             {% csrf_token %}
             <p><strong>Posibles respuestas (selecciona también las respuestas correctas):</strong></p>
             {% for nn in range_number_answers %}

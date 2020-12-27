@@ -10,6 +10,8 @@ from forum.models import Forum
 from resources.models import Resource
 from .models import Activity
 from .models import ActivityRequest
+from quiz.models import Quiz
+from AprendeAyudando.templatetags.auth_extras import ACTIVITY
 
 #Queries
 from django.db.models import Q
@@ -143,6 +145,9 @@ def join(request, activity_id):
     #-----------------------------------------RECURSOS-----------------------------------------
     resourceListCourse = Resource.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
 
+    #-------------------------------------------TEST-------------------------------------------
+    quizListActivity = Quiz.objects.filter(activity=activity)
+
     #Para mostrarnos el boton de "Desmatricular" o "Desvincular Actividad"
     show_de_enroll = False
     if request.user in activity.enrolled_users.all():
@@ -155,6 +160,8 @@ def join(request, activity_id):
         'show_de_enroll': show_de_enroll,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
+        'quizListActivity': quizListActivity,
+        'courseOrActivity': ACTIVITY
     }
     if (request.method=='POST' and request.user not in activity.enrolled_users.all() and request.user.is_authenticated and request.user!=activity.entity):
         activity.enrolled_users.add(request.user)

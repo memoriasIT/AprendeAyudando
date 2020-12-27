@@ -7,9 +7,8 @@
 {% endblock %}
 
 {% block content %}
-
 <section class="wrapper login">
-    
+    {% load auth_extras %}
     <div class="container 100%">
         <h1 style="padding-left: 0px;" class="courseTitle">{{ course.title }}</h1>
 
@@ -92,7 +91,7 @@
             </div>
             <div class="courseElementRight"> 
                 {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'quiz:createQuizCourse' course.id %}" class="button small">Crear un Test</a>
+                    <a href="{% url 'quiz:createQuizCourse' courseOrActivity course.id %}" class="button small">Crear un Test</a>
                 {% endif %}
             </div>
             <div class="courseElementContent">
@@ -107,7 +106,7 @@
                 {% endif %}
             </div> 
         </div>
-<!-- TEST Y BORRADO (SOLO DUEÑO Y ADMIN) -->
+<!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
         {% if isOwner or user.is_superuser %}
         <div class="courseElement">
             <div class="courseElementContent">
