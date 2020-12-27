@@ -3,8 +3,8 @@ from .models import Quiz, Question, Answer, Qualification, QuestionAsked
 
 class AdminQuiz(admin.ModelAdmin):
     list_display=("title","course","activity","id")
-    search_fields=("title",)   #Para realizar barra de busqueda
-    #date_hierarchy="pub_date"
+    search_fields=("title",)
+    
 class AdminQuestion(admin.ModelAdmin):
     list_display=("text","question_score","quiz","id")
     search_fields=("text","quiz",)
