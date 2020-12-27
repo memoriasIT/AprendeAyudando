@@ -1,29 +1,26 @@
 from django.contrib import admin
-from .models import QuizCourse, QuestionCourse, AnswerCourse, QualificationCourse, QuestionAskedCourse
-# Register your models here.
-class AdminQuizCourse(admin.ModelAdmin):
-    list_display=("title","course","id")
-    search_fields=("title",)   #Para realizar barra de busqueda
-    #date_hierarchy="pub_date"
+from .models import Quiz, Question, Answer, Qualification, QuestionAsked
+class AdminQuiz(admin.ModelAdmin):
+    list_display=("title","course","activity","id")
+    search_fields=("title",)
 
-class AdminQuestionCourse(admin.ModelAdmin):
+class AdminQuestion(admin.ModelAdmin):
     list_display=("text","question_score","quiz","id")
     search_fields=("text","quiz",)
 
-class AdminAnswerCourse(admin.ModelAdmin):
+class AdminAnswer(admin.ModelAdmin):
     list_display=("text","correct","question","id")
     search_fields=("text","question",)
 
-class AdminQualificationCourse(admin.ModelAdmin):
+class AdminQualification(admin.ModelAdmin):
     list_display=("user","quiz","total_score","id")
     search_fields=("user","quiz",)
 
-class AdminQuestionAskedCourse(admin.ModelAdmin):
-    list_display=("qualification_course","question_course","id")
-    search_fields=("qualification_course","question_course",)
+class AdminQuestionAsked(admin.ModelAdmin):
+    list_display=("qualification","question","id")
+    search_fields=("qualification","question",)
 
-admin.site.register(QuizCourse,AdminQuizCourse)
-admin.site.register(QuestionCourse,AdminQuestionCourse)
-admin.site.register(AnswerCourse,AdminAnswerCourse)
-admin.site.register(QualificationCourse,AdminQualificationCourse)
-admin.site.register(QuestionAskedCourse,AdminQuestionAskedCourse)
+admin.site.register(Question,AdminQuestion)
+admin.site.register(Answer,AdminAnswer)
+admin.site.register(Qualification,AdminQualification)
+admin.site.register(QuestionAsked,AdminQuestionAsked)

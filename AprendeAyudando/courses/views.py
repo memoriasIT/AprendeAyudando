@@ -3,7 +3,7 @@ from .models import Course
 from forum.models import Forum
 from review.models import Review
 from resources.models import Resource
-from quiz.models import QuizCourse
+from quiz.models import Quiz
 from django.contrib.auth.models import User, Group
 from AprendeAyudando.templatetags.auth_extras import is_owner
 
@@ -20,6 +20,8 @@ from AprendeAyudando.views import has_group
 #Queries
 from django.db.models import Q
 
+#Constants
+from AprendeAyudando.templatetags.auth_extras import COURSE
 
 def index(request):
     courseList = Course.objects.order_by('-pub_date')[:5]
@@ -109,7 +111,7 @@ def join(request, course_id):
     resourceListCourse = Resource.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
 
     #-------------------------------------------TEST-------------------------------------------
-    quizListCourse = QuizCourse.objects.filter(course=course)
+    quizListCourse = Quiz.objects.filter(course=course)
 
     #-----------------------------------CONTROL DE ELEMENTOS DEL HTML--------------------------
     #Para mostrarnos el boton de "Desmatricular"
@@ -130,7 +132,8 @@ def join(request, course_id):
         'show_review' : show_review,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
-        'quizListCourse': quizListCourse
+        'quizListCourse': quizListCourse,
+        'courseOrActivity': COURSE
     }
 
     return render(request, 'courses/curso.html', context)

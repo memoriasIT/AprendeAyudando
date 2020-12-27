@@ -1,5 +1,9 @@
 from django import template
-from django.contrib.auth.models import Group 
+from django.contrib.auth.models import Group
+
+#Constantes
+COURSE = 'curso'
+ACTIVITY = 'actividad'
 
 register = template.Library()
 
