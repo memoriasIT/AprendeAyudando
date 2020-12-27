@@ -10,5 +10,8 @@ urlpatterns = [
     path('debate/<int:debate_id>', views.viewDebate, name='viewDebate'),
     path('createDebate/<int:forum_id>', views.createDebate, name='createDebate'),
     path('deleteDebate/<int:debate_id>', views.deleteDebate, name='deleteDebate'),
+    path('reply/<int:message_id>', views.reply, name='reply'),
+    
+
     
 ]
