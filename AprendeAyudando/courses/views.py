@@ -171,7 +171,7 @@ def createCourse(request):
             'course': new_course,
             'isOwner': isOwner,
         }
-        return render(request, 'courses/curso.html',context)
+        return join(request, new_course.id)
 
     return render(request, 'courses/create.html',{})
 
