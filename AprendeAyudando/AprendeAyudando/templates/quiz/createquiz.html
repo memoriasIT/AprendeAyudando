@@ -12,15 +12,17 @@
 
         <form action="{% url 'quiz:createQuiz' courseOrActivity courseOrActivity_id %}" method="POST">
             {% csrf_token %}
-            <p><strong>Titulo del test:</strong></p> 
+            <p><strong>Título del test:</strong></p> 
             <p><input type="text" name="new_quiz_title" placeholder="Titulo del Test" required></p>
-            <p><strong>Descripción:</strong></p> 
+            <p><strong>Descripción:</strong></p>
             <p><input type="textarea" class="biggerTextarea" placeholder="Descripción" name="new_quiz_description" id= ""></p>
-            <p><strong>Numero de preguntas:</strong></p>
+            <p><strong>Fecha límite:</strong></p>
+            <p><input type="datetime-local" name="fecha"></p>
+            <p><strong>Número de preguntas:</strong></p>
             <input type="number" name="number_questions" min="1" max="100" required>
             <p>
                 <fieldset>
-                    <legend><strong>Desea que el test se pueda repetir varias veces?</strong></legend>
+                    <legend><strong>¿Desea que el test se pueda repetir varias veces?</strong></legend>
                     <br>
                     <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="si" id="si_repeatable" checked>
                     <label for="si_repeatable">
@@ -36,7 +38,7 @@
 
             <p>
                 <fieldset>
-                    <legend><strong>Desea que el usuario pueda ver la calificación de inmediato (tras finalizar el test)?</strong></legend>
+                    <legend><strong>¿Desea que el usuario pueda ver la calificación de inmediato (tras finalizar el test)?</strong></legend>
                     <br>
                     <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="si" id="si_show_qualification" checked>
                     <label for="si_show_qualification">

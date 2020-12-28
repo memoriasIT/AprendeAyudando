@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import permission_required
 from AprendeAyudando.templatetags.auth_extras import is_owner
 from activity.views import join as viewsActivityJoin
 from courses.views import join as viewsCourseJoin
+
 #HTTP
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -51,21 +52,25 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
     }
 
     #----------------------------------------FORM-------------------------------------------
-    if request.method=="POST" and (isOwner or request.user.is_superuser):   #Creo k se pude simplificar
+    if request.method=="POST":   #Creo k se pude simplificar
         new_quiz_title = request.POST["new_quiz_title"]
         new_quiz_description = request.POST["new_quiz_description"]
+        new_quiz_date = request.POST["fecha"]
         new_quiz_is_repeatable = request.POST["is_repeatable"]=='si'
         new_quiz_show_qualification = request.POST["show_qualification"]=='si'
         number_questions = request.POST["number_questions"]
         if not number_questions:
             number_questions = 1
+        if not new_quiz_date:
+            new_quiz_date = None
         if(courseOrActivity == COURSE):
             new_quiz = Quiz.objects.create(
                 title=new_quiz_title,
                 description=new_quiz_description,
                 repeatable=new_quiz_is_repeatable,
                 show_qualification=new_quiz_show_qualification,
-                course=course
+                course=course,
+                maximum_date=new_quiz_date
             )
         else:
             new_quiz = Quiz.objects.create(

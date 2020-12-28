@@ -109,7 +109,7 @@ def join(request, course_id):
 
 
     #-----------------------------------------RECURSOS-----------------------------------------
-    resourceListCourse = Resource.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
+    resourceListCourse = Resource.objects.filter(activityCourseType=COURSE, activityCourseFk=course.id)
 
     #-------------------------------------------TEST-------------------------------------------
     dic_test = {}

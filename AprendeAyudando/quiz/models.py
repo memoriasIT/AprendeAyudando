@@ -7,7 +7,7 @@ from django.contrib.auth import get_user_model
 class Quiz(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=1000, blank=True, null=True)
-    maximum_date = models.DateTimeField(verbose_name="Maximum Date", null=True)
+    maximum_date = models.DateTimeField(verbose_name="Maximum Date", null=True, blank=True)
     repeatable = models.BooleanField()
     show_qualification = models.BooleanField(default=False)
 

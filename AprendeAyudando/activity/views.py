@@ -145,7 +145,7 @@ def join(request, activity_id):
     forumListCourse = Forum.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
 
     #-----------------------------------------RECURSOS-----------------------------------------
-    resourceListCourse = Resource.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
+    resourceListCourse = Resource.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
 
     #-------------------------------------------TEST-------------------------------------------
     dic_test = {}
