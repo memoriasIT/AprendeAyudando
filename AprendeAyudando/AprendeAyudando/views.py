@@ -2,12 +2,16 @@ from django.shortcuts import render
 
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect
-from .forms import RegisterForm
+from .forms import RegisterForm, RecoverForm
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.core.mail import send_mail
+from django.conf import settings
+import random
+import string
 
 def has_group(user, group_name):
     group = Group.objects.get(name=group_name)
@@ -95,3 +99,49 @@ def user_register(request):
         form = RegisterForm()
 
     return render(request, template, {'form': form})
+
+def recoverpassword(request):
+    # if this is a POST request we need to process the form data
+    template = 'registration/recoverpassword.html'
+   
+    if request.method == 'POST':
+        # create a form instance and populate it with data from the request:
+        miForm = RecoverForm(request.POST)
+        # check whether it's valid:
+        if miForm.is_valid():
+            if User.objects.filter(email=miForm.cleaned_data['email']).exists():
+                # Minuto 19:19
+                infForm=miForm.cleaned_data
+
+                size = 12
+                chars = string.ascii_uppercase+string.ascii_lowercase+string.digits
+
+                newPass = ''.join(random.choice(chars) for x in range(size))
+                subject = 'Solicitud de nueva contraseña'
+                message = 'Ha solicitado una nueva contraseña en la plataforma AprendeAyudando. Su nueva contraseña es: %s.' %newPass
+                email_from = settings.EMAIL_HOST_USER 
+                email_to = [infForm['email']]
+                user = User.objects.get(email=infForm['email'])
+                user.set_password(newPass)
+                user.save()
+                send_mail(subject, message, email_from, email_to)
+
+                
+                return render(request, template, {
+                    'form': miForm,
+                    'error_message': 'The new password has been sent to your email'
+                })
+            else:
+                return render(request, template, {
+                    'form': miForm,
+                    'error_message': 'Try again. Email does not exists.'
+                })
+            
+
+   # No post data availabe, let's just show the page.
+    else:
+        miForm = RecoverForm()
+
+    return render(request, template, {'form': miForm})
+    
+

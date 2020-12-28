@@ -8,6 +8,9 @@
         <form method="post">
           {% csrf_token %}
           {{ form.as_p }}
+          <p align = "right">
+            <a href="/recoverpassword" align = "right">Forgot password?</a>
+          </p>
           <button class="button big" type="submit">Log In</button>
         </form>
     </div>

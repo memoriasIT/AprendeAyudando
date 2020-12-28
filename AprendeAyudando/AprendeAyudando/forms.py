@@ -7,3 +7,6 @@ class RegisterForm(forms.Form):
     password_repeat = forms.CharField(widget=forms.PasswordInput(attrs={'class':'form-control'}))
     first_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
     last_name = forms.CharField(widget=forms.TextInput(attrs={'class':'form-control'}))
+
+class RecoverForm(forms.Form):
+    email = forms.EmailField(widget=forms.EmailInput(attrs={'class':'form-control'}))
