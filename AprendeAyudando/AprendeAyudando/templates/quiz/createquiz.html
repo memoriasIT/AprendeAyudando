@@ -13,11 +13,11 @@
         <form action="{% url 'quiz:createQuiz' courseOrActivity courseOrActivity_id %}" method="POST">
             {% csrf_token %}
             <p><strong>Titulo del test:</strong></p> 
-            <p><input type="text" name="new_quiz_title" id=""></p>
+            <p><input type="text" name="new_quiz_title" placeholder="Titulo del Test" required></p>
             <p><strong>Descripción:</strong></p> 
-            <p><input type="textarea" class="biggerTextarea" name="new_quiz_description" id= ""></p>
+            <p><input type="textarea" class="biggerTextarea" placeholder="Descripción" name="new_quiz_description" id= ""></p>
             <p><strong>Numero de preguntas:</strong></p>
-            <input type="number" name="number_questions" id= "" min="0" max="100">
+            <input type="number" name="number_questions" min="1" max="100" required>
             <p>
                 <fieldset>
                     <legend><strong>Desea que el test se pueda repetir varias veces?</strong></legend>

@@ -9,23 +9,23 @@
 {% block content %}
     <div class="container 75% align-left minHeight">
         <h1 class="bigger">Borrar Test</h1>
-        <p><strong>Esta seguro de borrar el siguiente test:</strong></p>
+        <p><strong>¿Está seguro de borrar el siguiente test?:</strong></p>
         <p>{{quiz.title}}</p>
         <p>{{quiz.description}}</p>
         <form action="{% url 'quiz:deleteQuiz' quiz.id %}" method="POST">
             {% csrf_token %}
             <p>
                 <fieldset>
-                    <legend><strong>Todos los datos(como las calificaciones de los distintos usuarios) asociados a este test serán borrados. Esta seguro?</strong></legend>
+                    <legend><strong style="font-size:20px">Todos los datos (como las calificaciones de los distintos usuarios) asociados a este test serán borrados. ¿Está seguro?</strong></legend>
                     <br>
                     <input type="radio" class="eliminarDefaultCheckBox" name="confirm_delete" value="no" id="no_confirm_delete" checked>
                     <label for="no_confirm_delete">
                         No.
                     </label>
-
+                    <br>
                     <input type="radio" class="eliminarDefaultCheckBox" name="confirm_delete" value="si" id="si_confirm_delete">
                     <label for="si_confirm_delete">
-                        Sí. Entiendo que no solamente se borrara el test sino las calificaciones asociadas al test.
+                        <strong style="color: red;">Sí. Entiendo que no solamente se borrará el test. También se borrará TODAS las calificaciones asociadas al test.</strong>
                     </label>
                 </fieldset>
             </p>

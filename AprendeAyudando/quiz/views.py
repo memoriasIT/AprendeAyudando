@@ -57,6 +57,10 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
         new_quiz_is_repeatable = request.POST["is_repeatable"]=='si'
         new_quiz_show_qualification = request.POST["show_qualification"]=='si'
         number_questions = request.POST["number_questions"]
+        if not number_questions:
+            number_questions = 1
+        """if not new_quiz_title:
+            new_quiz_title = "Test ID"""
         if(courseOrActivity == COURSE):
             new_quiz = Quiz.objects.create(
                 title=new_quiz_title,
