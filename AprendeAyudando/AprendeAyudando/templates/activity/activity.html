@@ -74,7 +74,7 @@
             </div>
             <div class="courseElementRight"> 
                 {% if isOwner or user.is_superuser %}
-                    <a  href="{% url 'forum:create' activity.id %}" class="button pink">Crear un foro</a>
+                    <a  href="{% url 'forum:create' courseOrActivity activity.id %}" class="button pink">Crear un foro</a>
                 {% endif %}
             </div>
             <div class="courseElementContent"> 

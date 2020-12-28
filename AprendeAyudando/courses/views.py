@@ -105,7 +105,7 @@ def join(request, course_id):
 
 
     #-----------------------------------------FOROS-------------------------------------------
-    forumListCourse = Forum.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
+    forumListCourse = Forum.objects.filter(activityCourseType=COURSE, activityCourseFk=course.id)
 
 
     #-----------------------------------------RECURSOS-----------------------------------------

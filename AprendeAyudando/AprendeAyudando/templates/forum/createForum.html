@@ -2,12 +2,12 @@
 {% block title %}AprendeAyudando - Crear Foro{% endblock %}
 
 {% block content %}
-<div class="container 75% align-center minHeight">
-    <h1 class="bigger">Crear un foro nuevo</h1>
-    <form action="{% url 'forum:create' activityCourseFk %}" method="POST">
-        {% csrf_token %}
-        <p>Nombre del foro: <input type="text" name="new_forum_name" id=""></p>
-        <input type="submit" value="Enviar">
-    </form>
-</div>
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Crear un foro nuevo</h1>
+        <form action="{% url 'forum:create' courseOrActivity activityCourseFk %}" method="POST">
+            {% csrf_token %}
+            <p>Nombre del foro: <input type="text" name="new_forum_name" id=""></p>
+            <input type="submit" value="Enviar">
+        </form>
+    </div>
 {% endblock %}

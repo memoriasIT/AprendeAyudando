@@ -142,7 +142,7 @@ def join(request, activity_id):
         return inscription(request, activity_id)
 
     #-----------------------------------------FOROS-----------------------------------------
-    forumListCourse = Forum.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
+    forumListCourse = Forum.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
 
     #-----------------------------------------RECURSOS-----------------------------------------
     resourceListCourse = Resource.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
