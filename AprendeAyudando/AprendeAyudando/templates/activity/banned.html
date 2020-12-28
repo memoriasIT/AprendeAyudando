@@ -3,19 +3,10 @@
 
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
-    {% load static %}
-    {% load auth_extras %}
-    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
-
-    <div class="container 100%">
-        <div class="courseElement">
-            <h2 class="courseTitle">No te puedes inscribir</h2>
-            <div class="courseElementContent">
-                <p>Has sido expulsado de <b>{{activity.title}}</b></p>
-                <a href="/activity/enrolled" class="button big">Volver a mis actividades</a>
-            </div> 
-        </div> 
+    <div class="container py-5 text-center">
+        <h2 class="text-danger">No te puedes inscribir</h2>
+        <p>Has sido expulsado de <b>{{activity.title}}</b></p>
+        <a href="/activity/enrolled" class="btn btn-secondary btn-lg">Volver a mis actividades</a>
     </div>
-
 </section>
 {% endblock %}

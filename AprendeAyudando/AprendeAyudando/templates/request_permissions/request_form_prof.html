@@ -7,12 +7,15 @@
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
 
-    <div class="container 75% minHeightSmaller">
+    <div class="container py-5 text-center">
         <h2>Solicitar permisos de profesor</h2>
         <form action="{% url 'request_permissions:create' 'Profesor' %}" method="POST">
             {% csrf_token %}
-            <p>Número de teléfono: <input type="text" name="telefono" id=""></p>
-            <input type="submit" value="Enviar">
+            <div class="form-group">
+                <label for="telefono">Número de teléfono:</label>
+                <input type="text" name="telefono" class="form-control text-center" id="">
+            </div>
+            <input type="submit" value="Enviar solicitud" class="btn btn-secondary btn-lg">
         </form>
     </div>
     

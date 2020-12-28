@@ -9,9 +9,9 @@
 {% block content %}
 {% load static %}
 <section class="bg-white text-dark py-5 min-vh-100">
-    <div class="container 125% align-center minHeight">
+    <div class="container py-5">
     <!------DESCRIPCION----->
-        <h1 class="courseTitle">{{ debate.title}}</h1>
+        <h1>{{ debate.title}}</h1>
     <!------MENSAJES---->
         <!------mensaje inicial---->
         <div class="container">
@@ -20,7 +20,7 @@
                     <section class="box" style="text-align: left;">
                         <!------HEADER---->
                         <div style="flex: left; border-bottom: 1px black;">
-                            <img src="{% static 'general/images/profile/user_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;">
+                            <img src="{% static 'general/images/profile/user-icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;">
                             <h3>{{initialMessage.subject}}</h3>
                             <p>de <span style="color:rgb(20, 76, 160);"> {{initialMessage.author.email}} </span> - {{initialMessage.pub_date}}</p>
                         </div>
@@ -30,7 +30,7 @@
                         </div>
                         <!------ACCIONES---->
                         <div style="flex:right;">
-                            <a style="margin-top: 10px;" href="{% url 'forum:reply' initialMessage.id %}" class="button small align-center">Responder</a>
+                            <a style="margin-top: 10px;" href="{% url 'forum:reply' initialMessage.id %}" class="btn btn-small btn-secondary">Responder</a>
                         </div>
                     </section>
                 </div>
@@ -55,7 +55,7 @@
                                 </div>
                                 <!------ACCIONES---->
                                 <div style="flex:right;">
-                                    <a style="margin-top: 10px;" href="{% url 'forum:reply' message.id %}" class="button small align-center">Responder</a>
+                                    <a style="margin-top: 10px;" href="{% url 'forum:reply' message.id %}" class="btn btn-small btn-secondary">Responder</a>
                                 </div>
                             </section>
                         </div>
@@ -64,10 +64,10 @@
                 {% endfor %}
         {% endif %}</p>
     <!------VOLVER A FORO----->
-        <a style="margin-bottom: 50px;" href="{% url 'forum:join' forum.id %}" class="button big">Volver a foro</a>
+        <a style="margin-bottom: 50px;" href="{% url 'forum:join' forum.id %}" class="btn btn-small btn-warning">Volver a foro</a>
         <!------BORRAR DEBATE----->
         {% if isAuthor is True %}
-        <a style="margin-bottom: 50px;" href="{% url 'forum:deleteDebate' debate.id %}" class="button big pink">Borrar debate</a>
+        <a style="margin-bottom: 50px;" href="{% url 'forum:deleteDebate' debate.id %}" class="btn btn-small btn-danger">Borrar debate</a>
         {% endif %}
         
     </div>

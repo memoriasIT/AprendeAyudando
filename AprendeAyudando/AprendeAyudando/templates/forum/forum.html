@@ -8,8 +8,8 @@
 
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
-    <div class="container">
-        <h1 style="padding-left: 0px;" class="courseTitle" >{{ forum.title }}</h1>
+    <div class="container py-5">
+        <h1>{{ forum.title }}</h1>
         
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         <!------DESCRIPCION----->
@@ -32,10 +32,10 @@
         <!-- DEBATES -->
         <div class="courseElement">
             <div class="courseElementLeft"> 
-                <h1>DEBATES:</h1>
+                <h4>Debates:</h4>
             </div>
             <div class="courseElementRight"> 
-                <a  href="{% url 'forum:createDebate' forum.id %}" class="button small">Añadir un nuevo debate</a>
+                <a  href="{% url 'forum:createDebate' forum.id %}" class="btn btn-secondary btn-sm">Añadir un nuevo debate</a>
             </div>
             <div class="courseElementContent"> 
                 <p>{% if debatesList %}
@@ -53,13 +53,13 @@
         <!------VOLVER A CURSO/ACTIVIDAD----->
 
         {% if forum.activityCourseType == 'Course' %}
-            <a style="margin-bottom: 50px;" href="{% url 'courses:join' forum.activityCourseFk %}" class="button big">Volver a curso</a>
+            <a style="margin-bottom: 50px;" href="{% url 'courses:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a curso</a>
         {% else %}
-            <a style="margin-bottom: 50px;" href="{% url 'activity:join' forum.activityCourseFk %}" class="button big">Volver a actividad</a>   
+            <a style="margin-bottom: 50px;" href="{% url 'activity:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a actividad</a>   
         {% endif %}
         <!------BORRAR FORO----->
         {% if isAuthor is True %}
-            <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="button big pink">Borrar foro</a>
+            <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="btn btn-danger btn-sm">Borrar foro</a>
         {% endif %}
     </div>
 </section>

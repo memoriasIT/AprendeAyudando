@@ -1,37 +1,48 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Crear Curso{% endblock %}
 
+
+{% block content %}
 {% block style %} 
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
 {% endblock %}
-
-{% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
-        <h1 class="bigger">Crear actividad</h1>
+    <div class="container py-5 text-center">
+        <h1>Crear actividad</h1>
 
         <form action="{% url 'activity:create' %}" method="POST">
             {% csrf_token %}
-            <p><strong>Nombre de la actividad:</strong></p> 
-            <p><input type="text" name="new_activity_name" id=""></p>
-            <p><strong>Descripción:</strong></p> 
-            <input type="textarea" class="biggerTextarea" name="new_activity_description" id= "">
-            <p>
-            <fieldset>
-                <legend>Desea restringir la entrada?</legend>
-                
-                <input type="radio" class="eliminarDefaultCheckBox" name="is_restricted_entry" value="si" id="ssi" checked>
-                <label for="ssi">
-                    Sí
-                </label>
-                
-                <input type="radio" class="eliminarDefaultCheckBox" name="is_restricted_entry" value="no" id="nno">
-                <label for="nno">
-                    No
-                </label>
+            <div class="form-group">
+                <label for="new_activity_name">Nombre de la actividad:</label>
+                <input type="text" name="new_activity_name" class="form-control text-center" id="">
+            </div>
+
+            <div class="form-group">
+                <label for="new_activity_description">Descripción</label>
+                <textarea class="form-control text-center" name="new_activity_description" rows="3"></textarea>
+            </div>
+
+            <fieldset class="form-group">
+                <legend class="col-form-label pt-0" >Desea restringir la entrada?</legend>
+                <div class="col-sm-12">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="is_restricted_entry" value="si" id="ssi" checked>
+                        <label class="form-check-label" for="ssi">
+                        Si
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="is_restricted_entry" value="no" id="nno">
+                        <label for="nno">
+                            No
+                        </label>
+                    </div>
+                </div>
             </fieldset>
-        </p>
-        <input type="submit" value="Crear Actividad">
-    </form>
+            <input type="submit" value="Crear Actividad" class="btn btn-success btn-lg">
+        </form>
+    </div>
+        
 </div>
 {% endblock %}

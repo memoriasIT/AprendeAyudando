@@ -3,13 +3,19 @@
 
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
-    <div class="container 75% align-center minHeight">
-        <h1 class="bigger">Tu nuevo debate</h1>
+    <div class="container py-5 text-center">
+        <h1>Tu nuevo debate</h1>
         <form action="{% url 'forum:createDebate' forum.id %}" method="POST">
             {% csrf_token %}
-            <p>Asunto*: <input type="text" name="initial_message_subject"></p>
-            <p>Mensaje*: <input type="textarea" class="biggerTextarea" name="initial_message_content"></p>
-            <input type="submit" value="Enviar"  class="btn btn-success btn-lg">
+            <div class="form-group">
+                <label for="initial_message_subject">Asunto*</label>
+                <input type="text" name="initial_message_subject" class="form-control text-center" id="">
+            </div>
+            <div class="form-group">
+                <label for="initial_message_content">Mensaje*</label>
+                <textarea class="form-control text-center" name="initial_message_content" rows="3"></textarea>
+            </div>
+            <input type="submit" value="Crear debate" class="btn btn-success btn-lg">
         </form>
     </div>
 </section>

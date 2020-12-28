@@ -4,7 +4,7 @@
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
 
-    <div class="container 125% align-center minHeight">
+    <div class="container py-5 text-center">
 
         {% if not is_Estudiante_or_superuser %}
             <p>No puedes inscribirte en un curso si no eres estudiante.</p>
@@ -16,7 +16,7 @@
 
             <form action="{% url 'courses:inscription' course.id %}" method="post">
                 {% csrf_token %}
-                <input type="submit" value="Matricularse" class="button">
+                <input type="submit" value="Matricularse" class="btn btn-secondary btn-lg">
             </form>
         {% endif %}
     </div>

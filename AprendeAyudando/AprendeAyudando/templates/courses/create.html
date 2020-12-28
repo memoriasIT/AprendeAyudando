@@ -3,13 +3,22 @@
 
 {% block content %}
 <div class="bg-white text-dark py-5 min-vh-100">
-    <h1 class="bigger">Crear un curso nuevo</h1>
+    <div class="container py-5 text-center">
+        <h1>Crear un curso nuevo</h1>
 
-    <form action="{% url 'courses:create' %}" method="POST">
-        {% csrf_token %}
-        <p>Nombre del curso: <input type="text" name="new_course_name" id=""></p>
-        <p>Descripcion: <input type="textarea" class="biggerTextarea" name="new_course_description" id= ""></p>
-        <input type="submit" value="Enviar">
-    </form>
+        <form action="{% url 'courses:create' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="new_course_name">Nombre del curso:</label>
+                <input type="text" name="new_course_name" class="form-control text-center" id="">
+            </div>
+
+            <div class="form-group">
+                <label for="new_course_description">Descripción</label>
+                <textarea class="form-control text-center" name="new_course_description" rows="3"></textarea>
+            </div>
+            <input type="submit" value="Crear Curso" class="btn btn-success btn-lg">
+        </form>
+    </div>
 </div>
 {% endblock %}

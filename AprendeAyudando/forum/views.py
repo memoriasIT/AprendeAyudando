@@ -12,14 +12,13 @@ from forum.models import Forum, Debate, Message, Reply
 @login_required
 @permission_required('forum.add_forum', raise_exception=True)
 def createForum(request, activityCourseFk):
+    activityCourseType = ' '
+    if request.user.has_perm('courses.add_course'):
+        activityCourseType = 'Course'
+    else:
+        activityCourseType = 'Activity'
+
     if request.method=="POST":
-        activityCourseType = ' '
-
-        if request.user.has_perm('courses.add_course'):
-            activityCourseType = 'Course'
-        else:
-            activityCourseType = 'Activity'
-
         new_forum_name=request.POST["new_forum_name"]
         new_forum = Forum.objects.create(title=new_forum_name, author=request.user, activityCourseFk= activityCourseFk, activityCourseType=activityCourseType)
         new_forum.save()
@@ -31,7 +30,11 @@ def createForum(request, activityCourseFk):
         'isAuthor': isAuthor,
         }
         return render(request, 'forum/forum.html',context)
-    return render(request, 'forum/createForum.html', {'activityCourseFk': activityCourseFk})
+    context = {
+        'activityCourseFk': activityCourseFk,
+        'activityCourseType': activityCourseType,
+    }
+    return render(request, 'forum/createForum.html', context)
     
 
 

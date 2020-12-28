@@ -3,13 +3,24 @@
 
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
-    <div class="container">
-        <h1 class="bigger">Crear un foro nuevo</h1>
+    <div class="container py-5 text-center">
+        <h1>Crear un foro nuevo</h1>
+
         <form action="{% url 'forum:create' activityCourseFk %}" method="POST">
             {% csrf_token %}
-            <p>Nombre del foro: <input type="text" name="new_forum_name" id=""></p>
-            <input type="submit" value="Enviar" class="btn btn-success btn-lg">
+            <div class="form-group">
+                <label for="new_forum_name">Nombre del foro:</label>
+                <input type="text" name="new_forum_name" class="form-control text-center" id="">
+            </div>
+            <input type="submit" value="Crear foro" class="btn btn-success btn-lg">
         </form>
+    </div>
+    <div class="container text-center">
+        {% if activityCourseType == 'Course' %}
+            <a style="margin-bottom: 50px;" href="{% url 'courses:join' activityCourseFk %}" class="btn btn-warning btn-sm">Volver a curso</a>
+        {% else %}
+            <a style="margin-bottom: 50px;" href="{% url 'activity:join' activityCourseFk %}" class="btn btn-warning btn-sm">Volver a actividad</a>   
+        {% endif %}
     </div>
 </section>
 
