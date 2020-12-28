@@ -4,13 +4,14 @@
 {% block style %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
-{% endblock %}
-
+    {% endblock %}
+    
 {% block content %}
 
 <section class="bg-white text-dark py-5 min-vh-100">
     
     <div class="container">
+        
         <h1 style="padding-left: 0px;" class="courseTitle">{{ course.title }}</h1>
 
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
@@ -18,6 +19,7 @@
         <!-- DESCRIPCION -->
         <div class="courseElement">
             <div class="courseElementLeft"> 
+          
                 {% if isOwner %}
                     <p>Bienvenido a tu curso: <strong>{{ course.title }}</strong></p>
                 {% else %}

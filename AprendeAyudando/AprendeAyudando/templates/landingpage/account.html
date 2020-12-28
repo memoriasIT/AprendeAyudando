@@ -10,29 +10,25 @@
         <div class="container py-5">
             <div class="row py-5">
                 <div class="col-12">
-                    <h2>Bienvenido, {{ user.username }}</h2>
+                    <h1 class="text-center">Bienvenido, {{ user.username }}</h1>
                 </div>
-                <div class="col-12"> <!--Detalles de usuario-->
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <h3>Detalles de usuario</h3>
-                        </div>
-                        <div class="col-12">
+                <div class="col-sm-6 col-md-5 col-xl-3 mx-auto my-3"> <!--Detalles de usuario-->
+                    <h3 class="text-center">Detalles de usuario</h3>
+                    <div class="mx-auto">
+                        <div class="d-flex col-12">
                             <img src="{% static 'general/images/profile/id_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.first_name }} {{ user.last_name }} </span>
                         </div>
-                        <div class="col-12">
+                        <div class="d-flex col-12">
                             <img src="{% static 'general/images/profile/user_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text">{{ user.username }}</span>
                         </div>
-                        <div class="col-12">
+                        <div class="d-flex col-12">
                             <img src="{% static 'general/images/profile/email_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.email }} </span>
                         </div>
                     </div>
+                    
                 </div>
                 <div class="col-12"> <!--Funcionalidades-->
-                    <div class="row">
-                        <div class="col-12">
-                            <h3>Funcionalidades</h3>
-                        </div>
+                        <h3 class="text-center" >Funcionalidades</h3>
                         <div class="col-12">
                             <ol id="prettyList">
                             {% if not user|has_group:"EntidadPublicoPrivada" %}

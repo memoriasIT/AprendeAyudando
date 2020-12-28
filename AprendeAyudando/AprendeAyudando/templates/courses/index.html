@@ -8,15 +8,15 @@
     <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
 
     <div class="container">
-        <div class="courseElement">
-            <div class="courseElementLeft"> 
+        <div class="row">
+            <div class="col-6 ml-auto"> 
                 {% if filtered_by_enrolled %}
-                    <h2 class="courseTitle">Tus cursos</h2>
+                    <h2>Tus cursos</h2>
                 {% else %}
                     <h2 class="courseTitle">Cursos disponibles</h2>
                 {% endif %}
             </div>
-            <div class="courseElementRight"> 
+            <div class="col-4 mr-auto"> 
                 {% if is_teacher %}
                     <a style="margin-top: 25px;" href="{% url 'courses:create' %}" class="btn btn-secondary">Añadir curso</a>
                 {% elif user|has_group:"EntidadPublicoPrivada" %}
@@ -25,7 +25,7 @@
                     <p>Aviso: Necesitas registrarte para poder acceder a la información de los cursos.</p>
                 {% endif %}
             </div>
-            <div class="courseElementContent">
+            <div class="col-12">
                 {% if courseList %}
                 <ol id="prettyList" style="width:92%;">
                     {% for course in courseList %}

@@ -1,7 +1,7 @@
 {% extends "registration/base.html" %}
 {% block title %}{{landingpage}}{% endblock %}
 
-{% block content %} 
+{% block content %}
 <!-- Header Banner -->
 <section class="bg-info">
 	<div class="container py-5">
@@ -61,41 +61,37 @@
 <!-- Connections Banner  -->
 <section class="bg-light py-3">
 	<div class="container py-5">
-		<h1>Una plataforma para conectar a:</h1>
-		<div class="row justify-content-center">
-			<div class="col-sm py-5 border border-primary">
-				<div class="py-2">
-					<i class="material-icons">school</i>
-					<div class="text-uppercase title">Estudiantes</div>
-				</div>
+		<div class="row d-flex justify-content-center text-center align-items-center">
+			<div class="col-12 pb-4">
+				<h1 class="text-left">Una plataforma para conectar a:</h1>
 			</div>
-			<div class="col-sm py-5 border border-primary">
-				<div class="py-2">
-					<i class="material-icons">face</i>
-					<div class="text-uppercase title">Profesores</div>
-				</div>
+			<div class="col-lg-4">
+			  <img class="rounded-circle" src="/static/general/images/student-icon.png" alt="Generic placeholder image" width="140" height="140">
+			  <h2>Estudiantes</h2>
+			</div><!-- /.col-lg-4 -->
+			<div class="col-lg-4">
+			  <img class="rounded-circle" src="/static/general/images/teacher-icon.png" alt="Generic placeholder image" width="140" height="140">
+			  <h2>Profesores</h2>
 			</div>
-			<div class="col-sm py-5 border border-primary">
-				<div class="py-2">
-					<i class="material-icons">account_balance</i>
-					<div class="text-uppercase title">Entidades Público/Privadas</div>
-				</div>
-			</div>
-		</div>
+			<div class="col-lg-4">
+			  <img class="rounded-circle" src="/static/general/images/entity-icon.png" alt="Generic placeholder image" width="140" height="140">
+			  <h2>Entidades Público/Privadas</h2>
+			</div><!-- /.col-lg-4 -->
+		  </div><!-- /.row -->
 	</div>
 </section>
 <!-- Colaborations Banner  -->
-<section class="bg-dark text-light">
+<section class="bg-white text-dark">
 	<div class="container py-5">
 		<h1>En colaboración con:</h1>
-		<div class="row justify-content-center text-center align-center">
+		<div class="row d-flex justify-content-center text-center align-items-center">
 			<div class="col">
-				<img src="/static/general/images/feyalegria.jpg" alt="" height="300" width="300" class="img-fluid my-auto">
+				<img src="/static/general/images/feyalegria.jpg" alt="" height="200" width="200" class="img-fluid my-auto">
 			</div>
 			<div class="col">
 				<img src="/static/general/images/acoes.png" alt="" height="300" width="300" class="img-fluid my-auto">
 			</div>
-			<div class="col align-content-center">
+			<div class="col">
 				<img src="/static/general/images/uma_logo.jpg" width="300" alt="" class="img-fluid">
 			</div>
 		</div>
