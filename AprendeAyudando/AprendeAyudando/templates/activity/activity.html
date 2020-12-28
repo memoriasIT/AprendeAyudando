@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<section class="wrapper align-center login">
+<section class="wrapper align-left login">
     {% load auth_extras %}
 
     <div class="container 100%">
@@ -26,9 +26,11 @@
                 {% else %}
                     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
                 {% endif %}
-                {% if activity.restricted_entry and isOwner%}
-                    <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
-                    <a href="{% url 'activity:users' activity.id %}" class="button small pink">Ver usuarios inscritos</a>
+                {% if activity.restricted_entry %}
+                    {% if isOwner or user.is_superuser %}
+                        <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
+                        <a href="{% url 'activity:users' activity.id %}" class="button small pink">Ver usuarios inscritos</a>
+                    {% endif %}
                 {% endif %}
             </div>
 
