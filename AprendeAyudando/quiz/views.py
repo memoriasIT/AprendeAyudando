@@ -265,11 +265,12 @@ def doQuizQuestionAsked(request, question_id):
     if request.method == 'POST':
         checked_values = request.POST.getlist('list_answers[]')
         total_score = 0
+        correct_checked = False
         for answer in possible_answers:
             if str(answer.id) in checked_values and answer.correct:
                 total_score = total_score + question.question_score
+                correct_checked = True
             #QUE HACEMOS CUANDO ESTA MAL LA PREGUNTA?? Restar?? Por ahora no hace nada
-
         qualification = Qualification.objects.get(user=request.user, quiz=quiz, finish=False)
         #Por si el usuario intenta volver atras(se ignora)
         try:
@@ -281,6 +282,8 @@ def doQuizQuestionAsked(request, question_id):
         except:
             return doQuiz(request, quiz.id)
         qualification.total_score = qualification.total_score + total_score
+        if correct_checked:
+            qualification.total_correct_questions = qualification.total_correct_questions + 1
         qualification.save()
         return doQuiz(request, quiz.id)
     else:

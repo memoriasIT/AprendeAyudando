@@ -100,3 +100,79 @@ ul {
     left: -.5em;
     border-left-color: #fa8072;             
 }
+
+.quizElements{
+    display: grid;
+    grid-template-columns: 33% 33% 33%;
+}
+a.quizElements{
+    margin: 30px;
+    width: 300px;
+    text-decoration: none;
+}
+a.borrarStyle{
+    all: unset;
+}
+.card {
+    display: grid;
+    text-align: center;
+    grid-template-columns: 300px;
+    grid-template-rows: 210px 80px;
+    grid-template-areas: "text" "stats";
+    border-radius: 18px;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    transition: 0.5s ease;
+    cursor: pointer;
+    width: 300px;
+    transform: scale(1.005);
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+}
+.card-text {
+    grid-area: text;
+    background: rgb(250, 219, 216);
+    padding-top: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 12px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+.card-text .date {
+    color: rgb(255, 7, 110);
+    font-size:14px;
+}
+.card-text p {
+    color: grey;
+    font-size:15px;
+    font-weight: 300;
+}
+.card-text h2 {
+    margin-top:0px;
+    font-size:28px;
+}
+.card-stats {
+    grid-area: stats; 
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background: rgb(253, 5, 108);
+}
+.card-stats .stat {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    color: white;
+    padding:10px;
+}
+.card:hover {
+    transform: scale(1.07);
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.6);
+}
+.clearh2{
+    margin-block-start: 0em !important;
+    margin-block-end: 0em !important;
+}

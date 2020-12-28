@@ -7,6 +7,7 @@ from django.contrib.auth import get_user_model
 class Quiz(models.Model):
     title = models.CharField(max_length=50)
     description = models.CharField(max_length=1000, blank=True, null=True)
+    maximum_date = models.DateTimeField(verbose_name="Maximum Date", null=True)
     repeatable = models.BooleanField()
     show_qualification = models.BooleanField(default=False)
 
@@ -40,16 +41,16 @@ class Question(models.Model):
 class Answer(models.Model):
     text = models.CharField(max_length=500)
     correct = models.BooleanField()
-
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
 
 #-------------------------Qualification--------------
 class Qualification(models.Model):
     user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
-    total_score = models.IntegerField()
+    total_score = models.IntegerField(default=0)
     finish = models.BooleanField(default=False)
-
+    total_correct_questions = models.IntegerField(default=0)
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+
     questions_asked = models.ManyToManyField(
         Question,
         through='QuestionAsked',
