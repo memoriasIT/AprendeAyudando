@@ -8,7 +8,13 @@
 
 {% block content %}
     <div class="container 75% align-center minHeight">
-        <h2 class="bigger">Test</h2>
+        <!--<h2 class="bigger">Test</h2>-->
+        {% if isOwner or user.is_superuser %}
+            <h2 class="bigger">Administración</h2>
+            <a href="{% url 'quiz:deleteQuiz' quiz.id %}" class="button pink">Borrar Test</a>
+            <br>
+        {% endif %}
+        <h2 class="bigger" style="margin-top: 60px;">Test</h2>
         {% if not exist_started_qualification and not exist_finished_qualification %}
             <p>Esta seguro de inicializar el test <strong>{{quiz.title}}</strong>?</p>
             <a href="{% url 'quiz:doQuiz' quiz.id %}" class="button pink">Empezar Test</a>

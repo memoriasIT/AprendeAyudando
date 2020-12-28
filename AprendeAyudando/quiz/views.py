@@ -3,9 +3,10 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 
-#Extras
+#Extras and other functions
 from AprendeAyudando.templatetags.auth_extras import is_owner
-
+from activity.views import join as viewsActivityJoin
+from courses.views import join as viewsCourseJoin
 #HTTP
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
@@ -50,7 +51,7 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
     }
 
     #----------------------------------------FORM-------------------------------------------
-    if request.method=="POST" and (isOwner or request.user.is_superuser):
+    if request.method=="POST" and (isOwner or request.user.is_superuser):   #Creo k se pude simplificar
         new_quiz_title = request.POST["new_quiz_title"]
         new_quiz_description = request.POST["new_quiz_description"]
         new_quiz_is_repeatable = request.POST["is_repeatable"]=='si'
@@ -183,7 +184,17 @@ def createAnswers(request, courseOrActivity, courseOrActivity_id, question_id, n
 @login_required
 def startQuiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
-    
+
+    #----------------CONTROL DE VISUALIZACION DEL APARTADO DEADMINISTRACION---------------
+    if quiz.course== None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+
     #----------------------------COMPROBACION DE REPETICION DEL TEST----------------------
     exist_finished_qualification = None
     exist_started_qualification = None
@@ -204,7 +215,8 @@ def startQuiz(request, quiz_id):
     ctx = {
         'quiz':quiz,
         'exist_finished_qualification':exist_finished_qualification,
-        'exist_started_qualification':exist_started_qualification
+        'exist_started_qualification':exist_started_qualification,
+        'isOwner':isOwner
     }
     return render(request, 'quiz/startquiz.html', ctx)
 
@@ -288,3 +300,36 @@ def doQuizQuestionAsked(request, question_id):
         return doQuiz(request, quiz.id)
     else:
         return HttpResponseForbidden()
+
+@login_required
+@permission_required('quiz.delete_quiz', raise_exception=True)
+def deleteQuiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course== None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    
+    #-----------------------------------ELIMINACIÓN DEL TEST--------------------------------
+    if request.method == 'POST':
+        accepted = request.POST["confirm_delete"]=='si'
+        if accepted:
+            Quiz.objects.filter(id=quiz.id).delete()
+        
+        if is_course:
+            return viewsCourseJoin(request, activity_or_course_id)
+        else:
+            return viewsActivityJoin(request, activity_or_course_id)
+    ctx = {
+        'quiz':quiz
+    }
+    return render(request, 'quiz/deletequiz.html', ctx)
