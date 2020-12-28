@@ -1,63 +1,64 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-	<title>{% block title %} AprendeAyudando {% endblock %}</title>
-	<link rel="stylesheet" type="text/css" href="{% static 'general/bs5/css/bootstrap.css' %}" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-	<link rel="icon" type="icon" href="/static/general/images/logoTransparent.png">
-	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-	
-	
-	{% block style %}
-    {% endblock %}
-  </head>
-  <body>
-	<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-gray-300">
-		<a class="navbar-brand" href="/"><img style="height: 65px;" src="/static/general/images/logo-NoText.png" alt=""></a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-		  <span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarText">
-		  <ul class="navbar-nav ml-auto">
-			<li class="nav-item">
-			  <a class="nav-link" href="/">Inicio</a>
-			</li>
-			<li class="nav-item">
-			  <a class="nav-link" href="/news">Noticias</a>
-			</li>
-			<li class="nav-item">
-			  <a class="nav-link" href="/courses">Cursos</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="/activity">Actividades</a>
-			</li>
-			{% if not user.is_authenticated %}
-			<li class="nav-item">
-				<a class="nav-link" href="/register" >Registro</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link btn btn-outline-secondary" href="/accounts/login">Login</a>
-			</li>
-			{% else %}
-			<li class="nav-item">
-				<a class="nav-link" href="/account" >Mi perfil</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link btn btn-outline-secondary" href="{% url 'logout' %}">Cerrar sesion</a>
-			</li>
-			{% endif %}
-		  </ul>
-		</div>
-	  </nav>
-
-	
+	<head>
+		<meta charset="utf-8">
+		<title>{% block title %} AprendeAyudando {% endblock %}</title>
+		<link rel="stylesheet" type="text/css" href="{% static 'general/bs5/css/bootstrap.css' %}" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="icon" type="icon" href="/static/general/images/logoTransparent.png">
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		
-		{% block content %}
+		
+		{% block style %}
 		{% endblock %}
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom border-gray-300">
+			<a class="navbar-brand" href="/"><img style="height: 65px;" src="/static/general/images/logo-NoText.png" alt=""></a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarText">
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+				<a class="nav-link" href="/">Inicio</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" href="/news">Noticias</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" href="/courses">Cursos</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="/activity">Actividades</a>
+				</li>
+				{% if not user.is_authenticated %}
+				<li class="nav-item">
+					<a class="nav-link" href="/register" >Registro</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link btn btn-outline-secondary" href="/accounts/login">Login</a>
+				</li>
+				{% else %}
+				<li class="nav-item">
+					<a class="nav-link" href="/account" >Mi perfil</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link btn btn-outline-secondary" href="{% url 'logout' %}">Cerrar sesion</a>
+				</li>
+				{% endif %}
+			</ul>
+			</div>
+		</nav>
 
-		<footer class="bg-info">
+		
+		<main role="main">
+			{% block content %}
+			{% endblock %}
+		</main>
+
+		<footer class="footer bg-info mh-25">
 			<div class="container pt-4">
 				<div class="row">
 					<div class="col-4">
@@ -91,8 +92,7 @@
 					</div>
 				</div>
 			</div>
-			
-		  </footer>
+		</footer>
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 		<script>
 			$(document).ready(function() {

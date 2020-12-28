@@ -2,7 +2,7 @@
 {% block title %}AprendeAyudando - Actividades disponibles{% endblock %}
 
 {% block content %}
-<section class="wrapper login">
+<section class="bg-white text-dark py-5 min-vh-100">
     {% load static %}
     {% load auth_extras %}
     <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
@@ -18,7 +18,7 @@
             </div>
             <div class="activityElementRight"> 
                 {% if is_entity %}
-                    <a style="margin-top: 25px;" href="{% url 'activity:create' %}" class="button pink">Añadir actividad</a>
+                    <a style="margin-top: 25px;" href="{% url 'activity:create' %}" class="btn btn-secondary">Añadir actividad</a>
                 {% elif user|has_group:"Profesor" %}
                     <p>Aviso: Necesitas ser Estudiante para poder acceder a la información de las actividades restringidas.</p>
                 {% elif user|is_guest %}

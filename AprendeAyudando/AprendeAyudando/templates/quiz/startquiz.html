@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container">
         <h2 class="bigger">Test</h2>
         {% if not exist_started_qualification and not exist_finished_qualification %}
             <p>Esta seguro de inicializar el test <strong>{{quiz.title}}</strong>?</p>
@@ -25,4 +26,6 @@
             <a href="{% url 'courses:join' course.id %}" class="button pink">Volver al curso</a>
         {% endif %}
     </div>
+</section>
+    
 {% endblock %}

@@ -2,6 +2,8 @@
 {% block title %}AprendeAyudando - Inscripción en un curso{% endblock %}
 
 {% block content %}
+<section class="bg-white text-dark py-5 min-vh-100">
+
     <div class="container 125% align-center minHeight">
 
         {% if not is_Estudiante_or_superuser %}
@@ -18,6 +20,7 @@
             </form>
         {% endif %}
     </div>
+</section>
 {% endblock %}
 
 <!--<form action="{% url 'courses:leave' course.id %}" method="post">

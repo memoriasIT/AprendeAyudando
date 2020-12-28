@@ -5,53 +5,56 @@
 {% load static %}
 {% load auth_extras %}
     <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
-    <section class="bg-dark text-light py-5">
+    
+    <section class="bg-dark text-light py-5 min-vh-100">
         <div class="container py-5">
-            <h2>Bienvenido, {{ user.username }}</h2>
-            <div class="profileGrid row">
-                <div class="leftPannel col">    
-                    <h3>Funcionalidades</h3>
-                    <ol id="prettyList">
-                        {% if not user|has_group:"EntidadPublicoPrivada" %}
-                            <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
-                        {% endif %}
-    
-                        {% if not user|has_group:"Profesor" %}
-                            <li id="prettyListItem"><a href="/activity/enrolled">Mis actividades</a></li>
-                        {% else %}
-                            <li id="prettyListItem"><a href="/activity/enrolled">Actividades guardadas</a></li>
-                        {% endif %}
-    
-                        {% if user|has_group:"Administrador" or user.is_superuser %}
-                            <li id="prettyListItem"><a href="{% url 'request_permissions:give_permissions' %}">Proporcionar permisos</a></li>
-                        {% elif user|has_group:"Estudiante" %}
-                            <li id="prettyListItem"><a href="{% url 'request_permissions:index' %}">Solicitar permisos</a></li>
-                        {% else %}
-                            <li id="prettyListItem"><a href="{% url 'account_delete' %}">Darse de baja en la plataforma</a></li>
-                        {% endif %}
-                    </ol>
+            <div class="row py-5">
+                <div class="col-12">
+                    <h2>Bienvenido, {{ user.username }}</h2>
                 </div>
-                <div class="rightPannel col-md">
-                    <div class="row">
-                        <div class="col">
+                <div class="col-12"> <!--Detalles de usuario-->
+                    <div class="row justify-content-center">
+                        <div class="col-12">
                             <h3>Detalles de usuario</h3>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
+                        <div class="col-12">
                             <img src="{% static 'general/images/profile/id_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.first_name }} {{ user.last_name }} </span>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
+                        <div class="col-12">
                             <img src="{% static 'general/images/profile/user_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text">{{ user.username }}</span>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col">
+                        <div class="col-12">
                             <img src="{% static 'general/images/profile/email_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.email }} </span>
                         </div>
                     </div>
+                </div>
+                <div class="col-12"> <!--Funcionalidades-->
+                    <div class="row">
+                        <div class="col-12">
+                            <h3>Funcionalidades</h3>
+                        </div>
+                        <div class="col-12">
+                            <ol id="prettyList">
+                            {% if not user|has_group:"EntidadPublicoPrivada" %}
+                                <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
+                            {% endif %}
+        
+                            {% if not user|has_group:"Profesor" %}
+                                <li id="prettyListItem"><a href="/activity/enrolled">Mis actividades</a></li>
+                            {% else %}
+                                <li id="prettyListItem"><a href="/activity/enrolled">Actividades guardadas</a></li>
+                            {% endif %}
+        
+                            {% if user|has_group:"Administrador" or user.is_superuser %}
+                                <li id="prettyListItem"><a href="{% url 'request_permissions:give_permissions' %}">Proporcionar permisos</a></li>
+                            {% elif user|has_group:"Estudiante" %}
+                                <li id="prettyListItem"><a href="{% url 'request_permissions:index' %}">Solicitar permisos</a></li>
+                            {% else %}
+                                <li id="prettyListItem"><a href="{% url 'account_delete' %}">Darse de baja en la plataforma</a></li>
+                            {% endif %}
+                            </ol>
+                        </div>
+                    </div>    
                 </div>
             </div> 
         </div>

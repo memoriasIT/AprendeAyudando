@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container">
         <h2 class="bigger">Crear Test - Posibles respuestas</h2>
         
         <form action="{% url 'quiz:createAnswersCourse' course.id question.id number_questions number_answers %}" method="POST">
@@ -30,4 +31,6 @@
             {% endif %}
         </form>
     </div>
+</section>
+    
 {% endblock %}

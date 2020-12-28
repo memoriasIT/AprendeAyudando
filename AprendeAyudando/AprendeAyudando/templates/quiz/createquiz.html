@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container">
         <h1 class="bigger">Crear Test</h1>
 
         <form action="{% url 'quiz:createQuizCourse' course.id %}" method="POST">
@@ -49,7 +50,9 @@
                     </label>
                 </fieldset>
             </p>
-        <input type="submit" value="Crear Test">
-    </form>
-</div>
+            <input type="submit" value="Crear Test">
+        </form>
+    </div>
+</section>
+    
 {% endblock %}

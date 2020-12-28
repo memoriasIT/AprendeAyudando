@@ -2,12 +2,12 @@
 {% block title %}AprendeAyudando - Cursos {% endblock %}
 
 {% block content %}
-<section class="wrapper login">
+<section class="bg-white text-dark py-5 min-vh-100">
     {% load static %}
     {% load auth_extras %}
     <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
 
-    <div class="container 100%">
+    <div class="container">
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 {% if filtered_by_enrolled %}
@@ -18,7 +18,7 @@
             </div>
             <div class="courseElementRight"> 
                 {% if is_teacher %}
-                    <a style="margin-top: 25px;" href="{% url 'courses:create' %}" class="button pink">Añadir curso</a>
+                    <a style="margin-top: 25px;" href="{% url 'courses:create' %}" class="btn btn-secondary">Añadir curso</a>
                 {% elif user|has_group:"EntidadPublicoPrivada" %}
                     <p>Aviso: Necesitas ser Estudiante para poder acceder a la información de los cursos.</p>
                 {% elif user|is_guest %}
@@ -42,6 +42,5 @@
             </div> 
         </div> 
     </div>
-
 </section>
 {% endblock %}

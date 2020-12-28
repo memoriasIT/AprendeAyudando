@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container">
         {% if number_questions is 0 %}
             <h2 class="bigger">Creación del test finalizado. Ya ha realizado todas las preguntas.</h2>
             <a href="{% url 'courses:join' course.id %}" class="button pink">Volver al curso</a>
@@ -28,4 +29,6 @@
             </form>
         {% endif %}
     </div>
+</section>
+    
 {% endblock %}

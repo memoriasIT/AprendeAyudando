@@ -7,8 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<section class="wrapper align-center login">
-    
+<section class="bg-white text-dark py-5 min-vh-100">
 
     <div class="container 100%">
 
@@ -25,8 +24,8 @@
                     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
                 {% endif %}
                 {% if activity.restricted_entry and isOwner%}
-                    <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
-                    <a href="{% url 'activity:users' activity.id %}" class="button small pink">Ver usuarios inscritos</a>
+                    <a href="{% url 'activity:activityrequest' activity.id %}" class="btn btn-info btn-sm">Ver solicitudes</a>
+                    <a href="{% url 'activity:users' activity.id %}" class="btn btn-info btn-sm">Ver usuarios inscritos</a>
                 {% endif %}
             </div>
 
@@ -51,7 +50,7 @@
                     {% if not activity.restricted_entry %}
                         <form action="{% url 'activity:leave' activity.id %}" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="Desvincular Actividad">
+                            <input class="btn btn-warning" type="submit" value="Desvincular Actividad">
                         </form>
                     {% else %}
                         <form action="{% url 'activity:leave' activity.id %}" method="post">
@@ -70,7 +69,7 @@
             </div>
             <div class="courseElementRight"> 
                 {% if isOwner or user.is_superuser %}
-                    <a  href="{% url 'forum:create' activity.id %}" class="button pink">Crear un foro</a>
+                    <a  href="{% url 'forum:create' activity.id %}" class="btn btn-secondary btn-sm">Crear un foro</a>
                 {% endif %}
             </div>
             <div class="courseElementContent"> 
@@ -93,7 +92,7 @@
             </div>
             <div class="courseElementRight"> 
                 {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'resources:createResource' activity.id %}" class="button pink">Crear un recurso</a>
+                    <a href="{% url 'resources:createResource' activity.id %}" class="btn btn-secondary btn-sm">Crear un recurso</a>
                 {% endif %}
             </div>
             <div class="courseElementContent"> 
@@ -113,7 +112,7 @@
         <div class="courseElement">
             {% if isOwner or user.is_superuser %}
             <div class="courseElementContent">
-                <a href="{% url 'activity:delete' activity.id %}" class="button pink">Borrar actividad</a>
+                <a href="{% url 'activity:delete' activity.id %}" class="btn btn-danger btn-sm">Borrar actividad</a>
             </div>
             {% endif %}
         </div>

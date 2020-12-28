@@ -6,8 +6,9 @@
     <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
 {% endblock %}
 
-{% block content %}  
-    <div class="container 75% align-left minHeight">
+{% block content %}
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container">
     <h2 class="bigger align-center">Test</h2>
     <form action="{% url 'quiz:doQuizCourseQuestionAsked' question.id %}" method="POST">
         {% csrf_token %}
@@ -31,4 +32,6 @@
         </div>
     </form>
     </div>
+</section>  
+    
 {% endblock %}
