@@ -20,6 +20,7 @@ class AdminQuestionAsked(admin.ModelAdmin):
     list_display=("qualification","question","id")
     search_fields=("qualification","question",)
 
+admin.site.register(Quiz,AdminQuiz)
 admin.site.register(Question,AdminQuestion)
 admin.site.register(Answer,AdminAnswer)
 admin.site.register(Qualification,AdminQualification)
