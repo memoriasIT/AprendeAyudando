@@ -118,7 +118,7 @@ def join(request, course_id):
         qualifications = Qualification.objects.filter(quiz=q, user=request.user)
         attempts = qualifications.count()
         max_user_qualification = qualifications.order_by('-total_score').first()
-        if max_user_qualification:
+        if max_user_qualification and q.show_qualification:
             list_questions = Question.objects.filter(quiz=q)
             max_qualification = list_questions.aggregate(Sum('question_score'))['question_score__sum']
             num_questions = list_questions.count()
