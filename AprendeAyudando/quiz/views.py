@@ -407,11 +407,14 @@ def deleteQuestion(request, question_id):
 
     #-------------------------------------ELIMINACION----------------------------------------
     #Hay que recalcular la calificacion total de cada persona
+    num_correct_answers = Answer.objects.filter(question=question, correct=True).count()
     questions_asked = QuestionAsked.objects.filter(question=question).distinct()
     for question_asked in questions_asked:
         qualification = question_asked.qualification
         qualification.total_score = qualification.total_score - question_asked.num_correct_answers * question_asked.question.question_score
         qualification.total_score = qualification.total_score - question_asked.num_incorrect_answers * question_asked.question.question_negative_score
+        if question_asked.num_correct_answers == num_correct_answers:
+            qualification.total_correct_questions = qualification.total_correct_questions - 1
         qualification.save()
     Question.objects.filter(id=question.id).delete()
     if Question.objects.filter(id=question.id).count() == 0:
