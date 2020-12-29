@@ -1,7 +1,7 @@
 from django.shortcuts import render
 
 from django.contrib.auth.models import User, Group
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseForbidden
 from .forms import RegisterForm, RecoverForm, UploadForm
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
@@ -150,6 +150,8 @@ def recoverpassword(request):
 def modify(request, username):
     template = 'registration/modify.html'
     user = User.objects.get(username=username)
+    if not request.user == user:
+        return HttpResponseForbidden()
     modForm = UploadForm(instance=user)
     return render(request, template, {'form': modForm, 'username':username})
 
