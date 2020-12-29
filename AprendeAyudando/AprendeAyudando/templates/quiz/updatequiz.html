@@ -17,7 +17,7 @@
             <p><strong>Descripción:</strong></p>
             <p><input type="textarea" class="biggerTextarea" placeholder="Descripción" value="{{quiz.description}}" name="new_quiz_description" id= ""></p>
             <p><strong>Fecha límite:</strong></p>
-            <p><input type="datetime-local" name="fecha" value="{{quiz.maximum_date|date:"d-m-Y"}}T{{quiz.maximum_date|date:"d-m-Y"}}"></p>
+            <p><input type="datetime-local" name="fecha" value="{{quiz.maximum_date|date:"d-m-Y"}}T{{quiz.maximum_date|date:"H:M"}}"></p>
 
             <p>
                 <fieldset>
