@@ -207,6 +207,7 @@ def startQuiz(request, quiz_id):
         isOwner = quiz.course.teacher == request.user
         is_course = True
         activity_or_course_id = quiz.course.id
+
     #-------------------------------------------------------------------------------------
     expired = timezone.now() > quiz.maximum_date
 
@@ -399,11 +400,9 @@ def deleteQuestion(request, question_id):
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
     if quiz.course == None:
         isOwner = quiz.activity.entity == request.user
-        #is_course = False
         activity_or_course_id = quiz.activity.id
     else:
         isOwner = quiz.course.teacher == request.user
-        #is_course = True
         activity_or_course_id = quiz.course.id
     
     if not isOwner and not request.user.is_superuser:
@@ -436,11 +435,9 @@ def updateQuestion(request, question_id):
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
     if quiz.course == None:
         isOwner = quiz.activity.entity == request.user
-        #is_course = False
         activity_or_course_id = quiz.activity.id
     else:
         isOwner = quiz.course.teacher == request.user
-        #is_course = True
         activity_or_course_id = quiz.course.id
     
     if not isOwner and not request.user.is_superuser:
@@ -488,11 +485,9 @@ def updateAnswers(request, question_id, number_answers):
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
     if quiz.course == None:
         isOwner = quiz.activity.entity == request.user
-        #is_course = False
         activity_or_course_id = quiz.activity.id
     else:
         isOwner = quiz.course.teacher == request.user
-        #is_course = True
         activity_or_course_id = quiz.course.id
     
     if not isOwner and not request.user.is_superuser:
