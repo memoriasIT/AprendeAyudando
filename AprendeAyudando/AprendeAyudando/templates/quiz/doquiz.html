@@ -10,7 +10,7 @@
 <section class="bg-white text-dark py-5 min-vh-100">
     <div class="container">
     <h2 class="bigger align-center">Test</h2>
-    <form action="{% url 'quiz:doQuizCourseQuestionAsked' question.id %}" method="POST">
+    <form action="{% url 'quiz:doQuizQuestionAsked' question.id %}" method="POST">
         {% csrf_token %}
         <p><strong>{{question.text}}</strong></p>
         {% for answer in possible_answers %}

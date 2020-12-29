@@ -45,6 +45,7 @@ urlpatterns = [
     path('activity/', include('activity.urls')),
     path('requestpermissions/', include('request_permissions.urls')),
     path('quiz/', include('quiz.urls')),
+    path('review/', include('review.urls')),
     path('resources/', include('resources.urls')),
 ]
 

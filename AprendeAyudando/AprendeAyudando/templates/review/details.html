@@ -1,0 +1,31 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Ver encuestas de satisfacción{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Puntuación en '{{ enrollable_title }}'</h1>
+        
+        <table style="width:100%">
+            <tr>
+                <th>Actividad</th>
+                <th>Usuario</th>
+                <th>Nombre completo</th>
+            </tr>
+            <tr>
+                <td>{{ enrollable_title }}</td>
+                <td>{{ review.user }}</td>
+                <td>{{ review.user.last_name }}, {{ review.user.first_name }}</td>
+            </tr>
+        </table> 
+        
+        <p style="margin-top: 10%"><h3>Puntuación (sobre 10):</h3><div style="border: 1px solid gray;"> {{review.rating}}</div></p>
+        <p><h3>Problemas encontrados:</h3><div style="border: 1px solid gray;"> {{review.problems}}</div></p>
+        <p><h3>Posibles mejoras:</h3><div style="border: 1px solid gray;"> {{review.improvements}}</div></p>
+    </div>
+{% endblock %}

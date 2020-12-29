@@ -1,0 +1,24 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Puntuar{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Crear Review para: {{ enrollable_title }}</h1>
+
+        <form action="{% url 'review:create' enrollable_id enrollable_title %}" method="POST">
+            {% csrf_token %}
+            <p><strong>Valore de 1 a 10 su experiencia en: {{ enrollable_title }} </strong></p> 
+            <p><input type="number" max="10" min="1" name="rating" id="rating"></p>
+            <p><strong>Comente posibles problemas con esta actividad:</strong></p> 
+            <p><input type="textarea" class="biggerTextarea" name="problems" id= "problems"></p>
+            <p><strong>Aporta alguna posible idea para mejorar el contenido de esta actividad:</strong></p> 
+            <p><input type="textarea" class="biggerTextarea" name="improvements" id= "improvements"></p>
+        <input type="submit" value="Crear Review">
+    </form>
+</div>
+{% endblock %}

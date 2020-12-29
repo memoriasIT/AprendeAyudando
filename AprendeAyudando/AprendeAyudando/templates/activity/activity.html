@@ -15,11 +15,11 @@
 
         {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
         
-        <!-- DESCRIPCION -->
+<!-- DESCRIPCION -->
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 {% if isOwner %}
-                    <p>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></p>
+                    <h1>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></h1>
                 {% else %}
                     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
                 {% endif %}
@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <!-- FOROS -->
+<!-- FOROS -->
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 <h4>FOROS:</h4>
@@ -85,7 +85,7 @@
             </div> 
         </div>
         
-        <!-- RECURSOS -->
+<!-- RECURSOS -->
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 <h4>Recursos:</h4>
@@ -108,11 +108,42 @@
                 {% endif %}
             </div> 
         </div> 
-        <!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
+
+<!-- Test -->
         <div class="courseElement">
+            <div class="courseElementLeft">
+                <h4>Tests:</h4>
+            </div>
+            <div class="courseElementRight"> 
+                {% if isOwner or user.is_superuser %}
+                    <a href="{% url 'quiz:createQuiz' courseOrActivity activity.id %}" class="button small">Crear un Test</a>
+                {% endif %}
+            </div>
+            <div class="courseElementContent">
+                {% if quizListActivity %}
+                    <ol id="prettyList" style="width:92%;">
+                        {% for quiz in quizListActivity %}
+                            <li id="prettyListItem"><a href="{% url 'quiz:startQuiz' quiz.id %}">{{ quiz.title }}</a>
+                        {% endfor %}
+                    </ol>
+                {% else %}
+                    <p>Lo sentimos, no hay tests disponibles.</p>
+                {% endif %}
+            </div> 
+        </div>
+
+        <div style="text-align: center;">
+            {% if not isOwner and show_review %}
+                <a href="{% url 'review:create' activity.id activity.title %}" class="button pink">Puntuar esta actividad</a>
+            {% endif %}
+        </div>
+
+        <!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
+        <div class="courseElement" style="margin-top: 5%; text-align: center;">
             {% if isOwner or user.is_superuser %}
             <div class="courseElementContent">
-                <a href="{% url 'activity:delete' activity.id %}" class="btn btn-danger btn-sm">Borrar actividad</a>
+                <a href="{% url 'activity:delete' activity.id %}" class="button pink">Borrar actividad</a>
+                <a href="{% url 'review:list' activity.id activity.title %}" class="button pink">Ver encuestas de satisfacción</a>
             </div>
             {% endif %}
         </div>

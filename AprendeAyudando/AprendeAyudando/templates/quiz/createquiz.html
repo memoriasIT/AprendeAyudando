@@ -11,7 +11,7 @@
     <div class="container">
         <h1 class="bigger">Crear Test</h1>
 
-        <form action="{% url 'quiz:createQuizCourse' course.id %}" method="POST">
+        <form action="{% url 'quiz:createQuiz' courseOrActivity courseOrActivity_id %}" method="POST">
             {% csrf_token %}
             <p><strong>Titulo del test:</strong></p> 
             <p><input type="text" name="new_quiz_title" id=""></p>

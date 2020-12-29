@@ -5,11 +5,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
 from AprendeAyudando.views import has_group
+from review.models import Review
 
 from forum.models import Forum
 from resources.models import Resource
 from .models import Activity
 from .models import ActivityRequest
+from quiz.models import Quiz
+from AprendeAyudando.templatetags.auth_extras import ACTIVITY
 
 #Queries
 from django.db.models import Q
@@ -143,18 +146,28 @@ def join(request, activity_id):
     #-----------------------------------------RECURSOS-----------------------------------------
     resourceListCourse = Resource.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
 
+    #-------------------------------------------TEST-------------------------------------------
+    quizListActivity = Quiz.objects.filter(activity=activity)
+
     #Para mostrarnos el boton de "Desmatricular" o "Desvincular Actividad"
     show_de_enroll = False
     if request.user in activity.enrolled_users.all():
         show_de_enroll = True
+
+    show_review = False
+    if show_de_enroll and Review.objects.all().filter(user=request.user, enrollable_id=activity.id).count() <= 0:
+        show_review = True
 
     context = {
         'activity': activity,
         'usuario': request.user,
         'isOwner': isOwner,
         'show_de_enroll': show_de_enroll,
+        'show_review' : show_review,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
+        'quizListActivity': quizListActivity,
+        'courseOrActivity': ACTIVITY
     }
     if (request.method=='POST' and request.user not in activity.enrolled_users.all() and request.user.is_authenticated and request.user!=activity.entity):
         activity.enrolled_users.add(request.user)
@@ -191,7 +204,7 @@ def createActivity(request):
         new_activity_is_restricted=request.POST["is_restricted_entry"]=='si'
         new_activity = Activity.objects.create(title=new_activity_name, description=new_activity_description, entity=request.user,restricted_entry=new_activity_is_restricted)
         new_activity.save()
-        return render(request, 'activity/activity.html',{'activity': new_activity, 'isOwner': True})
+        return join(request, new_activity.id)
     return render(request, 'activity/create.html',{})
 
 @login_required
