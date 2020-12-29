@@ -295,7 +295,7 @@ def doQuizQuestionAsked(request, question_id):
             if str(answer.id) in checked_values and answer.correct:
                 total_score = total_score + question.question_score
                 num_correct_answers = num_correct_answers + 1
-            elif ((str(answer.id) not in checked_values and answer.correct) or (str(answer.id) in checked_values and not answer.correct)):
+            elif (str(answer.id) in checked_values and not answer.correct):
                 total_score = total_score + question.question_negative_score    #Realmente se resta(el numero es negativo)
                 num_incorrect_answers = num_incorrect_answers + 1
         qualification = Qualification.objects.get(user=request.user, quiz=quiz, finish=False)
