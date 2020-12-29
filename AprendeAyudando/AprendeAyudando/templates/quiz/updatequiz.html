@@ -13,31 +13,34 @@
         <form action="{% url 'quiz:updateQuiz' quiz.id %}" method="POST">
             {% csrf_token %}
             <p><strong>Título del test:</strong></p> 
-            <p><input type="text" name="new_quiz_title" placeholder="Titulo del Test" value="{{quiz.title}}" required></p>
+            <p><input type="text" name="quiz_title" placeholder="Titulo del Test" value="{{quiz.title}}" required></p>
             <p><strong>Descripción:</strong></p>
-            <p><input type="textarea" class="biggerTextarea" placeholder="Descripción" value="{{quiz.description}}" name="new_quiz_description" id= ""></p>
+            <p><input type="textarea" class="biggerTextarea" placeholder="Descripción" value="{{quiz.description}}" name="quiz_description" id= ""></p>
             <p><strong>Fecha límite:</strong></p>
-            <p><input type="datetime-local" name="fecha" value="{{quiz.maximum_date|date:"d-m-Y"}}T{{quiz.maximum_date|date:"H:M"}}"></p>
-
+            {% if quiz.maximum_date is not None %}
+                <p><input type="datetime-local" name="fecha" value="{{quiz.maximum_date|date:"Y-m-d"}}T{{quiz.maximum_date|date:"H"}}:{{quiz.maximum_date.minute}}"></p>
+            {% else %}
+                <p><input type="datetime-local" name="fecha"></p>
+            {% endif %}
             <p>
                 <fieldset>
-                    <legend><strong>¿Desea publicar el Test de inmediato?</strong></legend>
+                    <legend><strong>¿Desea publicar el Test?</strong></legend>
                     <br>
                     {% if quiz.show_quiz %}
-                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="si" id="si_show_quiz">
-                        <label for="si_show_quiz">
-                            Sí
-                        </label>
-                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="no" id="no_show_quiz" checked>
-                        <label for="no_show_quiz">
-                            No
-                        </label>
-                    {% else %}
                         <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="si" id="si_show_quiz" checked>
                         <label for="si_show_quiz">
                             Sí
                         </label>
                         <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="no" id="no_show_quiz">
+                        <label for="no_show_quiz">
+                            No
+                        </label>
+                    {% else %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="si" id="si_show_quiz">
+                        <label for="si_show_quiz">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="no" id="no_show_quiz" checked>
                         <label for="no_show_quiz">
                             No
                         </label>
@@ -101,7 +104,7 @@
                     
                 </fieldset>
             </p>
-        <input type="submit" value="Crear Test">
+        <input type="submit" value="Actualizar Test">
     </form>
 </div>
 {% endblock %}

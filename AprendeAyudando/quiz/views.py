@@ -561,8 +561,21 @@ def updateQuiz(request, quiz_id):
     
     #----------------------------------------FORM---------------------------------------------
     if request.method == 'POST':
-        x
-    
+        quiz_title = request.POST["quiz_title"]
+        quiz_description = request.POST["quiz_description"]
+        quiz_date = request.POST["fecha"]
+        show_quiz = request.POST["show_quiz"]=='si'
+        quiz_is_repeatable = request.POST["is_repeatable"]=='si'
+        quiz_show_qualification = request.POST["show_qualification"]=='si'
+        Quiz.objects.filter(id=quiz.id).update(
+            title=quiz_title,
+            description=quiz_description,
+            maximum_date=quiz_date,
+            repeatable=quiz_is_repeatable,
+            show_quiz=show_quiz,
+            show_qualification=quiz_show_qualification
+        )
+        return administrationQuiz(request, quiz.id)
     ctx = {
         'quiz':quiz
     }
