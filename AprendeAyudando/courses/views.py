@@ -113,7 +113,10 @@ def join(request, course_id):
 
     #-------------------------------------------TEST-------------------------------------------
     dic_test = {}
-    quizListCourse = Quiz.objects.filter(course=course)
+    if isOwner or request.user.is_superuser:
+        quizListCourse = Quiz.objects.filter(course=course)
+    else:
+        quizListCourse = Quiz.objects.filter(course=course, show_quiz=True)
     for q in quizListCourse:
         qualifications = Qualification.objects.filter(quiz=q, user=request.user)
         attempts = qualifications.count()

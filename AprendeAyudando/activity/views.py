@@ -149,7 +149,7 @@ def join(request, activity_id):
 
     #-------------------------------------------TEST-------------------------------------------
     dic_test = {}
-    quizListActivity = Quiz.objects.filter(activity=activity)
+    quizListActivity = Quiz.objects.filter(activity=activity, show_quiz=True).distinct()
     for q in quizListActivity:
         qualifications = Qualification.objects.filter(quiz=q, user=request.user)
         attempts = qualifications.count()

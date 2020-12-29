@@ -20,6 +20,22 @@
             <p><input type="datetime-local" name="fecha"></p>
             <p><strong>Número de preguntas:</strong></p>
             <input type="number" name="number_questions" min="1" max="100" required>
+
+            <p>
+                <fieldset>
+                    <legend><strong>¿Desea publicar el Test de inmediato?</strong></legend>
+                    <br>
+                    <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="si" id="si_show_quiz">
+                    <label for="si_show_quiz">
+                        Sí
+                    </label>
+
+                    <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="no" id="no_show_quiz" checked>
+                    <label for="no_show_quiz">
+                        No
+                    </label>
+                </fieldset>
+            </p>
             <p>
                 <fieldset>
                     <legend><strong>¿Desea que el test se pueda repetir varias veces?</strong></legend>

@@ -1,0 +1,50 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Editar Test - Respuestas{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h2 class="bigger">Editar Test - Posibles respuestas</h2>
+        
+        <form action="{% url 'quiz:updateAnswers' question.id number_answers %}" method="POST">
+            {% csrf_token %}
+
+            <p><strong>Posibles respuestas (antiguas):</strong></p>
+            {% for answer in list_old_answers %}
+                <p>
+                    {% if answer.correct %}
+                        <input type="checkbox" class="eliminarDefaultCheckBox" id="{{ answer.id }}" name="old_answer_is_correct[]" value="{{ answer.id }}" checked>
+                    {% else %}
+                        <input type="checkbox" class="eliminarDefaultCheckBox" id="{{ answer.id }}" name="old_answer_is_correct[]" value="{{ answer.id }}">
+                    {% endif %}
+                    <label for="{{ answer.id }}">
+                        <input type="text" name="old_answer_text{{ answer.id }}" value="{{ answer.text }}"required>
+                    </label>
+                </p>
+            {% endfor %}
+
+            {% if new_number_answers > 0 %}
+                <p><strong>Posibles respuestas (nuevas):</strong></p>
+                {% for nn in range_new_number_answers %}
+                    <p>
+                        <input type="checkbox" class="eliminarDefaultCheckBox" id="pregunta{{nn}}" name="new_answer_is_correct[]" value="{{nn}}">
+                        <label for="pregunta{{nn}}">
+                            <input type="text" name="new_answer_text{{nn}}" required>
+                        </label>
+                    </p>
+                {% endfor %}
+            {% endif %}
+            <br>
+            <br>
+            {% if number_questions > 1 %}
+                <input type="submit" value="Siguiente pregunta">
+            {% else %}
+                <input type="submit" value="Terminar Test">
+            {% endif %}
+        </form>
+    </div>
+{% endblock %}

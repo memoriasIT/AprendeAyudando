@@ -10,7 +10,8 @@ class Quiz(models.Model):
     maximum_date = models.DateTimeField(verbose_name="Maximum Date", null=True, blank=True)
     repeatable = models.BooleanField()
     show_qualification = models.BooleanField(default=False)
-
+    show_quiz = models.BooleanField(default=False)
+    
     activity = models.ForeignKey(Activity, on_delete=models.CASCADE, null=True, blank=True)
     course = models.ForeignKey(Course, on_delete=models.CASCADE, null=True, blank=True)
     def __str__(self):
