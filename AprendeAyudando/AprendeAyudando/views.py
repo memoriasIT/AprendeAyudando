@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect
-from .forms import RegisterForm, RecoverForm
+from .forms import RegisterForm, RecoverForm, UploadForm
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -121,9 +121,11 @@ def recoverpassword(request):
                 message = 'Ha solicitado una nueva contraseña en la plataforma AprendeAyudando. Su nueva contraseña es: %s.' %newPass
                 email_from = settings.EMAIL_HOST_USER 
                 email_to = [infForm['email']]
+                
                 user = User.objects.get(email=infForm['email'])
                 user.set_password(newPass)
                 user.save()
+                
                 send_mail(subject, message, email_from, email_to)
 
                 
@@ -143,5 +145,67 @@ def recoverpassword(request):
         miForm = RecoverForm()
 
     return render(request, template, {'form': miForm})
-    
 
+@login_required
+def modify(request, username):
+    template = 'registration/modify.html'
+    user = User.objects.get(username=username)
+    modForm = UploadForm(instance=user)
+    return render(request, template, {'form': modForm, 'username':username})
+
+@login_required
+def update(request, username):
+    template = 'registration/modify.html'
+    user = User.objects.get(username=username)
+    userEmail = user.email
+    modForm = UploadForm(request.POST, instance=user)
+    if request.method == 'POST':
+        if modForm.is_valid():
+
+            infForm=modForm.cleaned_data
+            email = infForm['email']
+            password = infForm['password']
+            confpassword = infForm['password_repeat']
+            firstName = infForm['first_name']
+            lastName = infForm['last_name']
+
+            if User.objects.filter(email=email).exists() and userEmail != email:
+                    return render(request, template, {
+                        'form': modForm,
+                        'error_message': 'Email already exists.'
+                    })
+            elif password != confpassword:
+                    return render(request, template, {
+                        'form': modForm,
+                        'error_message': 'Passwords do not match.'
+                    })
+            else:
+                
+                user.email = email
+                user.first_name = firstName
+                user.last_name = lastName
+                
+                if password != "":
+                    user.set_password(password)
+                    user.save()
+
+                    subject = 'Cambio de contraseña'
+                    message = 'Buenas %s %s.\nEn su cuenta de la plataforma AprendeAyudando la contraseña ha sido modificada.\nSi usted no ha cambiado la contraseña pulse sobre el siguiente enlace para recuperarla\n\nhttp://127.0.0.1:8000/recoverpassword/\n\nMuchas gracias.\nUn saludo.' %(user.first_name, user.last_name)
+                    email_from = settings.EMAIL_HOST_USER 
+                    email_to = [infForm['email']]
+                
+                    send_mail(subject, message, email_from, email_to)
+
+                else:
+                    user.save()
+
+                # Login the user
+                login(request, user)
+
+                return HttpResponseRedirect(reverse('account'))
+    else:
+        modForm = UploadForm(request.POST, instance=user)
+
+    return render(request, template, {'form': modForm, 'username':username})
+            
+        
