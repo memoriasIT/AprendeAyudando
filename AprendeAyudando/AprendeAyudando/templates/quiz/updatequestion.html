@@ -1,0 +1,50 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Editar Test - Pregunta{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        {% if not can_update %}
+            <h2 class="bigger">Error</h2>
+            <p><strong>Debe poner en privado el test</strong></p>
+        {% elif exist_qualification %}
+            <h2 class="bigger">Error</h2>
+            <p>
+                <strong>
+                    Ya existen calificaciones asociadas a esta pregunta. Se recomienda que elimine la pregunta
+                    para calcular automáticamente las calificaciones y crea una nueva pregunta.
+                </strong>
+            </p>
+        {% else %}
+            <h2 class="bigger">Editar Test - Pregunta</h2>
+            
+            <form action="{% url 'quiz:updateQuestion' question.id %}" method="POST">
+                {% csrf_token %}
+                <strong>Pregunta:</strong>
+                <p><input type="text" name="new_question_text" value="{{question.text}}" required></p>
+                <strong>Puntuación por cada respuesta acertada:</strong>
+                <p><input type="number" name="new_question_score" min="0" value="{{question.question_score}}" required></p>
+                <strong>Puntuación negativa cada respuesta errónea:</strong>
+                <p><input type="number" name="new_question_negative_score" max="0" value="{{question.question_negative_score}}" required></p>
+                <strong>Número de respuestas posibles <span style="color:green">(déjelo a {{list_answers|length}} si no desea añadir o quitar respuestas)</span>:</strong>
+                <p><input type="number" name="number_answers" min="1" max="20" value="{{list_answers|length}}" required></p>
+                <br>
+                Lista de respuestas posibles que hay actualmente:
+                {% for answer in list_answers %}
+                    {% if answer.correct %}
+                        <p><strong style="color:green">&#10004; {{answer.text}}</strong></p>
+                    {% else %}
+                        <p><strong style="color:red">&#10008; {{answer.text}}</strong></p>
+                    {% endif %}
+                {% endfor %}
+                <br>
+                <br>
+                <input type="submit" value="Cambiar datos">
+            </form>
+        {% endif %}
+    </div>
+{% endblock %}

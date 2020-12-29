@@ -9,7 +9,7 @@
 {% endblock %}
 
 {% block content %}
-<section class="wrapper align-center login">
+<section class="wrapper align-left login">
     {% load auth_extras %}
 
     <div class="container 100%">
@@ -26,9 +26,11 @@
                 {% else %}
                     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
                 {% endif %}
-                {% if activity.restricted_entry and isOwner%}
-                    <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
-                    <a href="{% url 'activity:users' activity.id %}" class="button small pink">Ver usuarios inscritos</a>
+                {% if activity.restricted_entry %}
+                    {% if isOwner or user.is_superuser %}
+                        <a style="margin-bottom: 50px;" href="{% url 'activity:activityrequest' activity.id %}" class="button small pink">Ver solicitudes</a>
+                        <a href="{% url 'activity:users' activity.id %}" class="button small pink">Ver usuarios inscritos</a>
+                    {% endif %}
                 {% endif %}
             </div>
 
@@ -72,7 +74,7 @@
             </div>
             <div class="courseElementRight"> 
                 {% if isOwner or user.is_superuser %}
-                    <a  href="{% url 'forum:create' activity.id %}" class="button pink">Crear un foro</a>
+                    <a  href="{% url 'forum:create' courseOrActivity activity.id %}" class="button pink">Crear un foro</a>
                 {% endif %}
             </div>
             <div class="courseElementContent"> 
@@ -95,15 +97,20 @@
             </div>
             <div class="courseElementRight"> 
                 {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'resources:createResource' activity.id %}" class="button pink">Crear un recurso</a>
+                    <a href="{% url 'resources:createResource' courseOrActivity activity.id %}" class="button pink">Crear un recurso</a>
                 {% endif %}
             </div>
             <div class="courseElementContent"> 
                 {% if resourceListCourse %}
                     <ol id="prettyList" style="width:92%;">
                         {% for resource in resourceListCourse %}
-                            <li id="prettyListItem"><a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
-                                <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a></li>
+                            <li id="prettyListItem">
+                                <a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
+                                {% if isOwner or user.is_superuser %}
+                                    <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a>
+                                {% endif %}
+                            </li>
+                            
                         {% endfor %}
                     </ol>
                 {% else %}

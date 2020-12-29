@@ -105,20 +105,23 @@ def join(request, course_id):
 
 
     #-----------------------------------------FOROS-------------------------------------------
-    forumListCourse = Forum.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
+    forumListCourse = Forum.objects.filter(activityCourseType=COURSE, activityCourseFk=course.id)
 
 
     #-----------------------------------------RECURSOS-----------------------------------------
-    resourceListCourse = Resource.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
+    resourceListCourse = Resource.objects.filter(activityCourseType=COURSE, activityCourseFk=course.id)
 
     #-------------------------------------------TEST-------------------------------------------
     dic_test = {}
-    quizListCourse = Quiz.objects.filter(course=course)
+    if isOwner or request.user.is_superuser:
+        quizListCourse = Quiz.objects.filter(course=course)
+    else:
+        quizListCourse = Quiz.objects.filter(course=course, show_quiz=True)
     for q in quizListCourse:
         qualifications = Qualification.objects.filter(quiz=q, user=request.user)
         attempts = qualifications.count()
         max_user_qualification = qualifications.order_by('-total_score').first()
-        if max_user_qualification:
+        if max_user_qualification and q.show_qualification:
             list_questions = Question.objects.filter(quiz=q)
             max_qualification = list_questions.aggregate(Sum('question_score'))['question_score__sum']
             num_questions = list_questions.count()

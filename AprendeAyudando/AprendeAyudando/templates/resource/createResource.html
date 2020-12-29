@@ -21,16 +21,20 @@
                 <td><strong>Talleres</strong></td>
                 <td><a href="#" target="_blank" style="color:#0070FF">Algun sitio</a></td>
             </tr>
+            <tr>
+                <td><strong>Tests</strong></td>
+                <td><a href="" target="_blank" style="color:#0070FF">Aprende Ayudando Tests</a></td>
+            </tr>
         </tbody>
     </table>
     <hr class="major">
     
-    <form action="{% url 'resources:createResource' activityCourseFk %}" method="POST">
+    <form action="{% url 'resources:createResource' courseOrActivity activityCourseFk %}" method="POST">
         {% csrf_token %}
         <p>Nombre del recurso: <input type="text" name="new_resource_name" id=""></p>
         <p>Link del recurso: <input type="text" name="new_resource_link" id=""></p>
 
-        <input type="submit" value="Enviar">
+        <input type="submit" value="Crear Recurso">
     </form>
 </div>
 {% endblock %}

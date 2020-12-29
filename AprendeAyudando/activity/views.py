@@ -142,14 +142,14 @@ def join(request, activity_id):
         return inscription(request, activity_id)
 
     #-----------------------------------------FOROS-----------------------------------------
-    forumListCourse = Forum.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
+    forumListCourse = Forum.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
 
     #-----------------------------------------RECURSOS-----------------------------------------
-    resourceListCourse = Resource.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
+    resourceListCourse = Resource.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
 
     #-------------------------------------------TEST-------------------------------------------
     dic_test = {}
-    quizListActivity = Quiz.objects.filter(activity=activity)
+    quizListActivity = Quiz.objects.filter(activity=activity, show_quiz=True).distinct()
     for q in quizListActivity:
         qualifications = Qualification.objects.filter(quiz=q, user=request.user)
         attempts = qualifications.count()

@@ -21,11 +21,13 @@
             <form action="{% url 'quiz:createQuestions' courseOrActivity courseOrActivity_id quiz.id number_questions %}" method="POST">
                 {% csrf_token %}
                 <p><strong>Escribe la pregunta:</strong></p> 
-                <p><input type="text" name="new_question_text" id=""></p>
-                <p><strong>Puntuación:</strong></p> 
-                <p><input type="number" name="new_question_score" id= "" min="0"></p>
+                <p><input type="text" name="new_question_text" required></p>
+                <p><strong>Puntuación por cada respuesta acertada:</strong></p> 
+                <p><input type="number" name="new_question_score" min="0" required></p>
+                <p><strong>Puntuación negativa cada respuesta errónea:</strong></p> 
+                <p><input type="number" name="new_question_negative_score" max="0" required></p>
                 <p><strong>Número de respuestas posibles:</strong></p>
-                <input type="number" name="number_answers" id= "" min="0" max="10">
+                <input type="number" name="number_answers" min="1" max="20" required>
                 <br>
                 <br>
                 <input type="submit" value="Realizar respuestas">

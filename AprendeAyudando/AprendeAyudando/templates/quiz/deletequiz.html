@@ -1,0 +1,35 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Eliminar Test{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-left minHeight">
+        <h1 class="bigger">Borrar Test</h1>
+        <p><strong>¿Está seguro de borrar el siguiente test?:</strong></p>
+        <p>{{quiz.title}}</p>
+        <p>{{quiz.description}}</p>
+        <form action="{% url 'quiz:deleteQuiz' quiz.id %}" method="POST">
+            {% csrf_token %}
+            <p>
+                <fieldset>
+                    <legend><strong style="font-size:20px">Todos los datos (como las calificaciones de los distintos usuarios) asociados a este test serán borrados. ¿Está seguro?</strong></legend>
+                    <br>
+                    <input type="radio" class="eliminarDefaultCheckBox" name="confirm_delete" value="no" id="no_confirm_delete" checked>
+                    <label for="no_confirm_delete">
+                        No.
+                    </label>
+                    <br>
+                    <input type="radio" class="eliminarDefaultCheckBox" name="confirm_delete" value="si" id="si_confirm_delete">
+                    <label for="si_confirm_delete">
+                        <strong style="color: red;">Sí. Entiendo que no solamente se borrará el test. También se borrará TODAS las calificaciones asociadas al test.</strong>
+                    </label>
+                </fieldset>
+            </p>
+            <input type="submit" value="Continuar">
+        </form>
+    </div>
+{% endblock %}

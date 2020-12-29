@@ -908,6 +908,7 @@
 		input[type="submit"].special,
 		input[type="reset"].special,
 		input[type="button"].special,
+		a.special,
 		.button.special {
 			background-color: #383b43;
 			color: #FFFFFF !important;
