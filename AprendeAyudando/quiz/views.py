@@ -118,11 +118,13 @@ def createQuestions(request, courseOrActivity, courseOrActivity_id, quiz_id, num
     if request.method=="POST":
         new_question_text = request.POST["new_question_text"]
         new_question_score = request.POST["new_question_score"]
+        new_question_negative_score = request.POST["new_question_negative_score"]
         number_answers = request.POST["number_answers"]
         new_question = Question.objects.create(
             text=new_question_text,
             question_score=new_question_score,
-            quiz=quiz
+            quiz=quiz,
+            question_negative_score=new_question_negative_score
         )
         new_question.save()
 
@@ -284,24 +286,29 @@ def doQuizQuestionAsked(request, question_id):
     if request.method == 'POST':
         checked_values = request.POST.getlist('list_answers[]')
         total_score = 0
-        correct_checked = False
+        num_correct_answers = 0
+        num_incorrect_answers = 0
         for answer in possible_answers:
             if str(answer.id) in checked_values and answer.correct:
                 total_score = total_score + question.question_score
-                correct_checked = True
-            #QUE HACEMOS CUANDO ESTA MAL LA PREGUNTA?? Restar?? Por ahora no hace nada
+                num_correct_answers = num_correct_answers + 1
+            elif ((str(answer.id) not in checked_values and answer.correct) or (str(answer.id) in checked_values and not answer.correct)):
+                total_score = total_score + question.question_negative_score    #Realmente se resta(el numero es negativo)
+                num_incorrect_answers = num_incorrect_answers + 1
         qualification = Qualification.objects.get(user=request.user, quiz=quiz, finish=False)
         #Por si el usuario intenta volver atras(se ignora)
         try:
             question_asked = QuestionAsked.objects.create(
                 qualification=qualification,
-                question=question
+                question=question,
+                num_correct_answers=num_correct_answers,
+                num_incorrect_answers=num_incorrect_answers
             )
             question_asked.save()
         except:
             return doQuiz(request, quiz.id)
         qualification.total_score = qualification.total_score + total_score
-        if correct_checked:
+        if num_correct_answers == possible_answers.filter(correct=True).count() and num_incorrect_answers == 0:
             qualification.total_correct_questions = qualification.total_correct_questions + 1
         qualification.save()
         return doQuiz(request, quiz.id)
@@ -340,3 +347,65 @@ def deleteQuiz(request, quiz_id):
         'quiz':quiz
     }
     return render(request, 'quiz/deletequiz.html', ctx)
+
+@login_required
+@permission_required('quiz.change_quiz', raise_exception=True)
+def updateQuiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    
+    #-----------------------------OBTENCION DE QUESTION Y ANSWERS---------------------------
+    list_questions = Question.objects.filter(quiz=quiz_id)
+    dic_answers = {}
+    for question in list_questions:
+        list_answers = Answer.objects.filter(question=question)
+        dic_answers[question.id] = list_answers
+    
+    ctx = {
+        'list_questions':list_questions,
+        'dic_answers': dic_answers,
+        'quiz':quiz
+    }
+    return render(request, 'quiz/updatequiz.html', ctx)
+
+@login_required
+@permission_required('quiz.delete_question', raise_exception=True)
+def deleteQuestion(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    quiz = question.quiz
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    #-------------------------------------ELIMINACION----------------------------------------
+    #Hay que recalcular la calificacion total de cada persona
+    questions_asked = QuestionAsked.objects.filter(question=question).distinct()
+    for question_asked in questions_asked:
+        qualification = question_asked.qualification
+        qualification.total_score = qualification.total_score - question_asked.num_correct_answers * question_asked.question.question_score
+        qualification.total_score = qualification.total_score - question_asked.num_incorrect_answers * question_asked.question.question_negative_score
+        qualification.save()
+    Question.objects.filter(id=question.id).delete()
+    return updateQuiz(request, quiz.id)

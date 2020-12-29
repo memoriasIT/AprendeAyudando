@@ -8,10 +8,10 @@
 
 {% block content %}
     <div class="container 75% align-center minHeight">
-        <!--<h2 class="bigger">Test</h2>-->
         {% if isOwner or user.is_superuser %}
             <h2 class="bigger">Administración</h2>
             <a href="{% url 'quiz:deleteQuiz' quiz.id %}" class="button pink">Borrar Test</a>
+            <a href="{% url 'quiz:updateQuiz' quiz.id %}" class="button pink">Cambiar Datos</a>
             <br>
         {% endif %}
         <h2 class="bigger" style="margin-top: 60px;">Test</h2>

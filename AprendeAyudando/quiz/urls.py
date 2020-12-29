@@ -10,4 +10,6 @@ urlpatterns = [
     path('doquiz/<int:quiz_id>/', views.doQuiz, name='doQuiz'),
     path('doquiz/questionasked/<int:question_id>/', views.doQuizQuestionAsked, name='doQuizQuestionAsked'),
     path('deletequiz/<int:quiz_id>/', views.deleteQuiz, name='deleteQuiz'),
+    path('updatequiz/<int:quiz_id>/', views.updateQuiz, name='updateQuiz'),
+    path('deletequestion/<int:question_id>/', views.deleteQuestion, name='deleteQuestion'),
 ]

@@ -30,7 +30,8 @@ class Quiz(models.Model):
 #---------------------------Question------------------
 class Question(models.Model):
     text = models.CharField(max_length=500)
-    question_score = models.IntegerField()
+    question_score = models.IntegerField()  #Los puntos por cada respuesta positiva
+    question_negative_score = models.IntegerField(default=0) #Los puntos negativos por cada respuesta erronea
     #image = models.ImageField()
 
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
@@ -63,6 +64,8 @@ class Qualification(models.Model):
 
 #------------------------Questions Asked-----------------
 class QuestionAsked(models.Model):
+    num_correct_answers = models.IntegerField(default=0)
+    num_incorrect_answers = models.IntegerField(default=0)
     qualification = models.ForeignKey(
         Qualification, 
         on_delete=models.CASCADE
