@@ -1,0 +1,107 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Editar Test{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Editar Test</h1>
+
+        <form action="{% url 'quiz:updateQuiz' quiz.id %}" method="POST">
+            {% csrf_token %}
+            <p><strong>Título del test:</strong></p> 
+            <p><input type="text" name="new_quiz_title" placeholder="Titulo del Test" value="{{quiz.title}}" required></p>
+            <p><strong>Descripción:</strong></p>
+            <p><input type="textarea" class="biggerTextarea" placeholder="Descripción" value="{{quiz.description}}" name="new_quiz_description" id= ""></p>
+            <p><strong>Fecha límite:</strong></p>
+            <p><input type="datetime-local" name="fecha" value="{{quiz.maximum_date|date:"d-m-Y"}}T{{quiz.maximum_date|date:"d-m-Y"}}"></p>
+
+            <p>
+                <fieldset>
+                    <legend><strong>¿Desea publicar el Test de inmediato?</strong></legend>
+                    <br>
+                    {% if quiz.show_quiz %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="si" id="si_show_quiz">
+                        <label for="si_show_quiz">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="no" id="no_show_quiz" checked>
+                        <label for="no_show_quiz">
+                            No
+                        </label>
+                    {% else %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="si" id="si_show_quiz" checked>
+                        <label for="si_show_quiz">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="no" id="no_show_quiz">
+                        <label for="no_show_quiz">
+                            No
+                        </label>
+                    {% endif %}
+                    
+                    
+                </fieldset>
+            </p>
+            <p>
+                <fieldset>
+                    <legend><strong>¿Desea que el test se pueda repetir varias veces?</strong></legend>
+                    <br>
+                    {% if quiz.repeatable %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="si" id="si_repeatable" checked>
+                        <label for="si_repeatable">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="no" id="no_repeatable">
+                        <label for="no_repeatable">
+                            No
+                        </label>
+                    {% else %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="si" id="si_repeatable">
+                        <label for="si_repeatable">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="no" id="no_repeatable" checked>
+                        <label for="no_repeatable">
+                            No
+                        </label>
+                    {% endif %}
+                    
+                    
+                </fieldset>
+            </p>
+
+            <p>
+                <fieldset>
+                    <legend><strong>¿Desea que el usuario pueda ver la calificación de inmediato (tras finalizar el test)?</strong></legend>
+                    <br>
+                    {% if quiz.show_qualification %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="si" id="si_show_qualification" checked>
+                        <label for="si_show_qualification">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="no" id="no_show_qualification">
+                        <label for="no_show_qualification">
+                            No
+                        </label>
+                    {% else %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="si" id="si_show_qualification">
+                        <label for="si_show_qualification">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="no" id="no_show_qualification" checked>
+                        <label for="no_show_qualification">
+                            No
+                        </label>
+                    {% endif %}
+                    
+                    
+                </fieldset>
+            </p>
+        <input type="submit" value="Crear Test">
+    </form>
+</div>
+{% endblock %}

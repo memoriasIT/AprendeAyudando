@@ -37,7 +37,7 @@
             {% else %}
                 <p>Test público: <strong style="color:red">NO</strong></p>
             {% endif %}
-            <a href="#" type="submit" class="letraEnBlanco" style="margin-bottom:30px">Editar campos</a>
+            <a href="{% url 'quiz:updateQuiz' quiz.id %}" type="submit" class="letraEnBlanco" style="margin-bottom:30px">Editar campos</a>
             <a href="{% url 'quiz:deleteQuiz' quiz.id %}" class="button special">Borrar Test</a>
             <h1 class="bigger">Preguntas</h1>
             <p><strong>Cosas a tener en cuenta:</p>

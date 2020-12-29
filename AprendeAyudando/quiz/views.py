@@ -454,8 +454,6 @@ def updateQuestion(request, question_id):
         question.question_negative_score = request.POST["new_question_negative_score"]
         number_answers = request.POST["number_answers"]
         question.save()
-
-        #NUEVO
         number_answers = int(number_answers)
         list_old_answers = list_answers[:number_answers]
         new_number_answers = number_answers - list_old_answers.count()
@@ -468,8 +466,7 @@ def updateQuestion(request, question_id):
             'range_new_number_answers':range(int(new_number_answers))
         }
         return render(request, 'quiz/updateanswers.html', ctx)
-        #VIEJO
-        #return updateAnswers(request, question_id, number_answers)
+
     ctx = {
         'question':question,
         'list_answers':list_answers,
@@ -545,3 +542,28 @@ def updateAnswers(request, question_id, number_answers):
         'range_new_number_answers':range(int(new_number_answers))
     }
     return render(request, 'quiz/updateanswers.html', ctx)
+
+@login_required
+@permission_required('quiz.change_answer', raise_exception=True)
+def updateQuiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    
+    #----------------------------------------FORM---------------------------------------------
+    if request.method == 'POST':
+        x
+    
+    ctx = {
+        'quiz':quiz
+    }
+    return render(request, 'quiz/updatequiz.html', ctx)
