@@ -27,6 +27,7 @@ from django.db.models import Q
 #Constants
 from AprendeAyudando.templatetags.auth_extras import ACTIVITY, COURSE
 
+from django.utils import timezone
 
 #-----------------------------------------CREACIÓN DE TESTS---------------------------------------------
 @login_required
@@ -206,6 +207,8 @@ def startQuiz(request, quiz_id):
         isOwner = quiz.course.teacher == request.user
         is_course = True
         activity_or_course_id = quiz.course.id
+    #-------------------------------------------------------------------------------------
+    expired = timezone.now() > quiz.maximum_date
 
     #----------------------------COMPROBACION DE REPETICION DEL TEST----------------------
     exist_finished_qualification = None
@@ -228,7 +231,8 @@ def startQuiz(request, quiz_id):
         'quiz':quiz,
         'exist_finished_qualification':exist_finished_qualification,
         'exist_started_qualification':exist_started_qualification,
-        'isOwner':isOwner
+        'isOwner':isOwner,
+        'expired':expired
     }
     return render(request, 'quiz/startquiz.html', ctx)
 
