@@ -11,16 +11,16 @@
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
     {% load auth_extras %}
-
     <div class="container py-5">
-
-        <h1>{{ activity.title }}</h1>
-
-        {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-        
 <!-- DESCRIPCION -->
-        <div class="courseElement">
-            <div class="courseElementLeft"> 
+        <div class="row py-2">
+            <div class="col-12">
+                <h1>{{ activity.title }}</h1>
+            </div>
+            <div class="col-12">
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            </div>
+            <div class="col-12">
                 {% if isOwner %}
                     <h3>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></h3>
                 {% else %}
@@ -33,8 +33,7 @@
                     {% endif %}
                 {% endif %}
             </div>
-
-            <div class="courseElementContent">
+            <div class="col-12">
                 <p>{{ activity.description }}</p> 
                 <p>Actividad restringida:
                     <strong>
@@ -68,134 +67,135 @@
         </div>
 
 <!-- FOROS -->
-        <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    <h4>FOROS:</h4>
-                </div>
-                <div class="col-6 text-right">
-                    {% if isOwner or user.is_superuser %}
-                        <a href="{% url 'forum:create' courseOrActivity activity.id %}" class="col-3 btn btn-secondary btn-sm">Crear un foro</a>
-                    {% endif %}
-                </div> 
-                <div class="col-12"> 
-                    <p>{% if forumListCourse %}
-                        <ol id="prettyList">
-                            {% for forum in forumListCourse %}
-                                <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
-                            {% endfor %}
-                        </ol>
-                    {% else %}
-                        <p>Lo sentimos, no hay foros disponibles.</p>
-                    {% endif %}</p>
-                </div> 
-        </div>
-    </div>    
-<!-- RECURSOS -->
-        <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    <h4>Recursos:</h4>
-                </div>
-                <div class="col-6 text-right">
-                    {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'resources:createResource' courseOrActivity activity.id %}" class="col-3 btn btn-secondary btn-sm">Crear un recurso</a>
-                    {% endif %}
-                </div> 
-                <div class="col-12"> 
-                    {% if resourceListCourse %}
-                    <ol id="prettyList" style="width:92%;">
-                        {% for resource in resourceListCourse %}
-                            <li id="prettyListItem">
-                                <a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
-                                {% if isOwner or user.is_superuser %}
-                                    <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a>
-                                {% endif %}
-                            </li>
-                            
+        <div class="row py-2">
+            <div class="col-6">
+                <h4>Foros:</h4>
+            </div>
+            <div class="col-6 text-right">
+                {% if isOwner or user.is_superuser %}
+                    <a href="{% url 'forum:create' courseOrActivity activity.id %}" class="col-lg-3 btn btn-secondary btn-sm">Crear un foro</a>
+                {% endif %}
+            </div> 
+            <div class="col-12"> 
+                {% if forumListCourse %}
+                    <ol id="prettyList">
+                        {% for forum in forumListCourse %}
+                            <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
                         {% endfor %}
                     </ol>
                 {% else %}
-                    <p>Lo sentimos, no hay recursos disponibles.</p>
+                    <p>Lo sentimos, no hay foros disponibles.</p>
                 {% endif %}
-                </div>
-             </div> 
-        </div>
-
-<!-- Test -->
-        <div class="container">
-            <div class="row">
-                <div class="col-6">
-                    <h4>Tests:</h4>
-                </div>
-                <div class="col-6 text-right"> 
-                    {% if isOwner or user.is_superuser %}
-                        <a href="{% url 'quiz:createQuiz' courseOrActivity activity.id %}" class="col-3 btn btn-secondary btn-sm">Crear un Test</a>
-                    {% endif %}
-                </div>
-                <div class="quizElements">
-                {% if quizListActivity %}
-                    {% for quiz in quizListActivity %}
-                        <a href="{% url 'quiz:startQuiz' quiz.id %}" class="quizElements">
-                        <div class="card">
-                            <div class="card-text">
-                                {% if quiz.maximum_date is not None %}
-                                    <span class="date">Fecha límite: {{quiz.maximum_date}}</span>
-                                {% else %}
-                                    <span class="date">Sin fecha límite</span>
-                                {% endif %}
-                                <h2 class="clearh2">{{ quiz.title }}</h2>
-                                <p>{{ quiz.description }}</p>
-                                
-                            </div>
-                            {% with list_info=dic_test|get_item_from_index:quiz.id %}
-                                <div class="card-stats">
-                                    <div class="stat">
-                                        <div class="value">{{list_info|get_item_from_index:0}}</div>
-                                        <div class="type">Intentos</div>
-                                    </div>
-                                    <div class="stat border">
-                                        <div class="value">
-                                            {% if list_info|get_item_from_index:1 is None %}
-                                                -
-                                            {% else %}
-                                                {{list_info|get_item_from_index:1}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="type">Calificación</div>
-                                    </div>
-                                    <div class="stat">
-                                        <div class="value">
-                                            {% if list_info|get_item_from_index:2 is None %}
-                                                -
-                                            {% else %}
-                                                {{list_info|get_item_from_index:2}}
-                                            {% endif %}
-                                        </div>
-                                        <div class="type">Acertadas</div>
-                                    </div>
-                                </div>
-                            {% endwith %}
-                        </div>
-                        </a>
-                    {% endfor %}
-                {% else %}
-                    <p>Lo sentimos, no hay tests disponibles.</p>
-                {% endif %}
-                </div>
             </div> 
+        </div>   
+<!-- RECURSOS -->
+        <div class="row py-2">
+            <div class="col-6">
+                <h4>Recursos:</h4>
+            </div>
+            <div class="col-6 text-right">
+                {% if isOwner or user.is_superuser %}
+                <a href="{% url 'resources:createResource' courseOrActivity activity.id %}" class="col-lg-3 btn btn-secondary btn-sm">Crear un recurso</a>
+                {% endif %}
+            </div> 
+            <div class="col-12"> 
+                {% if resourceListCourse %}
+                <ol id="prettyList" style="width:92%;">
+                    {% for resource in resourceListCourse %}
+                        <li id="prettyListItem">
+                            <a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
+                            {% if isOwner or user.is_superuser %}
+                                <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a>
+                            {% endif %}
+                        </li>
+                        
+                    {% endfor %}
+                </ol>
+            {% else %}
+                <p>Lo sentimos, no hay recursos disponibles.</p>
+            {% endif %}
+            </div>
         </div> 
-        <div style="text-align: center;">
+
+<!-- TESTS -->
+        <div class="row py-2">
+            <div class="col-6">
+                <h4>Tests:</h4>
+            </div>
+            <div class="col-6 text-right"> 
+                {% if isOwner or user.is_superuser %}
+                    <a href="{% url 'quiz:createQuiz' courseOrActivity activity.id %}" class="col-lg-3 btn btn-secondary btn-sm">Crear un Test</a>
+                {% endif %}
+            </div>
+            {% if quizListActivity %}
+            <div class="quizElements">
+                {% for quiz in quizListActivity %}
+                    <a href="{% url 'quiz:startQuiz' quiz.id %}" class="quizElements">
+                    <div class="card">
+                        <div class="card-text">
+                            {% if quiz.maximum_date is not None %}
+                                <span class="date">Fecha límite: {{quiz.maximum_date}}</span>
+                            {% else %}
+                                <span class="date">Sin fecha límite</span>
+                            {% endif %}
+                            <h2 class="clearh2">{{ quiz.title }}</h2>
+                            <p>{{ quiz.description }}</p>
+                            
+                        </div>
+                        {% with list_info=dic_test|get_item_from_index:quiz.id %}
+                            <div class="card-stats">
+                                <div class="stat">
+                                    <div class="value">{{list_info|get_item_from_index:0}}</div>
+                                    <div class="type">Intentos</div>
+                                </div>
+                                <div class="stat border">
+                                    <div class="value">
+                                        {% if list_info|get_item_from_index:1 is None %}
+                                            -
+                                        {% else %}
+                                            {{list_info|get_item_from_index:1}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="type">Calificación</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="value">
+                                        {% if list_info|get_item_from_index:2 is None %}
+                                            -
+                                        {% else %}
+                                            {{list_info|get_item_from_index:2}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="type">Acertadas</div>
+                                </div>
+                            </div>
+                        {% endwith %}
+                    </div>
+                    </a>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="col-12">
+                <p>Lo sentimos, no hay tests disponibles.</p>
+            </div>
+            {% endif %}
+        </div> 
+<!-- ENCUESTAS DE SATISFACCIÓN -->
+        <div class="row py-2 text-center">
             {% if not isOwner and show_review %}
+            <div class="col-12">
                 <a href="{% url 'review:create' activity.id activity.title %}" class="btn btn-warning btn-sm">Puntuar esta actividad</a>
+            </div>
             {% endif %}
         </div>
 
-        <!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
-        <div class="courseElement" style="margin-top: 5%; text-align: center;">
+<!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
+        <div class="row py-2">
             {% if isOwner or user.is_superuser %}
-            <div class="courseElementContent">
+            <div class="col-6 text-right">
                 <a href="{% url 'activity:delete' activity.id %}" class="btn btn-danger btn-sm">Borrar actividad</a>
+            </div>
+            <div class="col-6">
                 <a href="{% url 'review:list' activity.id activity.title %}" class="btn btn-warning btn-sm">Ver encuestas de satisfacción</a>
             </div>
             {% endif %}

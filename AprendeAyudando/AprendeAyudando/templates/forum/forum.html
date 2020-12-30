@@ -9,11 +9,11 @@
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
     <div class="container py-5">
-            <h1>{{ forum.title }}</h1>
-            
-            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
             <!--DESCRIPCION-->
-            <div class="courseElement">
+            <div class="container">
+                <h1>{{ forum.title }}</h1>
+                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                
                 {% if success %}
                     <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en el foro: {{ forum.title }}</p>
                 {% else %}
@@ -32,37 +32,41 @@
             </div>
 
             <!-- DEBATES -->
-            <div class="courseElement">
-                <div class="courseElementLeft"> 
-                    <h1>DEBATES:</h1>
-                </div>
-                <div class="courseElementRight"> 
-                    <a  href="{% url 'forum:createDebate' forum.id %}" class="btn btn-secondary btn-sm">Añadir un nuevo debate</a>
-                </div>
-                <div class="courseElementContent"> 
-                    <p>{% if debatesList %}
-                        <ol id="prettyList" style="width:92%;">
+            <div class="container">
+                <div class="row">
+                    <div class="col-6">
+                        <h4>Debates:</h4>
+                    </div>
+                    <div class="col-6 text-right">
+                        <a  href="{% url 'forum:createDebate' forum.id %}" class="btn btn-secondary btn-sm">Añadir un nuevo debate</a>
+                    </div>
+                    <div class="col-12">
+                        <p>{% if debatesList %}
+                        <ol id="prettyList">
                             {% for debate in debatesList %}
                                 <li id="prettyListItem"><a href="{% url 'forum:viewDebate' debate.id %}">{{ debate.title }}</a></li>
                             {% endfor %}
                         </ol>
-                    {% else %}
-                        <p>Lo sentimos, no hay debates disponibles.</p>
-                    {% endif %}</p>
-                </div> 
+                        {% else %}
+                            <p>Lo sentimos, no hay debates disponibles.</p>
+                        {% endif %}</p>
+                    </div>
+                </div>
             </div> 
 
             <!--VOLVER A CURSO/ACTIVIDAD-->
-
-            {% if isCourse %}
+            <div class="container text-center">
+                {% if isCourse %}
                 <a style="margin-bottom: 50px;" href="{% url 'courses:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a curso</a>
-            {% else %}
-                <a style="margin-bottom: 50px;" href="{% url 'activity:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a actividad</a>   
-            {% endif %}
-            <!--BORRAR FORO-->
-            {% if isAuthor is True %}
-                <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="btn btn-danger btn-sm">Borrar foro</a>
-            {% endif %}
+                {% else %}
+                    <a style="margin-bottom: 50px;" href="{% url 'activity:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a actividad</a>   
+                {% endif %}
+                <!--BORRAR FORO-->
+                {% if isAuthor is True %}
+                    <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="btn btn-danger btn-sm">Borrar foro</a>
+                {% endif %}
+            </div>
+            
         </div>
     </section>
 {% endblock %}

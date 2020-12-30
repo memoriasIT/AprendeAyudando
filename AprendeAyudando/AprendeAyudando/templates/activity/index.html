@@ -9,14 +9,14 @@
 
     <div class="container py-5">
         <div class="row">
-            <div class="col-4 ml-auto mb-4"> 
+            <div class="col ml-auto mb-4"> 
                 {% if filtered_by_enrolled %}
-                    <h2>Tus actividades</h2>
+                    <h1>Tus actividades</h1>
                 {% else %}
-                    <h2>Actividades disponibles</h2>
+                    <h1>Actividades disponibles</h1>
                 {% endif %}
             </div>
-            <div class="col-8 mr-auto mb-4 text-right"> 
+            <div class="col mr-auto mb-4 text-right"> 
                 {% if user|has_group:"Profesor" %}
                     <p>Aviso: Necesitas ser Estudiante para poder acceder a la información de las actividades restringidas.</p>
                 {% elif user|is_guest %}
