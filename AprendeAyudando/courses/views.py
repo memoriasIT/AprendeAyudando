@@ -148,7 +148,7 @@ def join(request, course_id):
 
     context = {
         'course': course,
-        'success': success,
+        #'success': success,
         'usuario': request.user,
         'isOwner': isOwner,
         'show_de_enroll':show_de_enroll,
