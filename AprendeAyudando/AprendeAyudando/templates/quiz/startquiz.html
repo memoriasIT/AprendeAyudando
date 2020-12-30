@@ -11,7 +11,8 @@
         <!--Administracion-->
         {% if isOwner or user.is_superuser %}
             <h2 class="bigger">Administración</h2>
-            <a href="{% url 'quiz:administrationQuiz' quiz.id %}" class="button pink">Cambiar Datos</a>
+            <a href="{% url 'quiz:administrationQuiz' quiz.id %}" class="button pink">Editar Test</a>
+            <a href="{% url 'quiz:viewQualifications' quiz.id %}" class="button pink">Ver calificaciones</a>
             <br>
         {% endif %}
         <!--Test-->

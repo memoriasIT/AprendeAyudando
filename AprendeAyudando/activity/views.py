@@ -11,7 +11,7 @@ from forum.models import Forum
 from resources.models import Resource
 from .models import Activity
 from .models import ActivityRequest
-from quiz.models import Quiz, Qualification, Question
+from quiz.models import Quiz, Qualification, Question, Answer
 from AprendeAyudando.templatetags.auth_extras import ACTIVITY
 
 #Queries
@@ -149,14 +149,19 @@ def join(request, activity_id):
 
     #-------------------------------------------TEST-------------------------------------------
     dic_test = {}
-    quizListActivity = Quiz.objects.filter(activity=activity, show_quiz=True).distinct()
+    if isOwner or request.user.is_superuser:
+        quizListActivity = Quiz.objects.filter(activity=activity)
+    else:
+        quizListActivity = Quiz.objects.filter(activity=activity, show_quiz=True)
     for q in quizListActivity:
         qualifications = Qualification.objects.filter(quiz=q, user=request.user)
         attempts = qualifications.count()
         max_user_qualification = qualifications.order_by('-total_score').first()
-        if max_user_qualification:
+        if max_user_qualification and q.show_qualification:
             list_questions = Question.objects.filter(quiz=q)
-            max_qualification = list_questions.aggregate(Sum('question_score'))['question_score__sum']
+            max_qualification = 0
+            for question in list_questions:
+                max_qualification = max_qualification + Answer.objects.filter(correct=True, question=question).count() * question.question_score
             num_questions = list_questions.count()
             dic_test[q.id] = [
                 str(attempts),

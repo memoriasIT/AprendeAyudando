@@ -1,0 +1,47 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Ver Calificaciones{% endblock %}
+{% load auth_extras %}
+
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <section class="wrapper align-left login">
+
+        <div class="container 100%">
+            <h1 class="bigger">Calificaciones</h1>
+            {% if list_qualification %}
+                <table class="alt">
+                    <thead>
+                        <tr>
+                            <th style="text-align:center;" width="33%"><strong style="font-size:20px">Usuario</strong></th>
+                            <th style="text-align:center;" width="33%"><strong style="font-size:20px">Nombre y Apellido</strong></th>
+                            <th style="text-align:center;" width="33%"><strong style="font-size:20px">Máxima Calificacion</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for qualification in list_qualification %}
+                        {% with this_user=querySet_of_users|get_user_from_id:qualification.user %}
+                            <tr>
+                                <td style="text-align: center; vertical-align: middle;"><strong>{{ this_user.username }}</strong></td>
+                                <td style="text-align: center; vertical-align: middle;"><strong>{{ this_user.first_name }} {{ this_user.last_name }}</strong></td>
+                                <td style="text-align: center; vertical-align: middle;"><strong>{{ qualification.max_score }} / {{ max_qualification }}</strong></td>
+                            </tr>
+                        {% endwith %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No existen calificaciones disponibles.</p>
+            {% endif %}
+            {% if is_course %}
+                <a href="{% url 'courses:join' quiz.course.id %}" class="button pink">Volver al curso</a>
+            {% else %}
+                <a href="{% url 'activity:join' quiz.activity.id %}" class="button pink">Volver a la actividad</a>
+            {% endif %}
+        </div>
+
+    </section>
+{% endblock %}
