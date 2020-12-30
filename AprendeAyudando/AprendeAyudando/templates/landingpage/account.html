@@ -48,12 +48,6 @@
                         {% else %}
                             <li id="prettyListItem"><a href="{% url 'account_delete' %}">Darse de baja en la plataforma</a></li>
                         {% endif %}
-    
-                        {% if not user|has_group:"Profesor" %}
-                            <li id="prettyListItem"><a href="/activity/enrolled">Mis actividades</a></li>
-                        {% else %}
-                            <li id="prettyListItem"><a href="/activity/enrolled">Actividades guardadas</a></li>
-                        {% endif %}
                         </ol>
                     </div>  
                 </div>

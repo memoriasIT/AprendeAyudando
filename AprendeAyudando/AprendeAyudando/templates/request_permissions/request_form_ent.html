@@ -4,9 +4,6 @@
 {% block content %}
 
 <section class="bg-white text-dark py-5 min-vh-100">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
-
     <div class="container py-5 text-center">
         <h2>Solicitar permisos de Entidad Público/Privada</h2>
         <form action="{% url 'request_permissions:create' 'EntidadPublicoPrivada' %}" method="POST">
