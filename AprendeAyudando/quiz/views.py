@@ -84,6 +84,7 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
                 repeatable=new_quiz_is_repeatable,
                 show_qualification=new_quiz_show_qualification,
                 activity=activity,
+                maximum_date=new_quiz_date,
                 show_quiz=new_show_quiz
             )
         new_quiz.save()
