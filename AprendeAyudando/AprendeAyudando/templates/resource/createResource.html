@@ -4,36 +4,38 @@
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
     <div class="container">
-        <h1 class="bigger">Crear un recurso nuevo</h1>
-        <p>AprendeAyudando recomienda los siguientes links de acceso gratuito, sin embargo, puede colocar cualquier link</p>
-        <table class="alt">
-            <thead>
-                <tr>
-                    <th style="text-align:center;"><strong style="font-size:20px">Tipo de recurso</strong></th>
-                    <th style="text-align:center;"><strong style="font-size:20px">Página</strong></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>Videoconferencias, Seminarios, Eventos</strong></td>
-                    <td><a href="https://meet.google.com/" target="_blank" style="color:#0070FF">Google Meet</a></td>
-                </tr>
-                <tr>
-                    <td><strong>Talleres</strong></td>
-                    <td><a href="#" target="_blank" style="color:#0070FF">Algun sitio</a></td>
-                </tr>
-            </tbody>
-        </table>
-        <hr class="major">
-        
-        <form action="{% url 'resources:createResource' activityCourseFk %}" method="POST">
-            {% csrf_token %}
-            <p>Nombre del recurso: <input type="text" name="new_resource_name" id=""></p>
-            <p>Link del recurso: <input type="text" name="new_resource_link" id=""></p>
+    <h1 class="bigger">Crear un recurso nuevo</h1>
+    <p>AprendeAyudando recomienda los siguientes links de acceso gratuito, sin embargo, puede colocar cualquier link</p>
+    <table class="alt">
+        <thead>
+            <tr>
+                <th style="text-align:center;"><strong style="font-size:20px">Tipo de recurso</strong></th>
+                <th style="text-align:center;"><strong style="font-size:20px">Página</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Videoconferencias, Seminarios, Eventos</strong></td>
+                <td><a href="https://meet.google.com/" target="_blank" style="color:#0070FF">Google Meet</a></td>
+            </tr>
+            <tr>
+                <td><strong>Talleres</strong></td>
+                <td><a href="#" target="_blank" style="color:#0070FF">Algun sitio</a></td>
+            </tr>
+            <tr>
+                <td><strong>Tests</strong></td>
+                <td><a href="" target="_blank" style="color:#0070FF">Aprende Ayudando Tests</a></td>
+            </tr>
+        </tbody>
+    </table>
+    <hr class="major">
+    
+    <form action="{% url 'resources:createResource' courseOrActivity activityCourseFk %}" method="POST">
+        {% csrf_token %}
+        <p>Nombre del recurso: <input type="text" name="new_resource_name" id=""></p>
+        <p>Link del recurso: <input type="text" name="new_resource_link" id=""></p>
 
-            <input type="submit" value="Enviar">
-        </form>
-    </div>
-</section>
-
+        <input type="submit" value="Crear Recurso">
+    </form>
+</div>
 {% endblock %}

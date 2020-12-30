@@ -5,78 +5,83 @@ from django.contrib.auth.decorators import permission_required
 
 from courses.models import Course
 from activity.models import Activity
+from activity.views import join as viewsActivityJoin
+from courses.views import join as viewsCourseJoin
 from forum.models import Forum, Debate, Message, Reply
+from AprendeAyudando.templatetags.auth_extras import COURSE, ACTIVITY
+from django.http import HttpResponseForbidden
 
 #-----------------------------------------FOROS------------------------------------------
 
 @login_required
 @permission_required('forum.add_forum', raise_exception=True)
-def createForum(request, activityCourseFk):
-    activityCourseType = ' '
-    if request.user.has_perm('courses.add_course'):
-        activityCourseType = 'Course'
+def createForum(request, courseOrActivity, activityCourseFk):
+    
+    #------------------------CONTROL DE ACCESO-------------------
+    if courseOrActivity == COURSE:
+        course = get_object_or_404(Course, id=activityCourseFk)
+        isOwner = course.teacher == request.user
     else:
-        activityCourseType = 'Activity'
+        activity = get_object_or_404(Activity, id=activityCourseFk)
+        isOwner = activity.entity == request.user
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    #---------------------------FORM POST----------------------
+    if request.method=="POST":
 
     if request.method=="POST":
         new_forum_name=request.POST["new_forum_name"]
-        new_forum = Forum.objects.create(title=new_forum_name, author=request.user, activityCourseFk= activityCourseFk, activityCourseType=activityCourseType)
+        new_forum = Forum.objects.create(
+            title=new_forum_name,
+            author=request.user,
+            activityCourseFk=activityCourseFk,
+            activityCourseType=courseOrActivity
+        )
         new_forum.save()
-
-        isAuthor = True
-
-        context = {
-        'forum': new_forum,
-        'isAuthor': isAuthor,
-        }
-        return render(request, 'forum/forum.html',context)
-    context = {
+        return join(request, new_forum.id)
+    
+    ctx = {
         'activityCourseFk': activityCourseFk,
-        'activityCourseType': activityCourseType,
+        'courseOrActivity': courseOrActivity
     }
-    return render(request, 'forum/createForum.html', context)
+    return render(request, 'forum/createForum.html', ctx)
     
 
 
 @login_required
 @permission_required('forum.delete_forum', raise_exception=True)
 def delete(request, forum_id):
-
     forum = get_object_or_404(Forum, pk=forum_id)
-    print(forum)
-    print(request.method)
-    isOwner = True
-    if forum.activityCourseType == 'Course':
-        course = get_object_or_404(Course, pk=forum.activityCourseFk)
-        context = {
-            'course': course,
-            'isOwner': isOwner,
-        }
-    else:
-        activity =get_object_or_404(Activity, pk=forum.activityCourseFk)
-        context = {
-            'activity': activity,
-            'isOwner': isOwner,
-        }
-    Forum.objects.filter(id=forum_id).delete()
-    if forum.activityCourseType == 'Course':
-        return render(request, 'courses/curso.html', context)
-    else:
-        return render(request, 'activity/activity.html', context)
 
+    #------------------------CONTROL DE ACCESO-------------------
+    if forum.activityCourseType == COURSE:
+        course = get_object_or_404(Course, id=forum.activityCourseFk)
+        isOwner = course.teacher == request.user
+    else:
+        activity = get_object_or_404(Activity, id=forum.activityCourseFk)
+        isOwner = activity.entity == request.user
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    #------------------------ELIMINACION------------------------
+    activity_or_course_id = forum.activityCourseFk
+    Forum.objects.filter(id=forum_id).delete()
+    if forum.activityCourseType == COURSE:
+        return viewsCourseJoin(request, activity_or_course_id)
+    else:
+        return viewsActivityJoin(request, activity_or_course_id)
 
 @login_required
 def join(request, forum_id): 
     forum = get_object_or_404(Forum, pk=forum_id)
     debatesList = Debate.objects.filter(forum = forum)
 
-    isAuthor = False
-
-    if request.user == forum.author:
-        isAuthor = True
+    isAuthor = request.user == forum.author
+    
+    isCourse = forum.activityCourseType == COURSE
     
     success = False
-
     # If the current logged user isn't enrolled in the course then add him
     if request.user not in forum.enrolled_users.all() and request.user != forum.author:
         forum.enrolled_users.add(request.user)
@@ -87,7 +92,8 @@ def join(request, forum_id):
         'forum': forum,
         'success': success,
         'debatesList': debatesList,
-        'isAuthor' : isAuthor
+        'isAuthor' : isAuthor,
+        'isCourse': isCourse
     }
 
     return render(request, 'forum/forum.html',context)

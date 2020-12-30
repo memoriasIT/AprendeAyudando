@@ -12,6 +12,9 @@
           <form class="text-center d-flex flex-column" method="post">
             {% csrf_token %}
             {{ form.as_p }}
+            <p align = "right">
+              <a href="/recoverpassword" align = "right">Forgot password?</a>
+            </p>
             <div class="col py-1 text-center">
               <input type="submit" value="Login" class="btn btn-lg btn-success">
             </div>

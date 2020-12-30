@@ -3,7 +3,7 @@ from .models import Course
 from forum.models import Forum
 from review.models import Review
 from resources.models import Resource
-from quiz.models import Quiz
+from quiz.models import Quiz, Qualification, Question
 from django.contrib.auth.models import User, Group
 from AprendeAyudando.templatetags.auth_extras import is_owner
 
@@ -19,6 +19,7 @@ from AprendeAyudando.views import has_group
 
 #Queries
 from django.db.models import Q
+from django.db.models import Sum
 
 #Constants
 from AprendeAyudando.templatetags.auth_extras import COURSE
@@ -104,15 +105,30 @@ def join(request, course_id):
 
 
     #-----------------------------------------FOROS-------------------------------------------
-    forumListCourse = Forum.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
+    forumListCourse = Forum.objects.filter(activityCourseType=COURSE, activityCourseFk=course.id)
 
 
     #-----------------------------------------RECURSOS-----------------------------------------
-    resourceListCourse = Resource.objects.filter(activityCourseType='Course', activityCourseFk=course.id)
+    resourceListCourse = Resource.objects.filter(activityCourseType=COURSE, activityCourseFk=course.id)
 
     #-------------------------------------------TEST-------------------------------------------
+    dic_test = {}
     quizListCourse = Quiz.objects.filter(course=course)
-
+    for q in quizListCourse:
+        qualifications = Qualification.objects.filter(quiz=q, user=request.user)
+        attempts = qualifications.count()
+        max_user_qualification = qualifications.order_by('-total_score').first()
+        if max_user_qualification and q.show_qualification:
+            list_questions = Question.objects.filter(quiz=q)
+            max_qualification = list_questions.aggregate(Sum('question_score'))['question_score__sum']
+            num_questions = list_questions.count()
+            dic_test[q.id] = [
+                str(attempts),
+                str(max_user_qualification.total_score)+'/'+str(max_qualification),
+                str(max_user_qualification.total_correct_questions)+'/'+str(num_questions)
+            ]
+        else:
+            dic_test[q.id] = [str(attempts), None, None]
     #-----------------------------------CONTROL DE ELEMENTOS DEL HTML--------------------------
     #Para mostrarnos el boton de "Desmatricular"
     show_de_enroll = False
@@ -132,6 +148,7 @@ def join(request, course_id):
         'show_review' : show_review,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
+        'dic_test':dic_test,
         'quizListCourse': quizListCourse,
         'courseOrActivity': COURSE
     }

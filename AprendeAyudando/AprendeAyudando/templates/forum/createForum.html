@@ -6,7 +6,7 @@
     <div class="container py-5 text-center">
         <h1>Crear un foro nuevo</h1>
 
-        <form action="{% url 'forum:create' activityCourseFk %}" method="POST">
+        <form action="{% url 'forum:create' courseOrActivity activityCourseFk %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
                 <label for="new_forum_name">Nombre del foro:</label>

@@ -47,6 +47,7 @@ urlpatterns = [
     path('quiz/', include('quiz.urls')),
     path('review/', include('review.urls')),
     path('resources/', include('resources.urls')),
+    path('recoverpassword/', views.recoverpassword, name="recoverpassword"),
 ]
 
 admin.site.site_header = 'Administración Aprende Ayudando'

@@ -11,11 +11,12 @@ from forum.models import Forum
 from resources.models import Resource
 from .models import Activity
 from .models import ActivityRequest
-from quiz.models import Quiz
+from quiz.models import Quiz, Qualification, Question
 from AprendeAyudando.templatetags.auth_extras import ACTIVITY
 
 #Queries
 from django.db.models import Q
+from django.db.models import Sum
 
 
 def index(request):
@@ -141,14 +142,29 @@ def join(request, activity_id):
         return inscription(request, activity_id)
 
     #-----------------------------------------FOROS-----------------------------------------
-    forumListCourse = Forum.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
+    forumListCourse = Forum.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
 
     #-----------------------------------------RECURSOS-----------------------------------------
-    resourceListCourse = Resource.objects.filter(activityCourseType='Activity', activityCourseFk=activity.id)
+    resourceListCourse = Resource.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
 
     #-------------------------------------------TEST-------------------------------------------
+    dic_test = {}
     quizListActivity = Quiz.objects.filter(activity=activity)
-
+    for q in quizListActivity:
+        qualifications = Qualification.objects.filter(quiz=q, user=request.user)
+        attempts = qualifications.count()
+        max_user_qualification = qualifications.order_by('-total_score').first()
+        if max_user_qualification:
+            list_questions = Question.objects.filter(quiz=q)
+            max_qualification = list_questions.aggregate(Sum('question_score'))['question_score__sum']
+            num_questions = list_questions.count()
+            dic_test[q.id] = [
+                str(attempts),
+                str(max_user_qualification.total_score)+'/'+str(max_qualification),
+                str(max_user_qualification.total_correct_questions)+'/'+str(num_questions)
+            ]
+        else:
+            dic_test[q.id] = [str(attempts), None, None]
     #Para mostrarnos el boton de "Desmatricular" o "Desvincular Actividad"
     show_de_enroll = False
     if request.user in activity.enrolled_users.all():
@@ -166,6 +182,7 @@ def join(request, activity_id):
         'show_review' : show_review,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
+        'dic_test':dic_test,
         'quizListActivity': quizListActivity,
         'courseOrActivity': ACTIVITY
     }

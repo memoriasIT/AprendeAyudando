@@ -22,3 +22,7 @@ def is_guest(user):
 @register.filter(name='is_owner')
 def is_owner(user, request_user):
     return True if user==request_user else False
+
+@register.filter(name='get_item_from_index')
+def get_list_items_card(list, quiz_id):
+    return list[quiz_id]
