@@ -33,7 +33,7 @@ from django.utils import timezone
 
 #-----------------------------------------CREACIÓN DE TESTS---------------------------------------------
 @login_required
-@permission_required('quiz.add_quizcourse', raise_exception=True)
+@permission_required('quiz.add_quiz', raise_exception=True)
 def createQuiz(request, courseOrActivity, courseOrActivity_id):
 
     if(courseOrActivity == COURSE):
@@ -95,7 +95,7 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
     return render(request, 'quiz/createquiz.html', ctx)
 
 @login_required
-@permission_required('quiz.add_questioncourse', raise_exception=True)
+@permission_required('quiz.add_question', raise_exception=True)
 def createQuestions(request, courseOrActivity, courseOrActivity_id, quiz_id, number_questions):
 
     #----------------------------------ACTIVIDAD O CURSO?------------------------------------
@@ -145,7 +145,7 @@ def createQuestions(request, courseOrActivity, courseOrActivity_id, quiz_id, num
     return render(request, 'quiz/createquestion.html', ctx)
 
 @login_required
-@permission_required('quiz.add_answercourse', raise_exception=True)
+@permission_required('quiz.add_answer', raise_exception=True)
 def createAnswers(request, courseOrActivity, courseOrActivity_id, question_id, number_questions, number_answers):
     if(courseOrActivity == COURSE):
         course = get_object_or_404(Course, pk=courseOrActivity_id)
