@@ -30,6 +30,7 @@
                     {% if isOwner or user.is_superuser %}
                         <a href="{% url 'activity:activityrequest' activity.id %}" class="btn btn-info btn-sm">Ver solicitudes</a>
                         <a href="{% url 'activity:users' activity.id %}" class="btn btn-info btn-sm">Ver usuarios inscritos</a>
+                    {% endif %}
                 {% endif %}
             </div>
 
@@ -125,7 +126,7 @@
             </div>
             <div class="courseElementRight"> 
                 {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'quiz:createQuiz' courseOrActivity activity.id %}" class="button small">Crear un Test</a>
+                    <a href="{% url 'quiz:createQuiz' courseOrActivity activity.id %}" class="btn btn-secondary btn-sm">Crear un Test</a>
                 {% endif %}
             </div>
         </div>
@@ -190,8 +191,8 @@
         <div class="courseElement" style="margin-top: 5%; text-align: center;">
             {% if isOwner or user.is_superuser %}
             <div class="courseElementContent">
-                <a href="{% url 'activity:delete' activity.id %}" class="button pink">Borrar actividad</a>
-                <a href="{% url 'review:list' activity.id activity.title %}" class="button pink">Ver encuestas de satisfacción</a>
+                <a href="{% url 'activity:delete' activity.id %}" class="btn btn-danger btn-sm">Borrar actividad</a>
+                <a href="{% url 'review:list' activity.id activity.title %}" class="btn btn-warning btn-sm">Ver encuestas de satisfacción</a>
             </div>
             {% endif %}
         </div>
