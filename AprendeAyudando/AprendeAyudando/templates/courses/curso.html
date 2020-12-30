@@ -104,54 +104,57 @@
                 {% endif %}
             </div>
         </div>
+        {% if quizListCourse %}
             <div class="quizElements">
-                {% if quizListCourse %}
-                        {% for quiz in quizListCourse %}
-                            <a href="{% url 'quiz:startQuiz' quiz.id %}" class="quizElements">
-                            <div class="card">
-                                <div class="card-text">
-                                    {% if quiz.maximum_date is not None %}
-                                        <span class="date">Fecha límite: {{quiz.maximum_date}}</span>
-                                    {% else %}
-                                        <span class="date">Sin fecha límite</span>
-                                    {% endif %}
-                                    <h2 class="clearh2">{{ quiz.title }}</h2>
-                                    <p>{{ quiz.description }}</p>
-                                    
+                {% for quiz in quizListCourse %}
+                    <a href="{% url 'quiz:startQuiz' quiz.id %}" class="quizElements">
+                    <div class="card">
+                        <div class="card-text">
+                            {% if quiz.maximum_date is not None %}
+                                <span class="date">Fecha límite: {{quiz.maximum_date}}</span>
+                            {% else %}
+                                <span class="date">Sin fecha límite</span>
+                            {% endif %}
+                            <h2 class="clearh2">{{ quiz.title }}</h2>
+                            <p>{{ quiz.description }}</p>
+                            
+                        </div>
+                        {% with list_info=dic_test|get_item_from_index:quiz.id %}
+                            <div class="card-stats">
+                                <div class="stat">
+                                    <div class="value">{{list_info|get_item_from_index:0}}</div>
+                                    <div class="type">Intentos</div>
                                 </div>
-                                {% with list_info=dic_test|get_item_from_index:quiz.id %}
-                                    <div class="card-stats">
-                                        <div class="stat">
-                                            <div class="value">{{list_info|get_item_from_index:0}}</div>
-                                            <div class="type">Intentos</div>
-                                        </div>
-                                        <div class="stat border">
-                                            <div class="value">
-                                                {% if list_info|get_item_from_index:1 is None %}
-                                                    -
-                                                {% else %}
-                                                    {{list_info|get_item_from_index:1}}
-                                                {% endif %}
-                                            </div>
-                                            <div class="type">Calificación</div>
-                                        </div>
-                                        <div class="stat">
-                                            <div class="value">
-                                                {% if list_info|get_item_from_index:2 is None %}
-                                                    -
-                                                {% else %}
-                                                    {{list_info|get_item_from_index:2}}
-                                                {% endif %}
-                                            </div>
-                                            <div class="type">Acertadas</div>
-                                        </div>
+                                <div class="stat border">
+                                    <div class="value">
+                                        {% if list_info|get_item_from_index:1 is None %}
+                                            -
+                                        {% else %}
+                                            {{list_info|get_item_from_index:1}}
+                                        {% endif %}
                                     </div>
-                                {% endwith %}
+                                    <div class="type">Calificación</div>
+                                </div>
+                                <div class="stat">
+                                    <div class="value">
+                                        {% if list_info|get_item_from_index:2 is None %}
+                                            -
+                                        {% else %}
+                                            {{list_info|get_item_from_index:2}}
+                                        {% endif %}
+                                    </div>
+                                    <div class="type">Acertadas</div>
+                                </div>
                             </div>
-                            </a>
-                        {% endfor %}
+                        {% endwith %}
+                    </div>
+                    </a>
+                {% endfor %}
+                </div>
                 {% else %}
+                <div class="col-12">
                     <p>Lo sentimos, no hay tests disponibles.</p>
+                </div>
                 {% endif %}
             </div> 
 
