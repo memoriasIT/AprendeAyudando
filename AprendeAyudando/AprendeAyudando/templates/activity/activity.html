@@ -22,7 +22,7 @@
         <div class="courseElement">
             <div class="courseElementLeft"> 
                 {% if isOwner %}
-                    <h1>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></h1>
+                    <h3>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></h3>
                 {% else %}
                     <p>Hola {{ usuario.first_name }}, te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
                 {% endif %}
@@ -68,40 +68,42 @@
         </div>
 
 <!-- FOROS -->
-        <div class="courseElement">
-            <div class="courseElementLeft"> 
-                <h4>FOROS:</h4>
-            </div>
-            <div class="courseElementRight"> 
-                {% if isOwner or user.is_superuser %}
-                    <a  href="{% url 'forum:create' courseOrActivity activity.id %}" class="btn btn-secondary btn-sm">Crear un foro</a>
-                {% endif %}
-            </div>
-            <div class="courseElementContent"> 
-                <p>{% if forumListCourse %}
-                    <ol id="prettyList" style="width:92%;">
-                        {% for forum in forumListCourse %}
-                            <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
-                        {% endfor %}
-                    </ol>
-                {% else %}
-                    <p>Lo sentimos, no hay foros disponibles.</p>
-                {% endif %}</p>
-            </div> 
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h4>FOROS:</h4>
+                </div>
+                <div class="col-6 text-right">
+                    {% if isOwner or user.is_superuser %}
+                        <a href="{% url 'forum:create' courseOrActivity activity.id %}" class="col-3 btn btn-secondary btn-sm">Crear un foro</a>
+                    {% endif %}
+                </div> 
+                <div class="col-12"> 
+                    <p>{% if forumListCourse %}
+                        <ol id="prettyList">
+                            {% for forum in forumListCourse %}
+                                <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
+                            {% endfor %}
+                        </ol>
+                    {% else %}
+                        <p>Lo sentimos, no hay foros disponibles.</p>
+                    {% endif %}</p>
+                </div> 
         </div>
-        
+    </div>    
 <!-- RECURSOS -->
-        <div class="courseElement">
-            <div class="courseElementLeft"> 
-                <h4>Recursos:</h4>
-            </div>
-            <div class="courseElementRight"> 
-                {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'resources:createResource' courseOrActivity activity.id %}" class="btn btn-secondary btn-sm">Crear un recurso</a>
-                {% endif %}
-            </div>
-            <div class="courseElementContent"> 
-                {% if resourceListCourse %}
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h4>Recursos:</h4>
+                </div>
+                <div class="col-6 text-right">
+                    {% if isOwner or user.is_superuser %}
+                    <a href="{% url 'resources:createResource' courseOrActivity activity.id %}" class="col-3 btn btn-secondary btn-sm">Crear un recurso</a>
+                    {% endif %}
+                </div> 
+                <div class="col-12"> 
+                    {% if resourceListCourse %}
                     <ol id="prettyList" style="width:92%;">
                         {% for resource in resourceListCourse %}
                             <li id="prettyListItem">
@@ -116,23 +118,23 @@
                 {% else %}
                     <p>Lo sentimos, no hay recursos disponibles.</p>
                 {% endif %}
-            </div> 
-        </div> 
-
-<!-- Test -->
-        <div class="courseElement">
-            <div class="courseElementLeft">
-                <h4>Tests:</h4>
-            </div>
-            <div class="courseElementRight"> 
-                {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'quiz:createQuiz' courseOrActivity activity.id %}" class="btn btn-secondary btn-sm">Crear un Test</a>
-                {% endif %}
-            </div>
+                </div>
+             </div> 
         </div>
 
-        <div class="quizElements">
-            {% if quizListActivity %}
+<!-- Test -->
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h4>Tests:</h4>
+                </div>
+                <div class="col-6 text-right"> 
+                    {% if isOwner or user.is_superuser %}
+                        <a href="{% url 'quiz:createQuiz' courseOrActivity activity.id %}" class="col-3 btn btn-secondary btn-sm">Crear un Test</a>
+                    {% endif %}
+                </div>
+                <div class="quizElements">
+                {% if quizListActivity %}
                     {% for quiz in quizListActivity %}
                         <a href="{% url 'quiz:startQuiz' quiz.id %}" class="quizElements">
                         <div class="card">
@@ -177,13 +179,15 @@
                         </div>
                         </a>
                     {% endfor %}
-            {% else %}
-                <p>Lo sentimos, no hay tests disponibles.</p>
-            {% endif %}
+                {% else %}
+                    <p>Lo sentimos, no hay tests disponibles.</p>
+                {% endif %}
+                </div>
+            </div> 
         </div> 
         <div style="text-align: center;">
             {% if not isOwner and show_review %}
-                <a href="{% url 'review:create' activity.id activity.title %}" class="button pink">Puntuar esta actividad</a>
+                <a href="{% url 'review:create' activity.id activity.title %}" class="btn btn-warning btn-sm">Puntuar esta actividad</a>
             {% endif %}
         </div>
 

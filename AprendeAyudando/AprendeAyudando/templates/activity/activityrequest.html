@@ -8,33 +8,27 @@
 
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
-    <div class="container py-5%">
-        <h3>Solicitudes de acceso</h3>
+    <div class="container py-5">
+        <h3 class="pb-3">Solicitudes de acceso</h3>
         {% if user_list %}
-        <table class="alt">
+        <table class="table">
             <thead>
-                <tr>
-                    <th style="text-align:center;"><strong style="font-size:20px">Nombre usuario</strong></th>
-                    <th style="text-align:center;"><strong style="font-size:20px">Acción</strong></th>
+                <tr class="text-center">
+                    <th><strong style="font-size:20px">Nombre usuario</strong></th>
+                    <th><strong style="font-size:20px">Acción</strong></th>
                 </tr>
             </thead>
             <tbody>
             {% for esteUsuario in user_list %}
-                <tr>
+                <tr class="text-center">
                     <td><strong>{{ esteUsuario.requester.username }}</strong></td>
 
-                    <td style="text-align:center;">
+                    <td>
                         <form action="{% url 'activity:action_activity_request' activity.id %}" method="POST">
                             {% csrf_token %}
                             <input type="hidden" name="selected_username" value="{{ esteUsuario.requester }}">
-                            <ul class="actions" style="margin-top: 25px;">
-                                <li>
-                                    <input type="submit" value="Aceptar" name="aceptar" class="letraEnBlanco">
-                                </li>
-                                <li style="margin-left: 20%;">
-                                    <input type="submit" value="Rechazar" name="rechazar" class="special">
-                                </li>
-                            </ul>
+                            <input type="submit" value="Aceptar" name="aceptar" class="btn btn-success">
+                            <input type="submit" value="Rechazar" name="rechazar" class="btn btn-danger">
                         </form>
                     </td>
 
@@ -45,6 +39,7 @@
         {% else %}
             <p>No hay solicitudes de estudiantes disponibles.</p>
         {% endif %}
+        <a style="margin-bottom: 50px;" href="{% url 'activity:join' activity.id %}" class="btn btn-warning btn-sm">Volver a actividad</a>  
     </div>
 
 </section>
