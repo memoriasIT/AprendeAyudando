@@ -1,12 +1,68 @@
 {% extends "registration/base.html" %}
-{% block title %}AprendeAyudando - Recuperar Contraseña{% endblock %}
+{% block title %}AprendeAyudando - Editar Perfil{% endblock %}
 
 {% block content %}
 <section class="wrapper align-center login">
-    <div class="container 50%">
-        <h2>Forgot password?</h2>
-        
+    <div class="container 100%">
+        <h2>Editar perfil</h2>
+        <form action="{% url 'update' user.username %}" method="POST">
+            {% csrf_token %}
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        {% if error_message %}
+                            <p class="bg-danger p-d ml-b">{{ error_message }}</p>
+                        {% endif %}
+                       
+                        <div class="form-group clearfix">
+                            <label for="{{ form.username.id_for_label }}" class="col-md-4 control-label text-right">Username:</label>
+                            <div class="col-md-6">
+                                {{ form.username }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group clearfix">
+                            <label for="{{ form.email.id_for_label }}" class="col-md-4 control-label text-right">Email:</label>
+                            <div class="col-md-6">
+                                {{ form.email }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group clearfix">
+                            <label for="{{ form.password.id_for_label }}" class="col-md-4 control-label text-right">New password:</label>
+                            <div class="col-md-6">
+                                {{ form.password }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group clearfix">
+                            <label for="{{ form.password_repeat.id_for_label }}" class="col-md-4 control-label text-right">Confirm password:</label>
+                            <div class="col-md-6">
+                                {{ form.password_repeat }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group clearfix">
+                            <label for="{{ form.first_name.id_for_label }}" class="col-md-4 control-label text-right">First Name:</label>
+                            <div class="col-md-6">
+                                {{ form.first_name }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="form-group clearfix">
+                            <label for="{{ form.last_name.id_for_label }}" class="col-md-4 control-label text-right">Last Name:</label>
+                            <div class="col-md-6">
+                                {{ form.last_name }}
+                            </div>
+                        </div>
+                        <br>
+                        <div class="col-md-6 col-md-offset-4">
+                            <button class="button big" type="submit">Editar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </section>
-  </div>
 {% endblock %}

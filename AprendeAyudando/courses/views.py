@@ -3,7 +3,7 @@ from .models import Course
 from forum.models import Forum
 from review.models import Review
 from resources.models import Resource
-from quiz.models import Quiz, Qualification, Question
+from quiz.models import Quiz, Qualification, Question, Answer
 from django.contrib.auth.models import User, Group
 from AprendeAyudando.templatetags.auth_extras import is_owner
 
@@ -113,14 +113,21 @@ def join(request, course_id):
 
     #-------------------------------------------TEST-------------------------------------------
     dic_test = {}
-    quizListCourse = Quiz.objects.filter(course=course)
+    if isOwner or request.user.is_superuser:
+        quizListCourse = Quiz.objects.filter(course=course)
+    else:
+        quizListCourse = Quiz.objects.filter(course=course, show_quiz=True)
     for q in quizListCourse:
         qualifications = Qualification.objects.filter(quiz=q, user=request.user)
         attempts = qualifications.count()
         max_user_qualification = qualifications.order_by('-total_score').first()
         if max_user_qualification and q.show_qualification:
             list_questions = Question.objects.filter(quiz=q)
-            max_qualification = list_questions.aggregate(Sum('question_score'))['question_score__sum']
+            #num_of_correct_answers = Answer.objects.filter(correct=True, question__in=list_questions).count()
+            max_qualification = 0
+            for question in list_questions:
+                max_qualification = max_qualification + Answer.objects.filter(correct=True, question=question).count() * question.question_score
+            #max_qualification = list_questions.aggregate(Sum('question_score'))['question_score__sum']
             num_questions = list_questions.count()
             dic_test[q.id] = [
                 str(attempts),

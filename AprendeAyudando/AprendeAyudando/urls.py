@@ -48,6 +48,8 @@ urlpatterns = [
     path('review/', include('review.urls')),
     path('resources/', include('resources.urls')),
     path('recoverpassword/', views.recoverpassword, name="recoverpassword"),
+    path('modify/<str:username>', views.modify, name="modify"),
+    path('update/<str:username>', views.update, name="update"),
 ]
 
 admin.site.site_header = 'Administración Aprende Ayudando'

@@ -27,6 +27,7 @@ from django.db.models import Q
 #Constants
 from AprendeAyudando.templatetags.auth_extras import ACTIVITY, COURSE
 
+from django.utils import timezone
 
 #-----------------------------------------CREACIÓN DE TESTS---------------------------------------------
 @login_required
@@ -56,6 +57,7 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
         new_quiz_title = request.POST["new_quiz_title"]
         new_quiz_description = request.POST["new_quiz_description"]
         new_quiz_date = request.POST["fecha"]
+        new_show_quiz = request.POST["show_quiz"]=='si'
         new_quiz_is_repeatable = request.POST["is_repeatable"]=='si'
         new_quiz_show_qualification = request.POST["show_qualification"]=='si'
         number_questions = request.POST["number_questions"]
@@ -70,7 +72,8 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
                 repeatable=new_quiz_is_repeatable,
                 show_qualification=new_quiz_show_qualification,
                 course=course,
-                maximum_date=new_quiz_date
+                maximum_date=new_quiz_date,
+                show_quiz=new_show_quiz
             )
         else:
             new_quiz = Quiz.objects.create(
@@ -78,7 +81,8 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
                 description=new_quiz_description,
                 repeatable=new_quiz_is_repeatable,
                 show_qualification=new_quiz_show_qualification,
-                activity=activity
+                activity=activity,
+                show_quiz=new_show_quiz
             )
         new_quiz.save()
 
@@ -204,6 +208,9 @@ def startQuiz(request, quiz_id):
         is_course = True
         activity_or_course_id = quiz.course.id
 
+    #-------------------------------------------------------------------------------------
+    expired = timezone.now() > quiz.maximum_date
+
     #----------------------------COMPROBACION DE REPETICION DEL TEST----------------------
     exist_finished_qualification = None
     exist_started_qualification = None
@@ -225,7 +232,8 @@ def startQuiz(request, quiz_id):
         'quiz':quiz,
         'exist_finished_qualification':exist_finished_qualification,
         'exist_started_qualification':exist_started_qualification,
-        'isOwner':isOwner
+        'isOwner':isOwner,
+        'expired':expired
     }
     return render(request, 'quiz/startquiz.html', ctx)
 
@@ -292,7 +300,7 @@ def doQuizQuestionAsked(request, question_id):
             if str(answer.id) in checked_values and answer.correct:
                 total_score = total_score + question.question_score
                 num_correct_answers = num_correct_answers + 1
-            elif ((str(answer.id) not in checked_values and answer.correct) or (str(answer.id) in checked_values and not answer.correct)):
+            elif (str(answer.id) in checked_values and not answer.correct):
                 total_score = total_score + question.question_negative_score    #Realmente se resta(el numero es negativo)
                 num_incorrect_answers = num_incorrect_answers + 1
         qualification = Qualification.objects.get(user=request.user, quiz=quiz, finish=False)
@@ -339,10 +347,13 @@ def deleteQuiz(request, quiz_id):
         if accepted:
             Quiz.objects.filter(id=quiz.id).delete()
         
-        if is_course:
+        if is_course and accepted:
             return viewsCourseJoin(request, activity_or_course_id)
-        else:
+        elif not is_course and accepted:
             return viewsActivityJoin(request, activity_or_course_id)
+        else:
+            return administrationQuiz(request, quiz.id)
+
     ctx = {
         'quiz':quiz
     }
@@ -350,7 +361,7 @@ def deleteQuiz(request, quiz_id):
 
 @login_required
 @permission_required('quiz.change_quiz', raise_exception=True)
-def updateQuiz(request, quiz_id):
+def administrationQuiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, pk=quiz_id)
 
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
@@ -378,7 +389,7 @@ def updateQuiz(request, quiz_id):
         'dic_answers': dic_answers,
         'quiz':quiz
     }
-    return render(request, 'quiz/updatequiz.html', ctx)
+    return render(request, 'quiz/administrationquiz.html', ctx)
 
 @login_required
 @permission_required('quiz.delete_question', raise_exception=True)
@@ -389,11 +400,9 @@ def deleteQuestion(request, question_id):
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
     if quiz.course == None:
         isOwner = quiz.activity.entity == request.user
-        is_course = False
         activity_or_course_id = quiz.activity.id
     else:
         isOwner = quiz.course.teacher == request.user
-        is_course = True
         activity_or_course_id = quiz.course.id
     
     if not isOwner and not request.user.is_superuser:
@@ -401,11 +410,172 @@ def deleteQuestion(request, question_id):
 
     #-------------------------------------ELIMINACION----------------------------------------
     #Hay que recalcular la calificacion total de cada persona
+    num_correct_answers = Answer.objects.filter(question=question, correct=True).count()
     questions_asked = QuestionAsked.objects.filter(question=question).distinct()
     for question_asked in questions_asked:
         qualification = question_asked.qualification
         qualification.total_score = qualification.total_score - question_asked.num_correct_answers * question_asked.question.question_score
         qualification.total_score = qualification.total_score - question_asked.num_incorrect_answers * question_asked.question.question_negative_score
+        if question_asked.num_correct_answers == num_correct_answers:
+            qualification.total_correct_questions = qualification.total_correct_questions - 1
         qualification.save()
     Question.objects.filter(id=question.id).delete()
-    return updateQuiz(request, quiz.id)
+    if Question.objects.filter(id=question.id).count() == 0:
+        Quiz.objects.filter(id=quiz.id).update(
+            show_quiz = False
+        )
+    return administrationQuiz(request, quiz.id)
+
+@login_required
+@permission_required('quiz.change_question', raise_exception=True)
+def updateQuestion(request, question_id):
+    question = get_object_or_404(Question, pk=question_id)
+    quiz = question.quiz
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    can_update = True
+    if quiz.show_quiz:
+        can_update = False
+    exist_qualification = QuestionAsked.objects.filter(question=question).count() > 0
+    #---------------------------------------UPDATE-----------------------------------------
+    list_answers = Answer.objects.filter(question=question)
+    if request.method == 'POST' and can_update:
+        question.text = request.POST["new_question_text"]
+        question.question_score = request.POST["new_question_score"]
+        question.question_negative_score = request.POST["new_question_negative_score"]
+        number_answers = request.POST["number_answers"]
+        question.save()
+        number_answers = int(number_answers)
+        list_old_answers = list_answers[:number_answers]
+        new_number_answers = number_answers - list_old_answers.count()
+        ctx = {
+            'question':question,
+            'list_old_answers':list_old_answers,
+            'can_update':can_update,
+            'new_number_answers':new_number_answers,
+            'number_answers':number_answers,
+            'range_new_number_answers':range(int(new_number_answers))
+        }
+        return render(request, 'quiz/updateanswers.html', ctx)
+
+    ctx = {
+        'question':question,
+        'list_answers':list_answers,
+        'can_update':can_update,
+        'exist_qualification':exist_qualification
+    }
+    return render(request, 'quiz/updatequestion.html', ctx)
+
+@login_required
+@permission_required('quiz.change_answer', raise_exception=True)
+def updateAnswers(request, question_id, number_answers):
+    question = get_object_or_404(Question, pk=question_id)
+    quiz = question.quiz
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    
+    can_update = False
+    if Qualification.objects.filter(quiz=quiz).count() == 0 and not quiz.show_quiz:
+        can_update = True
+    
+    #---------------------------------------UPDATE-----------------------------------------
+    list_old_answers = Answer.objects.filter(question=question)
+    list_old_answers = list_old_answers[:number_answers]
+    new_number_answers = number_answers - list_old_answers.count()
+
+    if request.method == 'POST' and can_update:
+        old_checked_values = request.POST.getlist('old_answer_is_correct[]')
+        for old_answer in list_old_answers:
+            old_answer_text = request.POST["old_answer_text"+str(old_answer.id)]
+            old_answer_is_correct = False
+            if str(old_answer.id) in old_checked_values:
+                old_answer_is_correct = True
+
+            Answer.objects.filter(id=old_answer.id).update(
+                text=old_answer_text,
+                correct=old_answer_is_correct
+            )
+        Answer.objects.filter(question=question).exclude(Q(id__in=list_old_answers)).distinct().delete()
+
+        #Preguntas nuevas
+        if(new_number_answers > 0):
+            new_checked_values = request.POST.getlist('new_answer_is_correct[]')
+            for x in range(new_number_answers):
+                new_answer_text = request.POST["new_answer_text"+str(x)]
+                new_answer_is_correct = False
+                if str(x) in new_checked_values:
+                    new_answer_is_correct = True
+                new_answer = Answer.objects.create(
+                    text=new_answer_text,
+                    correct=new_answer_is_correct,
+                    question=question
+                )
+                new_answer.save()
+        return administrationQuiz(request, quiz.id)
+    
+    ctx = {
+        'question':question,
+        'list_old_answers':list_old_answers,
+        'can_update':can_update,
+        'new_number_answers':new_number_answers,
+        'number_answers':number_answers,
+        'range_new_number_answers':range(int(new_number_answers))
+    }
+    return render(request, 'quiz/updateanswers.html', ctx)
+
+@login_required
+@permission_required('quiz.change_answer', raise_exception=True)
+def updateQuiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    
+    #----------------------------------------FORM---------------------------------------------
+    if request.method == 'POST':
+        quiz_title = request.POST["quiz_title"]
+        quiz_description = request.POST["quiz_description"]
+        quiz_date = request.POST["fecha"]
+        show_quiz = request.POST["show_quiz"]=='si'
+        quiz_is_repeatable = request.POST["is_repeatable"]=='si'
+        quiz_show_qualification = request.POST["show_qualification"]=='si'
+        Quiz.objects.filter(id=quiz.id).update(
+            title=quiz_title,
+            description=quiz_description,
+            maximum_date=quiz_date,
+            repeatable=quiz_is_repeatable,
+            show_quiz=show_quiz,
+            show_qualification=quiz_show_qualification
+        )
+        return administrationQuiz(request, quiz.id)
+    ctx = {
+        'quiz':quiz
+    }
+    return render(request, 'quiz/updatequiz.html', ctx)

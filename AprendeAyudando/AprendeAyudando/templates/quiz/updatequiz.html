@@ -1,68 +1,110 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Editar Test{% endblock %}
-{% load auth_extras %}
 
-{% block style %}
+{% block style %} 
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
 {% endblock %}
 
 {% block content %}
-    <section class="wrapper align-center login">
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Editar Test</h1>
 
-        <div class="container 100%">
-            <h1 class="bigger">Editar Test</h1>
-            <br>
-            {% if list_questions %}
-            <table class="alt">
-                <thead>
-                    <tr>
-                        <th style="text-align:center;" width="33%"><strong style="font-size:20px">Preguntas</strong></th>
-                        <th style="text-align:center;" width="33%"><strong style="font-size:20px">Posibles Respuestas</strong></th>
-                        <th style="text-align:center;" width="33%"><strong style="font-size:20px">Acción</strong></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for question in list_questions %}
-                    <tr>
-                        <td style="text-align: center; vertical-align: middle;"><strong>{{ question.text }}</strong></td>
-
-                        <td style="text-align: left; vertical-align: middle;">
-                            {% with list_answers=dic_answers|get_item_from_index:question.id %}
-                                {% for answer in list_answers %}
-                                    {% if answer.correct %}
-                                        <p style="margin-bottom:0px;"><strong style="color:green">&#10004; {{answer.text}}</strong></p>
-                                    {% else %}
-                                        <p style="margin-bottom:0px;"><strong style="color:red">&#10008; {{answer.text}}</strong></p>
-                                    {% endif %}
-                                {% endfor %}
-                            {% endwith %}
-                        </td>
-
-                        <td style="text-align: center; vertical-align: middle;">
-                            <a href="#" type="submit" class="letraEnBlanco">Editar</a>
-                            <a href="{% url 'quiz:deleteQuestion' question.id %}" class="button special">Eliminar</a>
-                            <!--<form action="#" method="POST" style="margin-bottom:0px">
-                                {% csrf_token %}
-                                <ul class="actions" style="margin-bottom:0px">
-                                    <li>
-                                        <input type="submit" value="Editar" name="aceptar" class="letraEnBlanco">
-                                    </li>
-                                    <li>
-                                        <input type="submit" value="Eliminar" name="rechazar" class="special">
-                                    </li>
-                                </ul>
-                            </form>-->
-                        </td>
-
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
+        <form action="{% url 'quiz:updateQuiz' quiz.id %}" method="POST">
+            {% csrf_token %}
+            <p><strong>Título del test:</strong></p> 
+            <p><input type="text" name="quiz_title" placeholder="Titulo del Test" value="{{quiz.title}}" required></p>
+            <p><strong>Descripción:</strong></p>
+            <p><input type="textarea" class="biggerTextarea" placeholder="Descripción" value="{{quiz.description}}" name="quiz_description" id= ""></p>
+            <p><strong>Fecha límite:</strong></p>
+            {% if quiz.maximum_date is not None %}
+                <p><input type="datetime-local" name="fecha" value="{{quiz.maximum_date|date:"Y-m-d"}}T{{quiz.maximum_date|date:"H"}}:{{quiz.maximum_date.minute}}"></p>
             {% else %}
-                <p>No hay preguntas disponibles.</p>
+                <p><input type="datetime-local" name="fecha"></p>
             {% endif %}
-        </div>
+            <p>
+                <fieldset>
+                    <legend><strong>¿Desea publicar el Test?</strong></legend>
+                    <br>
+                    {% if quiz.show_quiz %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="si" id="si_show_quiz" checked>
+                        <label for="si_show_quiz">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="no" id="no_show_quiz">
+                        <label for="no_show_quiz">
+                            No
+                        </label>
+                    {% else %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="si" id="si_show_quiz">
+                        <label for="si_show_quiz">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_quiz" value="no" id="no_show_quiz" checked>
+                        <label for="no_show_quiz">
+                            No
+                        </label>
+                    {% endif %}
+                    
+                    
+                </fieldset>
+            </p>
+            <p>
+                <fieldset>
+                    <legend><strong>¿Desea que el test se pueda repetir varias veces?</strong></legend>
+                    <br>
+                    {% if quiz.repeatable %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="si" id="si_repeatable" checked>
+                        <label for="si_repeatable">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="no" id="no_repeatable">
+                        <label for="no_repeatable">
+                            No
+                        </label>
+                    {% else %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="si" id="si_repeatable">
+                        <label for="si_repeatable">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="is_repeatable" value="no" id="no_repeatable" checked>
+                        <label for="no_repeatable">
+                            No
+                        </label>
+                    {% endif %}
+                    
+                    
+                </fieldset>
+            </p>
 
-    </section>
+            <p>
+                <fieldset>
+                    <legend><strong>¿Desea que el usuario pueda ver la calificación de inmediato (tras finalizar el test)?</strong></legend>
+                    <br>
+                    {% if quiz.show_qualification %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="si" id="si_show_qualification" checked>
+                        <label for="si_show_qualification">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="no" id="no_show_qualification">
+                        <label for="no_show_qualification">
+                            No
+                        </label>
+                    {% else %}
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="si" id="si_show_qualification">
+                        <label for="si_show_qualification">
+                            Sí
+                        </label>
+                        <input type="radio" class="eliminarDefaultCheckBox" name="show_qualification" value="no" id="no_show_qualification" checked>
+                        <label for="no_show_qualification">
+                            No
+                        </label>
+                    {% endif %}
+                    
+                    
+                </fieldset>
+            </p>
+        <input type="submit" value="Actualizar Test">
+    </form>
+</div>
 {% endblock %}
