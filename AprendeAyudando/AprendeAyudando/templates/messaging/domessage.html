@@ -1,0 +1,43 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Redactar Mensaje{% endblock %}
+
+{% block style %} 
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+    <div class="container 75% align-center minHeight">
+        <h1 class="bigger">Redactar Mensaje</h1>
+
+        <form action="{% url 'messaging:doMessage' %}" method="POST">
+            {% csrf_token %}
+
+            
+            {% if elements is None %}
+                <strong>Email o nombre de usuario</strong>
+                <p><input type="text" name="new_message_to_email_or_username" placeholder="Email o Nombre de usuario" required></p>
+            {% else %}
+                <strong><span style="color:red;">Error: </span>Email o nombre de usuario no existe</strong>
+                <p><input type="text" name="new_message_to_email_or_username" placeholder="Email o Nombre de usuario" required value="{{elements.new_message_to_email_or_username}}"></p>
+                
+            {% endif %}
+
+            <strong>Título del Mensaje:</strong>
+            {% if elements is None %}
+                <p><input type="text" name="new_message_title" placeholder="Título del mensaje" required></p>
+            {% else %}
+                <p><input type="text" name="new_message_title" placeholder="Título del mensaje" required value="{{elements.new_message_title}}"></p>
+            {% endif %}
+
+            <strong>Texto:</strong>
+            {% if elements is None %}
+                <p><input type="textarea" class="biggerTextarea" name="new_message_text"></p>
+            {% else %}
+                 <p><input type="textarea" class="biggerTextarea" name="new_message_text" value="{{elements.new_message_text}}"></p>
+            {% endif %}
+            <a href="{% url 'messaging:viewMessages' %}"class="button special">Volver</a>
+            <input type="submit" class="letraEnBlanco" value="Enviar Mensaje">
+        </form>
+</div>
+{% endblock %}
