@@ -28,7 +28,6 @@ def createForum(request, courseOrActivity, activityCourseFk):
         return HttpResponseForbidden()
 
     #---------------------------FORM POST----------------------
-    if request.method=="POST":
 
     if request.method=="POST":
         new_forum_name=request.POST["new_forum_name"]
