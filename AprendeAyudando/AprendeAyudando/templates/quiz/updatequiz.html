@@ -20,7 +20,7 @@
             </div>
             <div class="form-group">
                 <label for="quiz_description"><strong>Descripción:</strong></label>
-                <textarea class="form-control text-center" placeholder="Descripción" value="{{quiz.description}}" name="quiz_description" rows="3"></textarea>
+                <textarea class="form-control text-center" placeholder="Descripción" name="quiz_description" rows="3">{{quiz.description}}</textarea>
             </div>
             {% if quiz.maximum_date is not None %}
                 <div class="form-group">

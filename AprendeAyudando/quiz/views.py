@@ -96,29 +96,44 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
 
 @login_required
 @permission_required('quiz.add_question', raise_exception=True)
-def createQuestions(request, courseOrActivity, courseOrActivity_id, quiz_id, number_questions):
+def createQuestions(request, quiz_id, number_questions):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
 
     #----------------------------------ACTIVIDAD O CURSO?------------------------------------
-    if(courseOrActivity == COURSE):
+    """if(courseOrActivity == COURSE):
         course = get_object_or_404(Course, pk=courseOrActivity_id)
         quiz = get_object_or_404(Quiz, pk=quiz_id)
         isOwner = is_owner(request.user, course.teacher)
     else:
         activity = get_object_or_404(Activity, pk=courseOrActivity_id)
         quiz = get_object_or_404(Quiz, pk=quiz_id)
-        isOwner = is_owner(request.user, activity.entity)
+        isOwner = is_owner(request.user, activity.entity)"""
 
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
-    if not isOwner and not request.user.is_superuser:
-        return HttpResponseForbidden()
+    """if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()"""
     
     #-----------------------------------ELEMENTOS PARA HTML-----------------------------------
     ctx = {
         'isOwner':isOwner,
         'quiz':quiz,
-        'courseOrActivity':courseOrActivity,
-        'courseOrActivity_id':courseOrActivity_id,
-        'number_questions':number_questions
+        #'courseOrActivity':courseOrActivity,
+        'activity_or_course_id':activity_or_course_id,
+        'number_questions':number_questions,
+        'is_course':is_course
     }
 
     #-------------------------------------POST FORM-------------------------------------------
@@ -146,29 +161,48 @@ def createQuestions(request, courseOrActivity, courseOrActivity_id, quiz_id, num
 
 @login_required
 @permission_required('quiz.add_answer', raise_exception=True)
-def createAnswers(request, courseOrActivity, courseOrActivity_id, question_id, number_questions, number_answers):
-    if(courseOrActivity == COURSE):
+def createAnswers(request, question_id, number_questions, number_answers):
+    question = get_object_or_404(Question, pk=question_id)
+    quiz = question.quiz
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+
+
+    """if(courseOrActivity == COURSE):
         course = get_object_or_404(Course, pk=courseOrActivity_id)
         question = get_object_or_404(Question, pk=question_id)
         isOwner = is_owner(request.user, course.teacher)
     else:
         activity = get_object_or_404(Activity, pk=courseOrActivity_id)
         question = get_object_or_404(Question, pk=question_id)
-        isOwner = is_owner(request.user, activity.entity)
+        isOwner = is_owner(request.user, activity.entity)"""
 
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
-    if not isOwner and not request.user.is_superuser:
-        return HttpResponseForbidden()
+    """if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()"""
     
     #-----------------------------------ELEMENTOS PARA HTML-----------------------------------
     ctx = {
         'isOwner':isOwner,
-        'courseOrActivity':courseOrActivity,
-        'courseOrActivity_id':courseOrActivity_id,
-        'quiz': question.quiz,
+        #'courseOrActivity':courseOrActivity,
+        'activity_or_course_id':activity_or_course_id,
+        'is_course':is_course,
+        'quiz': quiz,
         'number_answers': number_answers,
-        'constant_activity': ACTIVITY,
-        'constant_course': COURSE,
+        #'constant_activity': ACTIVITY,
+        #'constant_course': COURSE,
     }
 
     #----------------------------------------FORM---------------------------------------------

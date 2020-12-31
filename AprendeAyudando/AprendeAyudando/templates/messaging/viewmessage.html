@@ -13,7 +13,7 @@
             <h3 style="font-size:25px">{{ message.title }}</h3>
             <hr>
             
-            <p>Autor: <a href="{% url 'messaging:viewMessage' message.id %}" class="text-decoration-none">{{ message.user_origin }}</a></p>
+            <p>Autor: <strong class="primary">{{ message.user_origin }}</strong></p>
             <p class="text-justify">{{ message.text }}</p>
             <form action="{% url 'messaging:viewMessage' message.id %}" method="POST">
                 {% csrf_token %}

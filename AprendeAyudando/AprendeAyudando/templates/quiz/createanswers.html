@@ -11,7 +11,7 @@
     <div class="container py-5 text-center">
         <h2>Crear Test - Posibles respuestas</h2>
         <p><strong>Posibles respuestas (selecciona también las respuestas correctas):</strong></p>
-        <form action="{% url 'quiz:createAnswers' courseOrActivity courseOrActivity_id question.id number_questions number_answers %}" method="POST">
+        <form action="{% url 'quiz:createAnswers' question.id number_questions number_answers %}" method="POST">
             {% csrf_token %}
             {% for nn in range_number_answers %}
             <div class="form-group row justify-content-center">
