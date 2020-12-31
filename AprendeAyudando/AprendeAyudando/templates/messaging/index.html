@@ -11,109 +11,93 @@
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
     <div class="container py-5 text-center">
-                <div class="row">
-                    <h2 class="col-4 mr-auto mb-4 text-left">Mensajes</h2>
-                    <div class="col-8 mr-auto mb-4 text-right">
-                        <a href="{% url 'messaging:doMessage' %}" class="btn btn-secondary">Redactar Mensaje</a>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div id="myBtnContainer" class="col-12 mr-auto mb-4 text-left">
-                        <button class="btnMen active" onclick="filterSelection('all')">Mostrar todo</button>
-                        <button class="btnMen" onclick="filterSelection('recibidos')">Recibidos</button>
-                        <button class="btnMen" onclick="filterSelection('enviados')">Enviados</button>
-                    </div>
-                </div>
-                <br>
-                <br>
-                <div class=" listaActividades activityElement">
-                    <div class="activityElementContent">
-                    
-                        <!--Recibidos-->
-                        <div class="filterDiv recibidos">
-                            {% if list_received_message %}
-                                <ol id="prettyList" style="width:92%;">
-                                    {% for received_message in list_received_message %}
-                                        <li id="prettyListItem">
-                                            <a href="{% url 'messaging:viewMessage' received_message.id %}">
-                                                {{ received_message.user_destination.first_name }} {{ received_message.user_destination.last_name }}
-                                                - {{ received_message.title }}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ol>
-                            {% else %}
-                                <p>No has recibido ningún mensaje.</p>
-                            {% endif %}
-                        </div>
-
-                        <!--Enviados-->
-                        <div class="filterDiv enviados">
-                            {% if list_sent_messages %}
-                                <ol id="prettyList" style="width:92%;">
-                                    {% for sent_message in list_sent_messages %}
-                                        <li id="prettyListItem">
-                                            <a href="{% url 'messaging:viewMessage' sent_message.id %}">
-                                                {{ sent_message.user_origin.first_name }} {{ sent_message.user_origin.last_name }}
-                                                - {{ sent_message.title }}
-                                            </a>
-                                        </li>
-                                    {% endfor %}
-                                </ol>
-                            {% else %}
-                                <p>No has enviado ningún mensaje.</p>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            
+        <div class="row">
+            <h2 class="col-6 mr-auto mb-4 text-left">Mensajes</h2>
+            <div class="col-6 mr-auto mb-4 text-right">
+                <a href="{% url 'messaging:doMessage' %}" class="btn btn-secondary">Redactar Mensaje</a>
+            </div>
         </div>
-    </section>
 
-    <script>
-        filterSelection("all")
-        function filterSelection(c) {
-            var x, i;
-            x = document.getElementsByClassName("filterDiv");
-            if (c == "all") c = "";
-            for (i = 0; i < x.length; i++) {
-                w3RemoveClass(x[i], "show");
-                if (x[i].className.indexOf(c) > -1) w3AddClass(x[i], "show");
-            }
-        }
+        <div class=" listaActividades activityElement">
+            <div class="activityElementContent">
+                <!--Prueba-->
+                <div class="row">
+                    <div class="col-2">
+                        <div class="list-group" id="list-tab" role="tablist">
+                            <a class="list-group-item list-group-item-action active" id="list-all-list" data-bs-toggle="list" href="#list-all" role="tab" aria-controls="all">Mostrar Todo</a>
+                            <a class="list-group-item list-group-item-action" id="list-received-list" data-bs-toggle="list" href="#list-received" role="tab" aria-controls="received">Recibidos</a>
+                            <a class="list-group-item list-group-item-action" id="list-sent-list" data-bs-toggle="list" href="#list-sent" role="tab" aria-controls="sent">Enviados</a>
+                        </div>
+                    </div>
 
-        function w3AddClass(element, name) {
-            var i, arr1, arr2;
-            arr1 = element.className.split(" ");
-            arr2 = name.split(" ");
-            for (i = 0; i < arr2.length; i++) {
-                if (arr1.indexOf(arr2[i]) == -1) {element.className += " " + arr2[i];}
-            }
-        }
+                    <div class="col-10">
+                        <div class="tab-content" id="nav-tabContent">
 
-        function w3RemoveClass(element, name) {
-            var i, arr1, arr2;
-            arr1 = element.className.split(" ");
-            arr2 = name.split(" ");
-            for (i = 0; i < arr2.length; i++) {
-                while (arr1.indexOf(arr2[i]) > -1) {
-                    arr1.splice(arr1.indexOf(arr2[i]), 1);     
-                }
-            }
-            element.className = arr1.join(" ");
-        }
+                            <div class="tab-pane fade show active" id="list-all" role="tabpanel">
+                                {% if list_received_message or list_sent_messages %}
+                                    <ol id="prettyList" style="width:92%;">
+                                        {% for received_message in list_received_message %}
+                                            <li id="prettyListItem">
+                                                <a href="{% url 'messaging:viewMessage' received_message.id %}">
+                                                    De: {{ received_message.user_origin.first_name }} {{ received_message.user_origin.last_name }}
+                                                    - {{ received_message.title }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                        {% for sent_message in list_sent_messages %}
+                                            <li id="prettyListItem">
+                                                <a href="{% url 'messaging:viewMessage' sent_message.id %}">
+                                                    Para: {{ sent_message.user_destination.first_name }} {{ sent_message.user_destination.last_name }}
+                                                    - {{ sent_message.title }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                {% else %}
+                                    <p>No has recibido ni enviado ningún mensaje.</p>
+                                {% endif %}
+                            </div>
 
+                            <div class="tab-pane fade" id="list-received" role="tabpanel" aria-labelledby="list-received-list">
+                                {% if list_received_message %}
+                                    <ol id="prettyList" style="width:92%;">
+                                        {% for received_message in list_received_message %}
+                                            <li id="prettyListItem">
+                                                <a href="{% url 'messaging:viewMessage' received_message.id %}">
+                                                    De: {{ received_message.user_origin.first_name }} {{ received_message.user_origin.last_name }}
+                                                    - {{ received_message.title }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                {% else %}
+                                    <p>No has recibido ningún mensaje.</p>
+                                {% endif %}
+                            </div>
 
-        var btnContainer = document.getElementById("myBtnContainer");
-        var btns = btnContainer.getElementsByClassName("btnMen");
-        for (var i = 0; i < btns.length; i++) {
-            btns[i].addEventListener("click", function(){
-                var current = document.getElementsByClassName("active");
-                current[0].className = current[0].className.replace(" active", "");
-                this.className += " active";
-            });
-        }
-    </script>
+                            <div class="tab-pane fade" id="list-sent" role="tabpanel" aria-labelledby="list-sent-list">
+                                {% if list_sent_messages %}
+                                    <ol id="prettyList" style="width:92%;">
+                                        {% for sent_message in list_sent_messages %}
+                                            <li id="prettyListItem">
+                                                <a href="{% url 'messaging:viewMessage' sent_message.id %}">
+                                                    Para: {{ sent_message.user_destination.first_name }} {{ sent_message.user_destination.last_name }}
+                                                    - {{ sent_message.title }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                {% else %}
+                                    <p>No has enviado ningún mensaje.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
 
 {% endblock %}
