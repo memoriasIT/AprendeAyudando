@@ -19,13 +19,13 @@
                 <input type="text" name="quiz_title" class="form-control text-center" value="{{quiz.title}}" required>
             </div>
             <div class="form-group">
-                <label for="quiz_description"><strong>Descripción</strong></label>
+                <label for="quiz_description"><strong>Descripción:</strong></label>
                 <textarea class="form-control text-center" placeholder="Descripción" value="{{quiz.description}}" name="quiz_description" rows="3"></textarea>
             </div>
             {% if quiz.maximum_date is not None %}
                 <div class="form-group">
                     <label for="fecha"><strong>Fecha límite:</strong></label>
-                    <input type="datetime-local" class="form-control text-center" name="fecha" value="{{quiz.maximum_date|date:'Y-m-d'}}:{{quiz.maximum_date|date:'H'}}:{{quiz.maximum_date.minute}}"></input>
+                    <input type="datetime-local" class="form-control text-center" name="fecha" value=""></input>
                 </div>
             {% else %}
             <div class="form-group">
