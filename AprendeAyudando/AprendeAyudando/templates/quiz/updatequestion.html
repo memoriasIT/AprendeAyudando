@@ -35,7 +35,7 @@
                 </div>
                 <div class="form-group">
                     <label for="new_question_negative_score"><strong>Puntuación negativa cada respuesta errónea:</strong></p></label>
-                    <input class="form-control text-center col-1 mx-auto" type="number" min="0" value="{{question.question_negative_score}}" name="new_question_negative_score"required>
+                    <input class="form-control text-center col-1 mx-auto" type="number" max="0" value="{{question.question_negative_score}}" name="new_question_negative_score"required>
                 </div>
                 <div class="form-group">
                     <label for="number_answers"><strong>Número de respuestas posibles:<span class="text-success">(déjelo a {{list_answers|length}} si no desea añadir o quitar respuestas)</span>:</strong></p></label>

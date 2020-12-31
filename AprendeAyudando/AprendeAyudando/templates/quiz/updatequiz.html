@@ -25,7 +25,7 @@
             {% if quiz.maximum_date is not None %}
                 <div class="form-group">
                     <label for="fecha"><strong>Fecha límite:</strong></label>
-                    <input type="datetime-local" class="form-control text-center" name="fecha" value=""></input>
+                    <input type="datetime-local" class="form-control text-center" name="fecha" value="{{quiz.maximum_date|date:'Y-m-d'}}T{{quiz.maximum_date|date:'H'}}:{{quiz.maximum_date.minute}}"></input>
                 </div>
             {% else %}
             <div class="form-group">
@@ -33,10 +33,6 @@
                 <input type="datetime-local" class="form-control text-center" name="fecha"></input>
             </div>
             {% endif %}
-            <div class="form-group">
-                <label for="number_questions"><strong>Número de preguntas:</strong></p></label>
-                <input class="form-control text-center col-1 mx-auto" type="number" max="100" min="1" name="number_questions" id="rating" required>
-            </div>
             <fieldset class="form-group">
                 <legend class="col-form-label pt-0" ><strong>¿Desea publicar el Test de inmediato?</strong></legend>
                 <div class="col-sm-12">
