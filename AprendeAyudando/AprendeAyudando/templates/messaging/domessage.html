@@ -14,18 +14,18 @@
         <form action="{% url 'messaging:doMessage' %}" method="POST">
             {% csrf_token %}
             <div class="form-group">
+                <label for="new_message_to_email_or_username"><strong>Email o nombre de usuario</strong></label>
                 {% if elements is None %}
-                    <label for="new_message_to_email_or_username"><strong>Email o nombre de usuario</strong></label>
-                    <input type="text" name="new_message_to_email_or_username" class="form-control text-center" placeholder="Email o Nombre de usuario" required>
+                    <input type="text" id="new_message_to_email_or_username" name="new_message_to_email_or_username" class="form-control text-center" placeholder="Email o Nombre de usuario" required>
                 {% else %}
-                    <label for="new_message_to_email_or_username">
-                        {% if show_email_or_user_error %}
-                            <strong><span style="color:red;">Error: </span>Email o nombre de usuario no existe</strong>
-                        {% else %}
-                            <strong>Email o nombre de usuario</strong>
-                        {% endif %}
-                    </label>
-                    <input type="text" name="new_message_to_email_or_username" class="form-control text-center" placeholder="Email o Nombre de usuario" required value="{{elements.new_message_to_email_or_username}}"></p>
+                    {% if not show_email_or_user_error %}
+                        <input type="text" id="new_message_to_email_or_username" name="new_message_to_email_or_username" class="form-control text-center" placeholder="Email o Nombre de usuario" required value="{{elements.new_message_to_email_or_username}}"></p>
+                    {% else %}
+                        <input type="text" id="new_message_to_email_or_username" name="new_message_to_email_or_username" class="form-control text-center is-invalid" placeholder="Email o Nombre de usuario" required value="{{elements.new_message_to_email_or_username}}"></p>
+                        <div class="invalid-feedback">
+                            Error. Email o nombre de usuario no existe.
+                        </div>
+                    {% endif %}
                 {% endif %}
             </div>
 
