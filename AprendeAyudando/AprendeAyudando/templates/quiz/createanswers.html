@@ -8,26 +8,22 @@
 
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
-    <div class="container">
-        <h2 class="bigger">Crear Test - Posibles respuestas</h2>
-        
+    <div class="container py-5 text-center">
+        <h2>Crear Test - Posibles respuestas</h2>
+        <p><strong>Posibles respuestas (selecciona también las respuestas correctas):</strong></p>
         <form action="{% url 'quiz:createAnswers' courseOrActivity courseOrActivity_id question.id number_questions number_answers %}" method="POST">
             {% csrf_token %}
-            <p><strong>Posibles respuestas (selecciona también las respuestas correctas):</strong></p>
             {% for nn in range_number_answers %}
-                <p>
-                    <input type="checkbox" class="eliminarDefaultCheckBox" id="pregunta{{nn}}" name="new_answer_is_correct[]" value="{{nn}}">
-                    <label for="pregunta{{nn}}">
-                        <input type="text" name="new_answer_text{{nn}}" required>
-                    </label>
-                </p>
+            <div class="form-group row justify-content-center">
+                <label for="pregunta{{nn}}"></label>
+                <input class="form-control text-center col-4" type="text" name="new_answer_text{{nn}}" required>
+                <input class="form-control text-center col-1" type="checkbox" id="pregunta{{nn}}" name="new_answer_is_correct[]" value="{{nn}}">
+            </div>
             {% endfor %}
-            <br>
-            <br>
             {% if number_questions > 1 %}
-                <input type="submit" value="Siguiente pregunta">
+                <input type="submit" value="Siguiente pregunta" class="btn btn-success btn-lg"> 
             {% else %}
-                <input type="submit" value="Terminar Test">
+                <input type="submit" value="Terminar Test" class="btn btn-success btn-lg">
             {% endif %}
         </form>
     </div>

@@ -8,10 +8,11 @@
 {% endblock %}
 
 {% block content %}
-    <section class="wrapper align-left login">
-
-        <div class="container 100%">
-            <h1 class="bigger">Editar Test</h1>
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-6">
+            <h1>Editar Test</h1>
             <p>Título del test: <strong>{{ quiz.title }}</strong></p>
             <p>Descripción del test: <strong>{{ quiz.description }}</strong></p>
             {% if quiz.maximum_date is None %}
@@ -21,81 +22,87 @@
             {% endif %}
             
             {% if quiz.repeatable %}
-                <p>El test es repetible: <strong style="color:#2ECC71">SÍ</strong></p>
+                <p>El test es repetible: <strong class="text-success">SÍ</strong></p>
             {% else %}
-                <p>El test es repetible: <strong style="color:red">NO</strong></p>
+                <p>El test es repetible: <strong class="text-danger">NO</strong></p>
             {% endif %}
 
             {% if quiz.show_qualification %}
-                <p>Mostrar calificación: <strong style="color:#2ECC71">SÍ</strong></p>
+                <p>Mostrar calificación: <strong class="text-success">SÍ</strong></p>
             {% else %}
-                <p>Mostrar calificación: <strong style="color:red">NO</strong></p>
+                <p>Mostrar calificación: <strong class="text-danger">NO</strong></p>
             {% endif %}
 
             {% if quiz.show_quiz %}
-                <p>Test público: <strong style="color:#2ECC71">SÍ</strong></p>
+                <p>Test público: <strong class="text-success">SÍ</strong></p>
             {% else %}
-                <p>Test público: <strong style="color:red">NO</strong></p>
+                <p>Test público: <strong class="text-danger">NO</strong></p>
             {% endif %}
-            <a href="{% url 'quiz:updateQuiz' quiz.id %}" type="submit" class="letraEnBlanco" style="margin-bottom:30px">Editar campos</a>
-            <a href="{% url 'quiz:deleteQuiz' quiz.id %}" class="button special">Borrar Test</a>
-            <h1 class="bigger">Preguntas</h1>
-            <p><strong>Cosas a tener en cuenta:</p>
-            <p>- Si usted elimina una pregunta, todas las calificaciones de todos los alumnos serán calculadas de nuevo automáticamente.</p>
-            <p>
-                - Para editar una pregunta debe poner el test en privado. Si ya existe una calificación o una persona realizando el test,
-                no podrá editar la pregunta, debe eliminar la pregunta y crear una nueva.
-            </p></strong>
-            {% if list_questions %}
-                <table class="alt">
-                    <thead>
-                        <tr>
-                            <th style="text-align:center;" width="33%"><strong style="font-size:20px">Preguntas</strong></th>
-                            <th style="text-align:center;" width="33%"><strong style="font-size:20px">Posibles Respuestas</strong></th>
-                            <th style="text-align:center;" width="33%"><strong style="font-size:20px">Acción</strong></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {% for question in list_questions %}
-                        <tr>
-                            <td style="text-align: center; vertical-align: middle;"><strong>{{ question.text }}</strong></td>
-
-                            <td style="text-align: left; vertical-align: middle;">
-                                {% with list_answers=dic_answers|get_item_from_index:question.id %}
-                                    {% for answer in list_answers %}
-                                        {% if answer.correct %}
-                                            <p style="margin-bottom:0px;"><strong style="color:green">&#10004; {{answer.text}}</strong></p>
-                                        {% else %}
-                                            <p style="margin-bottom:0px;"><strong style="color:red">&#10008; {{answer.text}}</strong></p>
-                                        {% endif %}
-                                    {% endfor %}
-                                {% endwith %}
-                            </td>
-
-                            <td style="text-align: center; vertical-align: middle;">
-                                <a href="{% url 'quiz:updateQuestion' question.id %}" type="submit" class="letraEnBlanco">Editar</a>
-                                <a href="{% url 'quiz:deleteQuestion' question.id %}" class="button special">Eliminar</a>
-                                <!--<form action="#" method="POST" style="margin-bottom:0px">
-                                    {% csrf_token %}
-                                    <ul class="actions" style="margin-bottom:0px">
-                                        <li>
-                                            <input type="submit" value="Editar" name="aceptar" class="letraEnBlanco">
-                                        </li>
-                                        <li>
-                                            <input type="submit" value="Eliminar" name="rechazar" class="special">
-                                        </li>
-                                    </ul>
-                                </form>-->
-                            </td>
-
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            {% else %}
-                <p>No hay preguntas disponibles.</p>
-            {% endif %}
+            </div>
+            <div class="col-6 text-right">
+                <a href="{% url 'quiz:updateQuiz' quiz.id %}" type="submit" class="btn btn-sm btn-warning">Editar campos</a>
+                <a href="{% url 'quiz:deleteQuiz' quiz.id %}" class="btn btn-sm btn-danger">Borrar Test</a>
+            </div>
+            
         </div>
+        
 
-    </section>
+        <h2>Preguntas</h2>
+        <p><strong>Cosas a tener en cuenta:</p>
+        <p>- Si usted elimina una pregunta, todas las calificaciones de todos los alumnos serán calculadas de nuevo automáticamente.</p>
+        <p>
+            - Para editar una pregunta debe poner el test en privado. Si ya existe una calificación o una persona realizando el test,
+            no podrá editar la pregunta, debe eliminar la pregunta y crear una nueva.
+        </p></strong>
+        {% if list_questions %}
+            <table class="table text-center">
+                <thead>
+                    <tr>
+                        <th><strong style="font-size:20px">Preguntas</strong></th>
+                        <th><strong style="font-size:20px">Posibles Respuestas</strong></th>
+                        <th><strong style="font-size:20px">Acción</strong></th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for question in list_questions %}
+                    <tr>
+                        <td style="text-align: center; vertical-align: middle;"><strong>{{ question.text }}</strong></td>
+
+                        <td style="text-align: left; vertical-align: middle;">
+                            {% with list_answers=dic_answers|get_item_from_index:question.id %}
+                                {% for answer in list_answers %}
+                                    {% if answer.correct %}
+                                        <p><strong class="text-success">&#10004; {{answer.text}}</strong></p>
+                                    {% else %}
+                                        <p><strong class="text-warning">&#10008; {{answer.text}}</strong></p>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endwith %}
+                        </td>
+
+                        <td style="vertical-align: middle;">
+                            <a href="{% url 'quiz:updateQuestion' question.id %}" type="submit" class="btn btn-warning">Editar</a>
+                            <a href="{% url 'quiz:deleteQuestion' question.id %}" class="btn btn-danger">Eliminar</a>
+                            <!--<form action="#" method="POST" style="margin-bottom:0px">
+                                {% csrf_token %}
+                                <ul class="actions" style="margin-bottom:0px">
+                                    <li>
+                                        <input type="submit" value="Editar" name="aceptar" class="letraEnBlanco">
+                                    </li>
+                                    <li>
+                                        <input type="submit" value="Eliminar" name="rechazar" class="special">
+                                    </li>
+                                </ul>
+                            </form>-->
+                        </td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No hay preguntas disponibles.</p>
+        {% endif %}
+    </div>
+</section>
 {% endblock %}

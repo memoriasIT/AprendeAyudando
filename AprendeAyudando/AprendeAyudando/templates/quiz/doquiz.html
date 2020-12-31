@@ -8,26 +8,22 @@
 
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
-    <div class="container">
-    <h2 class="bigger align-center">Test</h2>
+    <div class="container py-5 text-center">
+    <h2>Test</h2>
     <form action="{% url 'quiz:doQuizQuestionAsked' question.id %}" method="POST">
         {% csrf_token %}
         <p><strong>{{question.text}}</strong></p>
         {% for answer in possible_answers %}
-            <p>
-                <input type="checkbox" class="eliminarDefaultCheckBox" id="{{answer.id}}" name="list_answers[]" value="{{answer.id}}">
-                <label for="{{answer.id}}">
-                    <strong>{{answer.text}}</strong>
-                </label>
-            </p>
+            <div class="form-group row justify-content-center">
+                <label for="{{answer.id}}"class="col-5 text-left"><strong>{{answer.text}}</strong></label>
+                <input type="checkbox" class="form-control col-1" id="{{answer.id}}" name="list_answers[]" value="{{answer.id}}">
+            </div>
         {% endfor %}
-        <br>
-        <br>
-        <div class="align-center">
+        <div>
             {% if not is_last_answer %}
-                <input type="submit"  value="Siguiente pregunta">
+                <input type="submit"  value="Siguiente pregunta" class="btn btn-secondary btn-lg">
             {% else %}
-                <input type="submit" value="Terminar Test">
+                <input type="submit" value="Terminar Test" class="btn btn-secondary btn-lg">
             {% endif %}
         </div>
     </form>

@@ -26,7 +26,7 @@
                         <tr class="text-center">
                             <td><strong>{{ user.username }}</strong></td>
                             <td>
-                                <a class="btn btn-danger btn-sm" href="{% url 'courses:removeUser' course.id u.id %}">Expulsar</a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'courses:removeUser' course.id user.id %}">Expulsar</a>
                             </td>
                         </tr>
                     {% endfor %}
@@ -37,7 +37,7 @@
                 {% endif %}
             </div>
             <div class="col-12 text-center">
-                <a href="{% url 'courses:join' course.id %}" class="btn btn-warning btn-sm">Volver a actividad</a>  
+                <a href="{% url 'courses:join' course.id %}" class="btn btn-warning btn-sm">Volver a curso</a>  
             </div>
         </div>
         

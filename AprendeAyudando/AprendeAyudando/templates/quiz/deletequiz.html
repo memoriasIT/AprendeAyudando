@@ -7,29 +7,36 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-left minHeight">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5">
         <h1 class="bigger">Borrar Test</h1>
         <p><strong>¿Está seguro de borrar el siguiente test?:</strong></p>
-        <p>{{quiz.title}}</p>
-        <p>{{quiz.description}}</p>
+        <div class="container bg-light">
+            <p><strong>{{quiz.title}}</strong></p>
+            <p>{{quiz.description}}</p>
+        </div>
+        
         <form action="{% url 'quiz:deleteQuiz' quiz.id %}" method="POST">
             {% csrf_token %}
-            <p>
-                <fieldset>
-                    <legend><strong style="font-size:20px">Todos los datos (como las calificaciones de los distintos usuarios) asociados a este test serán borrados. ¿Está seguro?</strong></legend>
-                    <br>
-                    <input type="radio" class="eliminarDefaultCheckBox" name="confirm_delete" value="no" id="no_confirm_delete" checked>
-                    <label for="no_confirm_delete">
-                        No.
-                    </label>
-                    <br>
-                    <input type="radio" class="eliminarDefaultCheckBox" name="confirm_delete" value="si" id="si_confirm_delete">
-                    <label for="si_confirm_delete">
-                        <strong style="color: red;">Sí. Entiendo que no solamente se borrará el test. También se borrará TODAS las calificaciones asociadas al test.</strong>
-                    </label>
-                </fieldset>
-            </p>
-            <input type="submit" value="Continuar">
+            <fieldset>
+                <legend class="col-form-label pt-0"><strong style="font-size:20px">Todos los datos (como las calificaciones de los distintos usuarios) asociados a este test serán borrados. ¿Está seguro?</strong></legend>
+                <div class="col-sm-12">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="confirm_delete" value="no" id="no_confirm_delete" checked>
+                        <label for="no_confirm_delete">
+                            No.
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="confirm_delete" value="si" id="si_confirm_delete">
+                        <label for="si_confirm_delete">
+                            <strong class="text-danger">Sí. Entiendo que no solamente se borrará el test. También se borrará TODAS las calificaciones asociadas al test.</strong>
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+            <input type="submit" value="Continuar" class="btn btn-danger btn-lg">
         </form>
     </div>
+</section>
 {% endblock %}

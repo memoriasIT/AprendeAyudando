@@ -44,7 +44,7 @@
                             {% if user.is_authenticated and not show_de_enroll and not isOwner %}
                                 <form action="{% url 'activity:join' activity.id %}" method="post">
                                     {% csrf_token %}
-                                    <input type="submit" value="Guardar Actividad">
+                                    <input class="btn btn-warning" type="submit" value="Guardar Actividad">
                                 </form>
                             {% endif %}
                         {% endif %}
@@ -59,7 +59,7 @@
                     {% else %}
                         <form action="{% url 'activity:leave' activity.id %}" method="post">
                             {% csrf_token %}
-                            <input type="submit" value="Desmatricularse">
+                            <input class="btn btn-warning" type="submit" value="Desmatricularse">
                         </form>
                     {% endif %}
                 {% endif %} 
@@ -192,12 +192,8 @@
 <!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
         <div class="row py-2">
             {% if isOwner or user.is_superuser %}
-            <div class="col-6 text-right">
-                <a href="{% url 'activity:delete' activity.id %}" class="btn btn-danger btn-sm">Borrar actividad</a>
-            </div>
-            <div class="col-6">
-                <a href="{% url 'review:list' activity.id activity.title %}" class="btn btn-warning btn-sm">Ver encuestas de satisfacción</a>
-            </div>
+            <a href="{% url 'activity:delete' activity.id %}" class="mx-2 btn btn-danger btn-sm">Borrar actividad</a>
+            <a href="{% url 'review:list' activity.id activity.title 'Activity' %}" class="mx-2 btn btn-warning btn-sm">Ver encuestas de satisfacción</a>
             {% endif %}
         </div>
     </div>
