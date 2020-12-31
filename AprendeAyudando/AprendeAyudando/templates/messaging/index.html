@@ -10,58 +10,64 @@
 
 {% block content %}
 <section class="bg-white text-dark py-5 min-vh-100">
-    <div class="container py-5 text-center listaActividades">
-            <div class="activityElement">
-                <h2>Mensajes</h2>
-                <div class="col-8 mr-auto mb-4 text-right">
-                    <a href="{% url 'messaging:doMessage' %}" class="btn btn-secondary">Redactar Mensaje</a>
+    <div class="container py-5 text-center">
+                <div class="row">
+                    <h2 class="col-4 mr-auto mb-4 text-left">Mensajes</h2>
+                    <div class="col-8 mr-auto mb-4 text-right">
+                        <a href="{% url 'messaging:doMessage' %}" class="btn btn-secondary">Redactar Mensaje</a>
+                    </div>
                 </div>
-                <div class="activityElementContent">
-                    <div id="myBtnContainer" class="activityElementContent">
+
+                <div class="row">
+                    <div id="myBtnContainer" class="col-12 mr-auto mb-4 text-left">
                         <button class="btnMen active" onclick="filterSelection('all')">Mostrar todo</button>
                         <button class="btnMen" onclick="filterSelection('recibidos')">Recibidos</button>
                         <button class="btnMen" onclick="filterSelection('enviados')">Enviados</button>
                     </div>
-                    <br>
-                    <br>
+                </div>
+                <br>
+                <br>
+                <div class=" listaActividades activityElement">
+                    <div class="activityElementContent">
+                    
+                        <!--Recibidos-->
+                        <div class="filterDiv recibidos">
+                            {% if list_received_message %}
+                                <ol id="prettyList" style="width:92%;">
+                                    {% for received_message in list_received_message %}
+                                        <li id="prettyListItem">
+                                            <a href="{% url 'messaging:viewMessage' received_message.id %}">
+                                                {{ received_message.user_destination.first_name }} {{ received_message.user_destination.last_name }}
+                                                - {{ received_message.title }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                            {% else %}
+                                <p>No has recibido ningún mensaje.</p>
+                            {% endif %}
+                        </div>
 
-                    <!--Recibidos-->
-                    <div class="filterDiv recibidos">
-                        {% if list_received_message %}
-                            <ol id="prettyList" style="width:92%;">
-                                {% for received_message in list_received_message %}
-                                    <li id="prettyListItem">
-                                        <a href="{% url 'messaging:viewMessage' received_message.id %}">
-                                            {{ received_message.user_destination.first_name }} {{ received_message.user_destination.last_name }}
-                                            - {{ received_message.title }}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ol>
-                        {% else %}
-                            <p>No has recibido ningún mensaje.</p>
-                        {% endif %}
-                    </div>
-
-                    <!--Enviados-->
-                    <div class="filterDiv enviados">
-                        {% if list_sent_messages %}
-                            <ol id="prettyList" style="width:92%;">
-                                {% for sent_message in list_sent_messages %}
-                                    <li id="prettyListItem">
-                                        <a href="{% url 'messaging:viewMessage' sent_message.id %}">
-                                            {{ sent_message.user_origin.first_name }} {{ sent_message.user_origin.last_name }}
-                                            - {{ sent_message.title }}
-                                        </a>
-                                    </li>
-                                {% endfor %}
-                            </ol>
-                        {% else %}
-                            <p>No has enviado ningún mensaje.</p>
-                        {% endif %}
+                        <!--Enviados-->
+                        <div class="filterDiv enviados">
+                            {% if list_sent_messages %}
+                                <ol id="prettyList" style="width:92%;">
+                                    {% for sent_message in list_sent_messages %}
+                                        <li id="prettyListItem">
+                                            <a href="{% url 'messaging:viewMessage' sent_message.id %}">
+                                                {{ sent_message.user_origin.first_name }} {{ sent_message.user_origin.last_name }}
+                                                - {{ sent_message.title }}
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ol>
+                            {% else %}
+                                <p>No has enviado ningún mensaje.</p>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
-            </div>
+            
         </div>
     </section>
 
