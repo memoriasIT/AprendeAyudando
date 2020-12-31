@@ -2,19 +2,35 @@
 {% block title %}AprendeAyudando - Inicio de sesión{% endblock %}
 
 {% block content %}
-<section class="bg-white text-dark py-5 min-vh-100">
+<section class="bg-white text-dark min-vh-100">
   <div class="container-fluid text-center py-5">
     <div class="row">
-      <div class="col-12 py-5">
+      <div class="col-12">
         <h2>Log In</h2>
       </div>
       <div class="col-12 gy-3">
           <form class="text-center d-flex flex-column" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
-            <div class="col py-1 text-center">
-              <a href="/recoverpassword" align = "right">Forgot password?</a>
-            </div>
+            <div class="form-group clearfix py-1 text-center">
+                    <label for="{{ form.username.id_for_label }}" class="control-label pb-1">Username:</label>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            {{ form.username }}
+                        </div>
+                    </div>
+                <div class="form-group clearfix py-1 text-center">
+                    <label for="{{ form.password.id_for_label }}" class="control-label pb-1">Password:</label>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            {{ form.password }}
+                        </div>
+                    </div>
+                </div>
+
+              <div class="col py-1 text-center">
+                <a href="/recoverpassword" align = "right">Forgot password?</a>
+              </div>
+
             <div class="col py-1 text-center">
               <input type="submit" value="Login" class="btn btn-lg btn-success">
             </div>
