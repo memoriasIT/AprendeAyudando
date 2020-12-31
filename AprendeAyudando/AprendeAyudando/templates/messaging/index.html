@@ -4,8 +4,8 @@
 
 {% block style %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'messaging/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'messaging/style.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -13,14 +13,14 @@
     <div class="container py-5 text-center listaActividades">
             <div class="activityElement">
                 <h2>Mensajes</h2>
-                <div class="activityElementRight">
-                    <a style="margin-top: 25px;" href="{% url 'messaging:doMessage' %}" type="submit" class="letraEnBlanco">Redactar Mensaje</a>
+                <div class="col-8 mr-auto mb-4 text-right">
+                    <a href="{% url 'messaging:doMessage' %}" class="btn btn-secondary">Redactar Mensaje</a>
                 </div>
                 <div class="activityElementContent">
                     <div id="myBtnContainer" class="activityElementContent">
-                        <button class="btn active" onclick="filterSelection('all')">Mostrar todo</button>
-                        <button class="btn" onclick="filterSelection('recibidos')">Recibidos</button>
-                        <button class="btn" onclick="filterSelection('enviados')">Enviados</button>
+                        <button class="btnMen active" onclick="filterSelection('all')">Mostrar todo</button>
+                        <button class="btnMen" onclick="filterSelection('recibidos')">Recibidos</button>
+                        <button class="btnMen" onclick="filterSelection('enviados')">Enviados</button>
                     </div>
                     <br>
                     <br>
@@ -31,7 +31,7 @@
                             <ol id="prettyList" style="width:92%;">
                                 {% for received_message in list_received_message %}
                                     <li id="prettyListItem">
-                                        <a href="#">
+                                        <a href="{% url 'messaging:viewMessage' received_message.id %}">
                                             {{ received_message.user_destination.first_name }} {{ received_message.user_destination.last_name }}
                                             - {{ received_message.title }}
                                         </a>
@@ -47,11 +47,11 @@
                     <div class="filterDiv enviados">
                         {% if list_sent_messages %}
                             <ol id="prettyList" style="width:92%;">
-                                {% for sent_messages in list_sent_messages %}
+                                {% for sent_message in list_sent_messages %}
                                     <li id="prettyListItem">
-                                        <a href="#">
-                                            {{ sent_messages.user_origin.first_name }} {{ sent_messages.user_origin.last_name }}
-                                            - {{ sent_messages.title }}
+                                        <a href="{% url 'messaging:viewMessage' sent_message.id %}">
+                                            {{ sent_message.user_origin.first_name }} {{ sent_message.user_origin.last_name }}
+                                            - {{ sent_message.title }}
                                         </a>
                                     </li>
                                 {% endfor %}
@@ -100,7 +100,7 @@
 
 
         var btnContainer = document.getElementById("myBtnContainer");
-        var btns = btnContainer.getElementsByClassName("btn");
+        var btns = btnContainer.getElementsByClassName("btnMen");
         for (var i = 0; i < btns.length; i++) {
             btns[i].addEventListener("click", function(){
                 var current = document.getElementsByClassName("active");
