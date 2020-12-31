@@ -7,12 +7,13 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
         {% if not can_update %}
-            <h2 class="bigger">Error</h2>
+            <h2>Error</h2>
             <p><strong>Debe poner en privado el test</strong></p>
         {% elif exist_qualification %}
-            <h2 class="bigger">Error</h2>
+            <h2>Error</h2>
             <p>
                 <strong>
                     Ya existen calificaciones asociadas a esta pregunta. Se recomienda que elimine la pregunta
@@ -20,20 +21,28 @@
                 </strong>
             </p>
         {% else %}
-            <h2 class="bigger">Editar Test - Pregunta</h2>
+            <h1>Editar Test - Pregunta</h1>
             
             <form action="{% url 'quiz:updateQuestion' question.id %}" method="POST">
                 {% csrf_token %}
-                <strong>Pregunta:</strong>
-                <p><input type="text" name="new_question_text" value="{{question.text}}" required></p>
-                <strong>Puntuación por cada respuesta acertada:</strong>
-                <p><input type="number" name="new_question_score" min="0" value="{{question.question_score}}" required></p>
-                <strong>Puntuación negativa cada respuesta errónea:</strong>
-                <p><input type="number" name="new_question_negative_score" max="0" value="{{question.question_negative_score}}" required></p>
-                <strong>Número de respuestas posibles <span style="color:green">(déjelo a {{list_answers|length}} si no desea añadir o quitar respuestas)</span>:</strong>
-                <p><input type="number" name="number_answers" min="1" max="20" value="{{list_answers|length}}" required></p>
-                <br>
-                Lista de respuestas posibles que hay actualmente:
+                <div class="form-group">
+                    <label for="new_question_text"><strong>Pregunta:</strong></label>
+                    <input type="text" name="new_question_text" value="{{question.text}}" class="form-control text-center"required>
+                </div>
+                <div class="form-group">
+                    <label for="new_question_score"><strong>Puntuación por cada respuesta acertada:</strong></p></label>
+                    <input class="form-control text-center col-1 mx-auto" type="number" min="0" value="{{question.question_score}}" name="new_question_score"required>
+                </div>
+                <div class="form-group">
+                    <label for="new_question_negative_score"><strong>Puntuación negativa cada respuesta errónea:</strong></p></label>
+                    <input class="form-control text-center col-1 mx-auto" type="number" min="0" value="{{question.question_negative_score}}" name="new_question_negative_score"required>
+                </div>
+                <div class="form-group">
+                    <label for="number_answers"><strong>Número de respuestas posibles:<span class="text-success">(déjelo a {{list_answers|length}} si no desea añadir o quitar respuestas)</span>:</strong></p></label>
+                    <input class="form-control text-center col-1 mx-auto" type="number" name="number_answers" min="1" max="20" value="{{list_answers|length}}" required>
+                </div>
+                
+                <p>Lista de respuestas posibles que hay actualmente:</p>
                 {% for answer in list_answers %}
                     {% if answer.correct %}
                         <p><strong style="color:green">&#10004; {{answer.text}}</strong></p>
@@ -41,9 +50,7 @@
                         <p><strong style="color:red">&#10008; {{answer.text}}</strong></p>
                     {% endif %}
                 {% endfor %}
-                <br>
-                <br>
-                <input type="submit" value="Cambiar datos">
+                <input type="submit" value="Cambiar datos" class="btn btn-success btn-lg">
             </form>
         {% endif %}
     </div>

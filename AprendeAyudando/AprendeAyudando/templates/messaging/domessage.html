@@ -7,39 +7,47 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
-        <h1 class="bigger">Redactar Mensaje</h1>
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container text-center">
+        <h1>Redactar Mensaje</h1>
 
         <form action="{% url 'messaging:doMessage' %}" method="POST">
             {% csrf_token %}
-
-            {% if elements is None %}
-                <strong>Email o nombre de usuario</strong>
-                <p><input type="text" name="new_message_to_email_or_username" placeholder="Email o Nombre de usuario" required></p>
-            {% else %}
-                {% if show_email_or_user_error %}
-                    <strong><span style="color:red;">Error: </span>Email o nombre de usuario no existe</strong>
+            <div class="form-group">
+                {% if elements is None %}
+                    <label for="new_message_to_email_or_username"><strong>Email o nombre de usuario</strong></label>
+                    <input type="text" name="new_message_to_email_or_username" class="form-control text-center" placeholder="Email o Nombre de usuario" required>
                 {% else %}
-                    <strong>Email o nombre de usuario</strong>
+                    <label for="new_message_to_email_or_username">
+                        {% if show_email_or_user_error %}
+                            <strong><span style="color:red;">Error: </span>Email o nombre de usuario no existe</strong>
+                        {% else %}
+                            <strong>Email o nombre de usuario</strong>
+                        {% endif %}
+                    </label>
+                    <input type="text" name="new_message_to_email_or_username" class="form-control text-center" placeholder="Email o Nombre de usuario" required value="{{elements.new_message_to_email_or_username}}"></p>
                 {% endif %}
-                <p><input type="text" name="new_message_to_email_or_username" placeholder="Email o Nombre de usuario" required value="{{elements.new_message_to_email_or_username}}"></p>
-            {% endif %}
+            </div>
 
-            <strong>Título del Mensaje:</strong>
-            {% if elements is None %}
-                <p><input type="text" name="new_message_title" placeholder="Título del mensaje" required></p>
-            {% else %}
-                <p><input type="text" name="new_message_title" placeholder="Título del mensaje" required value="{{elements.new_message_title}}"></p>
-            {% endif %}
-
-            <strong>Texto:</strong>
-            {% if elements is None %}
-                <p><input type="textarea" class="biggerTextarea" name="new_message_text"></p>
-            {% else %}
-                 <p><input type="textarea" class="biggerTextarea" name="new_message_text" value="{{elements.new_message_text}}"></p>
-            {% endif %}
-            <a href="{% url 'messaging:index' %}"class="button special">Volver</a>
-            <input type="submit" class="letraEnBlanco" value="Enviar Mensaje">
+            <div class="form-group">
+                <label for="new_message_title"><strong>Título del Mensaje:</strong></label>
+                {% if elements is None %}
+                    <p><input type="text" name="new_message_title" class="form-control text-center" placeholder="Título del mensaje" required></p>
+                {% else %}
+                    <p><input type="text" name="new_message_title" class="form-control text-center" placeholder="Título del mensaje" required value="{{elements.new_message_title}}"></p>
+                {% endif %}
+            </div>
+            <div class="form-group">
+                <label for="new_message_text"><strong>Texto:</strong></label>
+                {% if elements is None %}
+                    <textarea class="form-control text-center" name="new_message_text" rows="3"></textarea>
+                {% else %}
+                    <textarea class="form-control text-center" name="new_message_text" rows="3" value="{{elements.new_message_text}}"></textarea>
+                {% endif %}
+            </div>
+            <a href="{% url 'messaging:index' %}"class="btn btn-large btn-warning">Volver</a>
+            <input type="submit" class="btn btn-large btn-success" value="Enviar Mensaje">
         </form>
-</div>
+    </div>
+</section>
 {% endblock %}

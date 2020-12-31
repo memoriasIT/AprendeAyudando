@@ -9,20 +9,18 @@
 
 {% block content %}
 
-<section class="wrapper align-center login">
+<section class="bg-white text-dark py-5 min-vh-100">
 
-    <div class="container 100%">
+    <div class="container py-5">
         <h2>Proporcionar permisos</h2>
-
         <h3>Solicitudes</h3>
-        <br>
         {% if permission_requests %}
-            <table class="alt">
+            <table class="table text-center">
             <thead>
                 <tr>
-                    <th style="text-align:center;"><strong style="font-size:20px">Nombre usuario</strong></th>
-                    <th style="text-align:center;"><strong style="font-size:20px">Rol deseado</strong></th>
-                    <th style="text-align:center;"><strong style="font-size:20px">Acción</strong></th>
+                    <th><strong style="font-size:20px">Nombre usuario</strong></th>
+                    <th><strong style="font-size:20px">Rol deseado</strong></th>
+                    <th><strong style="font-size:20px">Acción</strong></th>
                 </tr>
             </thead>
             <tbody>
@@ -30,7 +28,7 @@
                 <tr>
                     <td><strong>{{ selected_request.requester.username }}</strong></td>
                     <td><strong>{{ selected_request.role }}</strong></td>
-                    <td style="text-align:center;">
+                    <td>
                         <ul class="actions" style="margin-top: 25px;">
                             <li style="margin-left: 20%;">
                                 <a href="{% url 'request_permissions:deny' selected_request.id %}" class="button special" type="submit" name="deny">Denegar</a>

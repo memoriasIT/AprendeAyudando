@@ -4,23 +4,23 @@
 
 {% block style %}
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'messaging/style.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'messaging/style.css' %}">
 {% endblock %}
 
 {% block content %}
-    <section class="wrapper login">
-        <div class="container 100% listaActividades">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center listaActividades">
             <div class="activityElement">
                 <h2>Mensajes</h2>
-                <div class="activityElementRight">
-                    <a style="margin-top: 25px;" href="{% url 'messaging:doMessage' %}" type="submit" class="letraEnBlanco">Redactar Mensaje</a>
+                <div class="col-8 mr-auto mb-4 text-right">
+                    <a href="{% url 'messaging:doMessage' %}" class="btn btn-secondary">Redactar Mensaje</a>
                 </div>
                 <div class="activityElementContent">
                     <div id="myBtnContainer" class="activityElementContent">
-                        <button class="btn active" onclick="filterSelection('all')">Mostrar todo</button>
-                        <button class="btn" onclick="filterSelection('recibidos')">Recibidos</button>
-                        <button class="btn" onclick="filterSelection('enviados')">Enviados</button>
+                        <button class="btnMen active" onclick="filterSelection('all')">Mostrar todo</button>
+                        <button class="btnMen" onclick="filterSelection('recibidos')">Recibidos</button>
+                        <button class="btnMen" onclick="filterSelection('enviados')">Enviados</button>
                     </div>
                     <br>
                     <br>
@@ -100,7 +100,7 @@
 
 
         var btnContainer = document.getElementById("myBtnContainer");
-        var btns = btnContainer.getElementsByClassName("btn");
+        var btns = btnContainer.getElementsByClassName("btnMen");
         for (var i = 0; i < btns.length; i++) {
             btns[i].addEventListener("click", function(){
                 var current = document.getElementsByClassName("active");

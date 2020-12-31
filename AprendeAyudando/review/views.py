@@ -41,13 +41,14 @@ def create(request, id_enrollable, title_enrollable):
 
     return render(request, 'review/create_review.html', ctx)
 
-def list(request, id_enrollable, title_enrollable):
+def list(request, id_enrollable, title_enrollable, activityOrCourse):
     reviews = Review.objects.all().filter(enrollable_id=id_enrollable)
-    
+    isActivity = activityOrCourse == 'Activity'
     ctx = {
         'enrollable_id': id_enrollable,
         'enrollable_title' : title_enrollable,
-        'reviews' : reviews
+        'reviews' : reviews,
+        'isActivity': isActivity,
     }
 
     return render(request, 'review/list.html', ctx)

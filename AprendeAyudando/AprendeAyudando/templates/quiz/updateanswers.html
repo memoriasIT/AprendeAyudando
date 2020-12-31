@@ -7,7 +7,8 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
         <h2 class="bigger">Editar Test - Posibles respuestas</h2>
         
         <form action="{% url 'quiz:updateAnswers' question.id number_answers %}" method="POST">
@@ -15,36 +16,33 @@
 
             <p><strong>Posibles respuestas (antiguas):</strong></p>
             {% for answer in list_old_answers %}
-                <p>
+                <div class="form-group row justify-content-center">
                     {% if answer.correct %}
                         <input type="checkbox" class="eliminarDefaultCheckBox" id="{{ answer.id }}" name="old_answer_is_correct[]" value="{{ answer.id }}" checked>
                     {% else %}
                         <input type="checkbox" class="eliminarDefaultCheckBox" id="{{ answer.id }}" name="old_answer_is_correct[]" value="{{ answer.id }}">
                     {% endif %}
-                    <label for="{{ answer.id }}">
-                        <input type="text" name="old_answer_text{{ answer.id }}" value="{{ answer.text }}"required>
-                    </label>
-                </p>
+                    <label for="{{ answer.id }}"></label>
+                    <input type="text" name="old_answer_text{{ answer.id }}" value="{{ answer.text }}"required>
+                </div>
             {% endfor %}
 
             {% if new_number_answers > 0 %}
                 <p><strong>Posibles respuestas (nuevas):</strong></p>
                 {% for nn in range_new_number_answers %}
-                    <p>
+                    <div class="form-group row justify-content-center">
                         <input type="checkbox" class="eliminarDefaultCheckBox" id="pregunta{{nn}}" name="new_answer_is_correct[]" value="{{nn}}">
-                        <label for="pregunta{{nn}}">
-                            <input type="text" name="new_answer_text{{nn}}" required>
-                        </label>
-                    </p>
+                        <label for="pregunta{{nn}}"></label>
+                        <input type="text" name="new_answer_text{{nn}}" required>
+                    </div>
                 {% endfor %}
             {% endif %}
-            <br>
-            <br>
             {% if number_questions > 1 %}
-                <input type="submit" value="Siguiente pregunta">
+                <input type="submit" value="Siguiente pregunta" class="btn btn-success btn-lg">
             {% else %}
-                <input type="submit" value="Terminar Test">
+                <input type="submit" value="Terminar Test" class="btn btn-success btn-lg">
             {% endif %}
         </form>
     </div>
+</section>
 {% endblock %}

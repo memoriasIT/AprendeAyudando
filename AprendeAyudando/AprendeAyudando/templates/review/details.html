@@ -8,24 +8,36 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
-        <h1 class="bigger">Puntuación en '{{ enrollable_title }}'</h1>
-        
-        <table style="width:100%">
-            <tr>
-                <th>Actividad</th>
-                <th>Usuario</th>
-                <th>Nombre completo</th>
-            </tr>
-            <tr>
-                <td>{{ enrollable_title }}</td>
-                <td>{{ review.user }}</td>
-                <td>{{ review.user.last_name }}, {{ review.user.first_name }}</td>
-            </tr>
-        </table> 
-        
-        <p style="margin-top: 10%"><h3>Puntuación (sobre 10):</h3><div style="border: 1px solid gray;"> {{review.rating}}</div></p>
-        <p><h3>Problemas encontrados:</h3><div style="border: 1px solid gray;"> {{review.problems}}</div></p>
-        <p><h3>Posibles mejoras:</h3><div style="border: 1px solid gray;"> {{review.improvements}}</div></p>
+<section class="bg-white text-dark py-5 min-vh-100">
+    
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12">
+                <h1>Puntuación en '{{ enrollable_title }}'</h1>
+            </div>
+            <div class="col-12">
+                <table class="table text-center">
+                    <tr>
+                        <th>Actividad</th>
+                        <th>Usuario</th>
+                        <th>Nombre completo</th>
+                    </tr>
+                    <tr>
+                        <td>{{ enrollable_title }}</td>
+                        <td>{{ review.user }}</td>
+                        <td>{{ review.user.last_name }}, {{ review.user.first_name }}</td>
+                    </tr>
+                </table> 
+            </div>
+            <div class="col-12">
+                <p style="margin-top: 10%"><h3>Puntuación (sobre 10):</h3><div style="border: 1px solid gray;"> {{review.rating}}</div></p>
+            </div>
+            <div class="col-12">
+                <p><h3>Problemas encontrados:</h3><div style="border: 1px solid gray;"> {{review.problems}}</div></p>
+            </div>
+            <div class="col-12">
+                <p><h3>Posibles mejoras:</h3><div style="border: 1px solid gray;"> {{review.improvements}}</div></p>
+            </div>
+        </div>
     </div>
 {% endblock %}

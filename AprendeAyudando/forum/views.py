@@ -16,7 +16,7 @@ from django.http import HttpResponseForbidden
 @login_required
 @permission_required('forum.add_forum', raise_exception=True)
 def createForum(request, courseOrActivity, activityCourseFk):
-
+    
     #------------------------CONTROL DE ACCESO-------------------
     if courseOrActivity == COURSE:
         course = get_object_or_404(Course, id=activityCourseFk)
@@ -28,8 +28,8 @@ def createForum(request, courseOrActivity, activityCourseFk):
         return HttpResponseForbidden()
 
     #---------------------------FORM POST----------------------
-    if request.method=="POST":
 
+    if request.method=="POST":
         new_forum_name=request.POST["new_forum_name"]
         new_forum = Forum.objects.create(
             title=new_forum_name,

@@ -4,55 +4,57 @@
 {% block content %}
 {% load static %}
 {% load auth_extras %}
-
-<section class="wrapper align-center login">
     <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
-
-    <div class="container 100%">
-        <h2>Bienvenido, {{ user.username }}</h2>
-        <div class="profileGrid">
-            <div class="leftPannel">    
-                <h3>&emsp;&emsp;&emsp;Funcionalidades</h3>
-                <ol id="prettyList">
-                    {% if not user|has_group:"EntidadPublicoPrivada" %}
-                        <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
-                    {% endif %}
-
-                    {% if not user|has_group:"Profesor" %}
-                        <li id="prettyListItem"><a href="/activity/enrolled">Mis actividades</a></li>
-                    {% else %}
-                        <li id="prettyListItem"><a href="/activity/enrolled">Actividades guardadas</a></li>
-                    {% endif %}
-
-                    {% if user|has_group:"Administrador" or user.is_superuser %}
-                        <li id="prettyListItem"><a href="{% url 'request_permissions:give_permissions' %}">Proporcionar permisos</a></li>
-                    {% elif user|has_group:"Estudiante" %}
-                        <li id="prettyListItem"><a href="{% url 'request_permissions:index' %}">Solicitar permisos</a></li>
-                    {% else %}
-                        <li id="prettyListItem"><a href="{% url 'account_delete' %}">Darse de baja en la plataforma</a></li>
-                    {% endif %}
-                    <li id="prettyListItem"><a href="{% url 'messaging:index' %}">Mensajería</a></li>
-                </ol>
-            </div>
-            <div class="rightPannel">
-                <h3>&emsp;&emsp;&emsp;<a href="{% url 'modify' user.username %}"> Detalles de usuario</a></h3>
-                <ul class="leftPadding">
-                    <li><img src="{% static 'general/images/profile/id_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.first_name }} {{ user.last_name }} </span></li>
-                    <li class="clear_left"></li>
-
-                    <li><img src="{% static 'general/images/profile/user_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text">{{ user.username }}</span></li>
-                    <li class="clear_left"></li>
-
-                    <li><img src="{% static 'general/images/profile/email_icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.email }} </span></li>
-                    <li class="clear_left"></li>
-
-                </ul>
-            </div>
-        </div> 
-        
-    </div>
-
-</section>
+    
+    <section class="bg-dark text-light py-5 min-vh-100">
+        <div class="container py-5">
+            <div class="row py-5">
+                <div class="col-12">
+                    <h1 class="text-center">Bienvenido, {{ user.username }}</h1>
+                </div>
+                <div class="col-sm-6 col-md-5 col-xl-3 mx-auto my-3"> <!--Detalles de usuario-->
+                    <h3 class="text-center"><a href="{% url 'modify' user.username %}"> Detalles de usuario</a></h3>
+                    <div class="mx-auto">
+                        <div class="d-flex col-12">
+                            <img src="{% static 'general/images/profile/id-icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.first_name }} {{ user.last_name }} </span>
+                        </div>
+                        <div class="d-flex col-12">
+                            <img src="{% static 'general/images/profile/user-icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text">{{ user.username }}</span>
+                        </div>
+                        <div class="d-flex col-12">
+                            <img src="{% static 'general/images/profile/email-icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.email }} </span>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="col-12"> <!--Funcionalidades-->
+                    <h3 class="text-center" >Funcionalidades</h3>
+                    <div class="col-12">
+                        <ol id="prettyList">
+                        {% if not user|has_group:"EntidadPublicoPrivada" %}
+                            <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
+                        {% endif %}
+    
+                        {% if not user|has_group:"Profesor" %}
+                            <li id="prettyListItem"><a href="/activity/enrolled">Mis actividades</a></li>
+                        {% else %}
+                            <li id="prettyListItem"><a href="/activity/enrolled">Actividades guardadas</a></li>
+                        {% endif %}
+    
+                        {% if user|has_group:"Administrador" or user.is_superuser %}
+                            <li id="prettyListItem"><a href="{% url 'request_permissions:give_permissions' %}">Proporcionar permisos</a></li>
+                        {% elif user|has_group:"Estudiante" %}
+                            <li id="prettyListItem"><a href="{% url 'request_permissions:index' %}">Solicitar permisos</a></li>
+                        {% else %}
+                            <li id="prettyListItem"><a href="{% url 'account_delete' %}">Darse de baja en la plataforma</a></li>
+                        {% endif %}
+                            <li id="prettyListItem"><a href="{% url 'messaging:index' %}">Mensajería</a></li>
+                        </ol>
+                    </div>  
+                </div>
+            </div> 
+        </div>
+    </section>
 
 {% endblock %}
 

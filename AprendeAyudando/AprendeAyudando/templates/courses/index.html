@@ -2,32 +2,32 @@
 {% block title %}AprendeAyudando - Cursos {% endblock %}
 
 {% block content %}
-<section class="wrapper login">
+<section class="bg-white text-dark py-5 min-vh-100">
     {% load static %}
     {% load auth_extras %}
     <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
 
-    <div class="container 100%">
-        <div class="courseElement">
-            <div class="courseElementLeft"> 
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-4 ml-auto mb-4"> 
                 {% if filtered_by_enrolled %}
-                    <h2 class="courseTitle">Tus cursos</h2>
+                    <h2>Tus cursos</h2>
                 {% else %}
-                    <h2 class="courseTitle">Cursos disponibles</h2>
+                    <h2>Cursos disponibles</h2>
                 {% endif %}
             </div>
-            <div class="courseElementRight"> 
+            <div class="col-8 mr-auto mb-4 text-right"> 
                 {% if is_teacher %}
-                    <a style="margin-top: 25px;" href="{% url 'courses:create' %}" class="button pink">Añadir curso</a>
+                    <a href="{% url 'courses:create' %}" class="btn btn-secondary">Añadir curso</a>
                 {% elif user|has_group:"EntidadPublicoPrivada" %}
                     <p>Aviso: Necesitas ser Estudiante para poder acceder a la información de los cursos.</p>
                 {% elif user|is_guest %}
                     <p>Aviso: Necesitas registrarte para poder acceder a la información de los cursos.</p>
                 {% endif %}
             </div>
-            <div class="courseElementContent">
+            <div class="col-12">
                 {% if courseList %}
-                <ol id="prettyList" style="width:92%;">
+                <ol id="prettyList">
                     {% for course in courseList %}
                         {% if user|is_owner:course.teacher or user|has_group:"Estudiante" or user.is_superuser %}
                             <li id="prettyListItem"><a href="{% url 'courses:join' course.id %}">{{ course.title }}</a></li>
@@ -42,6 +42,5 @@
             </div> 
         </div> 
     </div>
-
 </section>
 {% endblock %}

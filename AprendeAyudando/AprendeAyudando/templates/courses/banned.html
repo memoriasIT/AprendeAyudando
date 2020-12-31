@@ -2,20 +2,11 @@
 {% block title %}AprendeAyudando - Haz sido expulsado del curso {% endblock %}
 
 {% block content %}
-<section class="wrapper login">
-    {% load static %}
-    {% load auth_extras %}
-    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
-
-    <div class="container 100%">
-        <div class="courseElement">
-            <h2 class="courseTitle">No te puedes matricular</h2>
-            <div class="courseElementContent">
-                <p>El profesor del curso <b>{{course.title}}</b> te ha expulsado.</p>
-                <a href="/courses/enrolled" class="button big">Volver a mis cursos</a>
-            </div> 
-        </div> 
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
+        <h2 class="text-danger">No te puedes matricular</h2>
+        <p>El profesor del curso <b>{{course.title}}</b> te ha expulsado.</p>
+        <a href="/courses/enrolled" class="btn btn-secondary btn-lg">Volver a mis cursos</a>
     </div>
-
 </section>
 {% endblock %}

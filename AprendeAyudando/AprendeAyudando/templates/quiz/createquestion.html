@@ -7,31 +7,40 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
         {% if number_questions is 0 %}
-            <h2 class="bigger">Creación del test finalizado. Ya ha realizado todas las preguntas.</h2>
+            <h2>Creación del test finalizado. Ya ha realizado todas las preguntas.</h2>
             {% if courseOrActivity|stringformat:"s" == constant_course|stringformat:"s" %}
-                <a href="{% url 'courses:join' courseOrActivity_id %}" class="button pink">Volver al curso</a>
+                <a href="{% url 'courses:join' courseOrActivity_id %}" class="btn btn-success btn-lg">Volver al curso</a>
             {% else %}
-                <a href="{% url 'activity:join' courseOrActivity_id %}" class="button pink">Volver a la actividad</a>
+                <a href="{% url 'activity:join' courseOrActivity_id %}" class="btn btn-success btn-lg">Volver a la actividad</a>
             {% endif %}
         {% else %}
-            <h1 class="bigger">Crear Test - Preguntas</h1>
+            <h1>Crear Test - Preguntas</h1>
             
             <form action="{% url 'quiz:createQuestions' courseOrActivity courseOrActivity_id quiz.id number_questions %}" method="POST">
                 {% csrf_token %}
-                <p><strong>Escribe la pregunta:</strong></p> 
-                <p><input type="text" name="new_question_text" required></p>
-                <p><strong>Puntuación por cada respuesta acertada:</strong></p> 
-                <p><input type="number" name="new_question_score" min="0" required></p>
-                <p><strong>Puntuación negativa cada respuesta errónea:</strong></p> 
-                <p><input type="number" name="new_question_negative_score" max="0" required></p>
-                <p><strong>Número de respuestas posibles:</strong></p>
-                <input type="number" name="number_answers" min="1" max="20" required>
-                <br>
-                <br>
-                <input type="submit" value="Realizar respuestas">
+                <div class="form-group">
+                    <label for="new_question_text"><strong>Escribe la pregunta:</strong></label>
+                    <input type="text" name="new_question_text" class="form-control text-center"required>
+                </div>
+                <div class="form-group">
+                    <label for="new_question_score"><strong>Puntuación por cada respuesta acertada:</strong></p></label>
+                    <input class="form-control text-center col-1 mx-auto" type="number" min="0" name="new_question_score"required>
+                </div>
+                <div class="form-group">
+                    <label for="new_question_negative_score"><strong>Puntuación negativa cada respuesta errónea:</strong></p></label>
+                    <input class="form-control text-center col-1 mx-auto" type="number" min="0" name="new_question_negative_score"required>
+                </div>
+                <div class="form-group">
+                    <label for="number_answers"><strong>Número de respuestas posibles:</strong></p></label>
+                    <input class="form-control text-center col-1 mx-auto" type="number" name="number_answers" min="1" max="20" required>
+                </div>
+                <input type="submit" value="Realizar respuestas" class="btn btn-success btn-lg">
             </form>
         {% endif %}
     </div>
+</section>
+    
 {% endblock %}

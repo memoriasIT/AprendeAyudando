@@ -2,8 +2,8 @@
 {% block title %}AprendeAyudando - Inscripción en una actividad{% endblock %}
 
 {% block content %}
-    <div class="container 125% align-center minHeight">
-
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
     {% if not user.is_authenticated %}
         <p>La actividad tiene el acceso restringido. Inicia sesión o registrate como estudiante para solicitar acceso.</p>
     {% elif not is_Estudiante_or_superuser %}
@@ -24,10 +24,9 @@
 
         <form action="{% url 'activity:inscription' activity.id %}" method="post">
             {% csrf_token %}
-            <input type="submit" value="Matricularse">
+            <input type="submit" value="Inscribirse" class="btn btn-secondary btn-lg">
         </form>
 
     {% endif %}
-
     </div>
 {% endblock %}

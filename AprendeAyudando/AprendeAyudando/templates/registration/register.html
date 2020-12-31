@@ -1,68 +1,76 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Registro{% endblock %}
 
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'registrationandlogin/style.css' %}">
+{% endblock %}
+
 {% block content %}
-<section class="wrapper align-center login">
-    <div class="container 100%">
-        <h2>Registro</h2>
-        <form action="{% url 'user_register' %}" method="post">
-            {% csrf_token %}
-            <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        {% if error_message %}
-                            <p class="bg-danger p-d ml-b">{{ error_message }}</p>
-                        {% endif %}
-                       
-                        <div class="form-group clearfix">
-                            <label for="{{ form.username.id_for_label }}" class="col-md-4 control-label text-right">Username<span class="text-red">*</span>:</label>
-                            <div class="col-md-6">
-                                {{ form.username }}
-                            </div>
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container">
+        <h2 class="text-center">Registro</h2>
+        <div class="col gy-3">
+            <form action="{% url 'user_register' %}" method="post">
+                {% csrf_token %}
+                {% if error_message %}
+                    <p class="bg-danger p-d ml-b">{{ error_message }}</p>
+                {% endif %}
+            
+                <div class="form-group clearfix py-1 text-center">
+                    <label for="{{ form.username.id_for_label }}" class="control-label pb-1">Username<span class="text-red">*</span>:</label>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            {{ form.username }}
                         </div>
-                        <br>
-                        <div class="form-group clearfix">
-                            <label for="{{ form.email.id_for_label }}" class="col-md-4 control-label text-right">Email<span class="text-red">*</span>:</label>
-                            <div class="col-md-6">
-                                {{ form.email }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-group clearfix">
-                            <label for="{{ form.password.id_for_label }}" class="col-md-4 control-label text-right">Password<span class="text-red">*</span>:</label>
-                            <div class="col-md-6">
-                                {{ form.password }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-group clearfix">
-                            <label for="{{ form.password_repeat.id_for_label }}" class="col-md-4 control-label text-right">Confirm password:</label>
-                            <div class="col-md-6">
-                                {{ form.password_repeat }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-group clearfix">
-                            <label for="{{ form.first_name.id_for_label }}" class="col-md-4 control-label text-right">First Name:</label>
-                            <div class="col-md-6">
-                                {{ form.first_name }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="form-group clearfix">
-                            <label for="{{ form.last_name.id_for_label }}" class="col-md-4 control-label text-right">Last Name:</label>
-                            <div class="col-md-6">
-                                {{ form.last_name }}
-                            </div>
-                        </div>
-                        <br>
-                        <div class="col-md-6 col-md-offset-4">
-                            <button class="button big" type="submit">Register</button>
+                    </div>
+                    
+                </div>
+                <div class="form-group clearfix py-1 text-center">
+                    <label for="{{ form.email.id_for_label }}" class="control-label pb-1">Email<span class="text-red">*</span>:</label>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            {{ form.email }}
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+                <div class="form-group clearfix py-1 text-center">
+                    <label for="{{ form.password.id_for_label }}" class="control-label pb-1">Password<span class="text-red">*</span>:</label>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            {{ form.password }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group clearfix py-1 text-center">
+                    <label for="{{ form.password_repeat.id_for_label }}" class="control-label pb-1">Confirm password<span class="text-red">*</span>:</label>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            {{ form.password_repeat }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group clearfix py-1 text-center">
+                    <label for="{{ form.first_name.id_for_label }}" class="control-label pb-1">First Name:</label>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            {{ form.first_name }}
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group clearfix py-1 text-center">
+                    <label for="{{ form.last_name.id_for_label }}" class="control-label pb-1">Last Name:</label>
+                    <div class="row justify-content-center">
+                        <div class="col-lg-6">
+                            {{ form.last_name }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col py-1 text-center">
+                    <input type="submit" value="Register" class="btn btn-success btn-lg mb-5">
+                </div>
+            </form>
+        </div>
     </div>
 </section>
 {% endblock %}
