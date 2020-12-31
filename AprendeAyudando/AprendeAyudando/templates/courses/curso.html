@@ -18,14 +18,14 @@
 
         <!-- DESCRIPCION -->
         <div class="courseElement">
-            <div class="courseElementLeft"> 
+            <div class="courseElementLeft">
                 {% if isOwner %}
                     <p>Bienvenido a tu curso: <strong>{{ course.title }}</strong></p>
                 {% else %}
                     <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
                 {% endif %}
             </div>
-            <div class="courseElementRight"> 
+            <div class="courseElementRight">
                 {% if show_de_enroll %}
                     <form action="{% url 'courses:leave' course.id %}" method="post">
                         {% csrf_token %}
@@ -35,8 +35,8 @@
             </div>
             <div class="courseElementContent"> 
                 <p>{{course.description}}</p>
-            </div> 
-        </div> 
+            </div>
+        </div>
 
 <!-- FOROS -->
         <div class="courseElement">
@@ -64,15 +64,15 @@
 
 <!-- RECURSOS -->
         <div class="courseElement">
-            <div class="courseElementLeft"> 
+            <div class="courseElementLeft">
                 <h4>Recursos:</h4>
             </div>
-            <div class="courseElementRight"> 
+            <div class="courseElementRight">
                 {% if isOwner or user.is_superuser %}
                     <a href="{% url 'resources:createResource' courseOrActivity course.id %}" class="button small">Crear un recurso</a>
                 {% endif %}
             </div>
-            <div class="courseElementContent"> 
+            <div class="courseElementContent">
                 {% if resourceListCourse %}
                     <ol id="prettyList" style="width:92%;">
                         {% for resource in resourceListCourse %}
@@ -87,7 +87,7 @@
                 {% else %}
                     <p>Lo sentimos, no hay recusos disponibles.</p>
                 {% endif %}
-            </div> 
+            </div>
         </div>
 
 <!-- Test -->
@@ -95,7 +95,7 @@
             <div class="courseElementLeft">
                 <h4>Tests:</h4>
             </div>
-            <div class="courseElementRight"> 
+            <div class="courseElementRight">
                 {% if isOwner or user.is_superuser %}
                     <a href="{% url 'quiz:createQuiz' courseOrActivity course.id %}" class="button small">Crear un Test</a>
                 {% endif %}
@@ -150,7 +150,7 @@
                 {% else %}
                     <p>Lo sentimos, no hay tests disponibles.</p>
                 {% endif %}
-            </div> 
+            </div>
 
         <div style="text-align: center;">
             {% if not isOwner and show_review %}
@@ -160,13 +160,13 @@
         
 <!-- TEST Y BORRADO (SOLO DUEÑO Y ADMIN) -->
         {% if isOwner or user.is_superuser %}
-        <div class="courseElement" style="margin-top: 5%; text-align: center;">
-            <div class="courseElementContent">
-                <a href="{% url 'courses:delete' course.id %}" class="button pink">Borrar curso</a>
-                <a href="{% url 'courses:users' course.id %}" class="button pink">Ver usuarios matriculados</a>
-                <a href="{% url 'review:list' course.id course.title %}" class="button pink">Ver encuestas de satisfacción</a>
+            <div class="courseElement" style="margin-top: 5%; text-align: center;">
+                <div class="courseElementContent">
+                    <a href="{% url 'courses:delete' course.id %}" class="button pink">Borrar curso</a>
+                    <a href="{% url 'courses:users' course.id %}" class="button pink">Ver usuarios matriculados</a>
+                    <a href="{% url 'review:list' course.id course.title %}" class="button pink">Ver encuestas de satisfacción</a>
+                </div>
             </div>
-        </div>
         {% endif %}
         
 </section>

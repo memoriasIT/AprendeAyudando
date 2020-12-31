@@ -13,14 +13,16 @@
         <form action="{% url 'messaging:doMessage' %}" method="POST">
             {% csrf_token %}
 
-            
             {% if elements is None %}
                 <strong>Email o nombre de usuario</strong>
                 <p><input type="text" name="new_message_to_email_or_username" placeholder="Email o Nombre de usuario" required></p>
             {% else %}
-                <strong><span style="color:red;">Error: </span>Email o nombre de usuario no existe</strong>
+                {% if show_email_or_user_error %}
+                    <strong><span style="color:red;">Error: </span>Email o nombre de usuario no existe</strong>
+                {% else %}
+                    <strong>Email o nombre de usuario</strong>
+                {% endif %}
                 <p><input type="text" name="new_message_to_email_or_username" placeholder="Email o Nombre de usuario" required value="{{elements.new_message_to_email_or_username}}"></p>
-                
             {% endif %}
 
             <strong>Título del Mensaje:</strong>
@@ -36,7 +38,7 @@
             {% else %}
                  <p><input type="textarea" class="biggerTextarea" name="new_message_text" value="{{elements.new_message_text}}"></p>
             {% endif %}
-            <a href="{% url 'messaging:viewMessages' %}"class="button special">Volver</a>
+            <a href="{% url 'messaging:index' %}"class="button special">Volver</a>
             <input type="submit" class="letraEnBlanco" value="Enviar Mensaje">
         </form>
 </div>
