@@ -18,8 +18,6 @@ from django.db.models import Q
 from .models import Review
 
 
-# Create your views here.
-
 @login_required
 def create(request, id_enrollable, title_enrollable):
     

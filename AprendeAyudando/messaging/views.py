@@ -75,7 +75,10 @@ def viewMessage(request, message_id):
         'message':message
     }
     if request.method == 'POST':
-        ctx['elements'] = {'new_message_to_email_or_username':message.user_origin}
+        if not request.user == message.user_origin: 
+            ctx['elements'] = {'new_message_to_email_or_username':message.user_origin}
+        else:
+            ctx['elements'] = {'new_message_to_email_or_username':message.user_destination}
         return render(request, 'messaging/domessage.html', ctx)
     
 
