@@ -17,9 +17,13 @@ def index(request):
     list_received_message = MessagingMessage.objects.filter(user_destination=request.user)
     list_sent_messages = MessagingMessage.objects.filter(user_origin=request.user)
 
+    all_messages = list_received_message | list_sent_messages
+    all_messages = all_messages.distinct()
+    
     ctx = {
         'list_received_message':list_received_message,
-        'list_sent_messages':list_sent_messages
+        'list_sent_messages':list_sent_messages,
+        'all_messages':all_messages
     }
 
     return render(request, 'messaging/index.html', ctx)

@@ -13,7 +13,7 @@
                     <h1 class="text-center">Bienvenido, {{ user.username }}</h1>
                 </div>
                 <div class="col-sm-6 col-md-5 col-xl-3 mx-auto my-3"> <!--Detalles de usuario-->
-                    <h3 class="text-center"><a href="{% url 'modify' user.username %}"> Detalles de usuario</a></h3>
+                    <h3 class="text-center"><a href="{% url 'modify' user.username %}" class="text-decoration-none"> Detalles de usuario</a></h3>
                     <div class="mx-auto">
                         <div class="d-flex col-12">
                             <img src="{% static 'general/images/profile/id-icon.png' %}" alt="" style="float:left;width:2em;height:2em;border-radius:500px;margin-right:25px;margin-bottom:15px;"> <span class="list_image_text"> {{ user.first_name }} {{ user.last_name }} </span>

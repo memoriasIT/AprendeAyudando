@@ -34,21 +34,13 @@
                         <div class="tab-content" id="nav-tabContent">
 
                             <div class="tab-pane fade show active" id="list-all" role="tabpanel">
-                                {% if list_received_message or list_sent_messages %}
+                                {% if all_messages %}
                                     <ol id="prettyList" style="width:92%;">
-                                        {% for received_message in list_received_message %}
+                                        {% for message in all_messages %}
                                             <li id="prettyListItem">
-                                                <a href="{% url 'messaging:viewMessage' received_message.id %}">
-                                                    De: {{ received_message.user_origin.first_name }} {{ received_message.user_origin.last_name }}
-                                                    - {{ received_message.title }}
-                                                </a>
-                                            </li>
-                                        {% endfor %}
-                                        {% for sent_message in list_sent_messages %}
-                                            <li id="prettyListItem">
-                                                <a href="{% url 'messaging:viewMessage' sent_message.id %}">
-                                                    Para: {{ sent_message.user_destination.first_name }} {{ sent_message.user_destination.last_name }}
-                                                    - {{ sent_message.title }}
+                                                <a href="{% url 'messaging:viewMessage' message.id %}">
+                                                    De: {{ message.user_origin.username }}, Para: {{ message.user_destination.username }}
+                                                    - {{ message.title }}
                                                 </a>
                                             </li>
                                         {% endfor %}
