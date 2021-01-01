@@ -24,9 +24,19 @@
                     <tbody>
                     {% for user in userList %}
                         <tr class="text-center">
-                            <td><strong>{{ user.username }}</strong></td>
+                            <td><strong>{{ user.username }}</strong>
+                                {% if user.is_superuser %}
+                                    <div class="badge bg-warning text-wrap rounded-circle" style="width: 4rem;">
+                                        ADMIN
+                                    </div>
+                                {% endif %}
+                            </td>
                             <td>
-                                <a class="btn btn-danger btn-sm" href="{% url 'courses:removeUser' course.id user.id %}">Expulsar</a>
+                                {% if not user.is_superuser %}
+                                    <a class="btn btn-danger btn-sm" href="{% url 'courses:removeUser' course.id user.id %}">Expulsar</a>
+                                {% else %}
+                                    <a class="btn btn-danger btn-sm disabled" href="#" aria-disabled="true">Expulsar</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
@@ -37,7 +47,7 @@
                 {% endif %}
             </div>
             <div class="col-12 text-center">
-                <a href="{% url 'courses:join' course.id %}" class="btn btn-warning btn-sm">Volver a curso</a>  
+                <a href="{% url 'courses:join' course.id %}" class="btn btn-outline-dark btn-sm">Volver a curso</a>  
             </div>
         </div>
         
