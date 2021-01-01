@@ -38,7 +38,7 @@
                                     <ol id="prettyList" style="width:92%;">
                                         {% for message in all_messages %}
                                             <li id="prettyListItem">
-                                                <a href="{% url 'messaging:viewMessage' message.id %}">
+                                                <a href="{% url 'messaging:viewMessage' message.id %}" class="text-info">
                                                     De: {{ message.user_origin.username }}, Para: {{ message.user_destination.username }}
                                                     - {{ message.title }}
                                                 </a>
