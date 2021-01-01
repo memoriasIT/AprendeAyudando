@@ -10,30 +10,30 @@
     
 {% block content %}
 {% load auth_extras %}
-<section class="bg-dark text-dark py-5 min-vh-100">
+<section class="bg-light text-dark py-5 min-vh-100">
     
-    <div class="container py-5">
+    <div class="container py-2">
 <!-- DESCRIPCION -->
         <div class="shadow p-3 mb-5 bg-white rounded">
             <div class="row">
                 <div class="col-12">
                     <h1 class="border-bottom">{{ course.title }}</h1>
                 </div>
-                <div class="col-12">
+                <div class="col-12 py-1">
                     {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
                 </div>
                 <div class="col-6">
                     {% if isOwner %}
                         <p>Bienvenido a tu curso: <strong>{{ course.title }}</strong></p>
                     {% else %}
-                        <p>Hola {{ usuario.first_name }}, te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
+                        <p>Hola {{ usuario.first_name }}! Te encuentras en el curso: <strong>{{ course.title }}</strong> del profesor <strong>{{ course.teacher.first_name }}</strong></p>
                     {% endif %}
                 </div>
                 <div class="col-6 text-right">
                     {% if show_de_enroll %}
                         <form action="{% url 'courses:leave' course.id %}" method="post">
                             {% csrf_token %}
-                            <input type="submit" class="mx-2 btn btn-danger btn-sm" value="Desmatricularse">
+                            <input type="submit" class="mr-2 btn btn-danger btn-sm" value="Desmatricularse">
                         </form>
                     {% endif %}
                 </div>
@@ -41,9 +41,9 @@
                     <p>{{course.description}}</p>
                 </div>    
             </div>
-        
+            <br>
 <!-- FOROS -->
-            <div class="shadow-none p-3 mb-5 bg-light rounded">
+            <div class="shadow-none p-3 mb-3 bg-light rounded">
                 <div class="row">
                     <div class="col-6">
                         <h4 class="border-bottom">Foros</h4>
@@ -68,7 +68,7 @@
             </div>
         
 <!-- RECURSOS -->
-            <div class="shadow-none p-3 mb-5 bg-light rounded">
+            <div class="shadow-none p-3 mb-3 bg-light rounded">
                 <div class="row">
                     <div class="col-6">
                         <h4 class="border-bottom">Recursos</h4>
@@ -175,7 +175,7 @@
     <!-- TEST Y BORRADO (SOLO DUEÑO Y ADMIN) -->
             <div class="row py-2">
                 {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'courses:delete' course.id %}" class="mx-2 btn btn-danger btn-sm">Borrar curso</a>
+                    <a href="{% url 'courses:delete' course.id %}" class="ml-4 mr-2 btn btn-danger btn-sm">Borrar curso</a>
                     <a href="{% url 'courses:users' course.id %}" class="mx-2 btn btn-info btn-sm">Ver usuarios matriculados</a>
                     <a href="{% url 'review:list' course.id course.title 'Course' %}" class="mx-2 btn btn-info btn-sm">Ver encuestas de satisfacción</a>
                 {% endif %}

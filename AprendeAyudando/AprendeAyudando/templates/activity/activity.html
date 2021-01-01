@@ -9,192 +9,202 @@
 {% endblock %}
 
 {% block content %}
-<section class="bg-white text-dark py-5 min-vh-100">
+<section class="bg-light text-dark py-5 min-vh-100">
     {% load auth_extras %}
-    <div class="container py-5">
+    <div class="container py-2">
 <!-- DESCRIPCION -->
-        <div class="row py-2">
-            <div class="col-12">
-                <h1>{{ activity.title }}</h1>
-            </div>
-            <div class="col-12">
-                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-            </div>
-            <div class="col-12">
-                {% if isOwner %}
-                    <h3>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></h3>
-                {% else %}
-                    <p>Hola {{ usuario.first_name }}, te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
-                {% endif %}
-                {% if activity.restricted_entry and isOwner%}
-                    {% if isOwner or user.is_superuser %}
-                        <a href="{% url 'activity:activityrequest' activity.id %}" class="btn btn-info btn-sm">Ver solicitudes</a>
-                        <a href="{% url 'activity:users' activity.id %}" class="btn btn-info btn-sm">Ver usuarios inscritos</a>
-                    {% endif %}
-                {% endif %}
-            </div>
-            <div class="col-12">
-                <p>{{ activity.description }}</p> 
-                <p>Actividad restringida:
-                    <strong>
-                        {% if activity.restricted_entry %}
-                            SI
-                        {% else %}
-                            NO
-                            {% if user.is_authenticated and not show_de_enroll and not isOwner %}
-                                <form action="{% url 'activity:join' activity.id %}" method="post">
-                                    {% csrf_token %}
-                                    <input class="btn btn-warning" type="submit" value="Guardar Actividad">
-                                </form>
-                            {% endif %}
-                        {% endif %}
-                    </strong>
-                </p>
-                {% if show_de_enroll %}
-                    {% if not activity.restricted_entry %}
-                        <form action="{% url 'activity:leave' activity.id %}" method="post">
-                            {% csrf_token %}
-                            <input class="btn btn-warning" type="submit" value="Desvincular Actividad">
-                        </form>
+        <div class="shadow p-3 mb-5 bg-white rounded">
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="border-bottom">{{ activity.title }}</h1>
+                </div>
+                <div class="col-12 py-1">
+                    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                </div>
+
+                <div class="col-6">
+                    {% if isOwner %}
+                        <h3>Bienvenido a tu actividad: <strong>{{ activity.title }}</strong></h3>
                     {% else %}
-                        <form action="{% url 'activity:leave' activity.id %}" method="post">
-                            {% csrf_token %}
-                            <input class="btn btn-warning" type="submit" value="Desmatricularse">
-                        </form>
+                        <p>Hola {{ usuario.first_name }}! Te encuentras en la actividad <strong>{{ activity.title }}</strong> de la Entidad Publica/Privada <strong>{{ activity.entity.first_name }}</strong></p>
                     {% endif %}
-                {% endif %} 
+                </div>
+
+                <div class="col-6 text-right">
+                    {% if not activity.restricted_entry and user.is_authenticated and not show_de_enroll and not isOwner %}
+                        <form action="{% url 'activity:join' activity.id %}" method="post">
+                            {% csrf_token %}
+                            <input class="mr-2 btn btn-success btn-sm" type="submit" value="Guardar Actividad">
+                        </form>
+                    {% elif show_de_enroll %}
+                        {% if not activity.restricted_entry %}
+                            <form action="{% url 'activity:leave' activity.id %}" method="post">
+                                {% csrf_token %}
+                                <input class="mr-2 btn btn-danger btn-sm" type="submit" value="Desvincular Actividad">
+                            </form>
+                        {% else %}
+                            <form action="{% url 'activity:leave' activity.id %}" method="post">
+                                {% csrf_token %}
+                                <input class="mr-2 btn btn-danger btn-sm" type="submit" value="Desmatricularse">
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            
+                <div class="col-12">
+                    <p>{{ activity.description }}</p> 
+                    <p>Actividad restringida:
+                        <strong>
+                            {% if activity.restricted_entry %}
+                                SI
+                            {% else %}
+                                NO
+                            {% endif %}
+                        </strong>
+                    </p>   
+                </div>
+                
             </div>
-        </div>
 
 <!-- FOROS -->
-        <div class="row py-2">
-            <div class="col-6">
-                <h4>Foros:</h4>
-            </div>
-            <div class="col-6 text-right">
-                {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'forum:create' courseOrActivity activity.id %}" class="col-lg-3 btn btn-secondary btn-sm">Crear un foro</a>
-                {% endif %}
-            </div> 
-            <div class="col-12"> 
-                {% if forumListCourse %}
-                    <ol id="prettyList">
-                        {% for forum in forumListCourse %}
-                            <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
-                        {% endfor %}
-                    </ol>
-                {% else %}
-                    <p>Lo sentimos, no hay foros disponibles.</p>
-                {% endif %}
-            </div> 
-        </div>   
-<!-- RECURSOS -->
-        <div class="row py-2">
-            <div class="col-6">
-                <h4>Recursos:</h4>
-            </div>
-            <div class="col-6 text-right">
-                {% if isOwner or user.is_superuser %}
-                <a href="{% url 'resources:createResource' courseOrActivity activity.id %}" class="col-lg-3 btn btn-secondary btn-sm">Crear un recurso</a>
-                {% endif %}
-            </div> 
-            <div class="col-12"> 
-                {% if resourceListCourse %}
-                <ol id="prettyList" style="width:92%;">
-                    {% for resource in resourceListCourse %}
-                        <li id="prettyListItem">
-                            <a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
-                            {% if isOwner or user.is_superuser %}
-                                <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a>
-                            {% endif %}
-                        </li>
-                        
-                    {% endfor %}
-                </ol>
-            {% else %}
-                <p>Lo sentimos, no hay recursos disponibles.</p>
-            {% endif %}
-            </div>
-        </div> 
-
-<!-- TESTS -->
-        <div class="row py-2">
-            <div class="col-6">
-                <h4>Tests:</h4>
-            </div>
-            <div class="col-6 text-right"> 
-                {% if isOwner or user.is_superuser %}
-                    <a href="{% url 'quiz:createQuiz' courseOrActivity activity.id %}" class="col-lg-3 btn btn-secondary btn-sm">Crear un Test</a>
-                {% endif %}
-            </div>
-            {% if quizListActivity %}
-            <div class="quizElements">
-                {% for quiz in quizListActivity %}
-                    <a href="{% url 'quiz:startQuiz' quiz.id %}" class="quizElements">
-                    <div class="card">
-                        <div class="card-text">
-                            {% if quiz.maximum_date is not None %}
-                                <span class="date">Fecha límite: {{quiz.maximum_date}}</span>
-                            {% else %}
-                                <span class="date">Sin fecha límite</span>
-                            {% endif %}
-                            <h2 class="clearh2">{{ quiz.title }}</h2>
-                            <p>{{ quiz.description }}</p>
-                            
-                        </div>
-                        {% with list_info=dic_test|get_item_from_index:quiz.id %}
-                            <div class="card-stats">
-                                <div class="stat">
-                                    <div class="value">{{list_info|get_item_from_index:0}}</div>
-                                    <div class="type">Intentos</div>
-                                </div>
-                                <div class="stat border">
-                                    <div class="value">
-                                        {% if list_info|get_item_from_index:1 is None %}
-                                            -
-                                        {% else %}
-                                            {{list_info|get_item_from_index:1}}
-                                        {% endif %}
-                                    </div>
-                                    <div class="type">Calificación</div>
-                                </div>
-                                <div class="stat">
-                                    <div class="value">
-                                        {% if list_info|get_item_from_index:2 is None %}
-                                            -
-                                        {% else %}
-                                            {{list_info|get_item_from_index:2}}
-                                        {% endif %}
-                                    </div>
-                                    <div class="type">Acertadas</div>
-                                </div>
-                            </div>
-                        {% endwith %}
+            <div class="shadow-none p-3 mb-3 bg-light rounded">
+                <div class="row py-2">
+                    <div class="col-6">
+                        <h4 class="border-bottom">Foros</h4>
                     </div>
-                    </a>
-                {% endfor %}
+                    <div class="col-6 text-right">
+                        {% if isOwner or user.is_superuser %}
+                            <a href="{% url 'forum:create' courseOrActivity activity.id %}" class="col-lg-3 btn btn-secondary btn-sm">Crear un foro</a>
+                        {% endif %}
+                    </div> 
+                    <div class="col-12"> 
+                        {% if forumListCourse %}
+                            <ol id="prettyList">
+                                {% for forum in forumListCourse %}
+                                    <li id="prettyListItem"><a href="{% url 'forum:join' forum.id %}">{{ forum.title }}</a></li>
+                                {% endfor %}
+                            </ol>
+                        {% else %}
+                            <p>Lo sentimos, no hay foros disponibles.</p>
+                        {% endif %}
+                    </div> 
+                </div>
             </div>
-            {% else %}
-            <div class="col-12">
-                <p>Lo sentimos, no hay tests disponibles.</p>
+<!-- RECURSOS -->
+            <div class="shadow-none p-3 mb-3 bg-light rounded">
+                <div class="row py-2">
+                    <div class="col-6">
+                        <h4 class="border-bottom">Recursos</h4>
+                    </div>
+                    <div class="col-6 text-right">
+                        {% if isOwner or user.is_superuser %}
+                            <a href="{% url 'resources:createResource' courseOrActivity activity.id %}" class="col-lg-3 btn btn-secondary btn-sm">Crear un recurso</a>
+                        {% endif %}
+                    </div> 
+                    <div class="col-12"> 
+                        {% if resourceListCourse %}
+                            <ol id="prettyList" style="width:92%;">
+                                {% for resource in resourceListCourse %}
+                                    <li id="prettyListItem">
+                                        <a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
+                                        {% if isOwner or user.is_superuser %}
+                                            <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a>
+                                        {% endif %}
+                                    </li>
+                                    
+                                {% endfor %}
+                            </ol>
+                        {% else %}
+                            <p>Lo sentimos, no hay recursos disponibles.</p>
+                        {% endif %}
+                    </div>
+                </div> 
             </div>
-            {% endif %}
-        </div> 
+<!-- TESTS -->
+            <div class="shadow-none p-3 mb-3 bg-light rounded">
+                <div class="row py-2">
+                    <div class="col-6">
+                        <h4 class="border-bottom">Tests</h4>
+                    </div>
+                    <div class="col-6 text-right"> 
+                        {% if isOwner or user.is_superuser %}
+                            <a href="{% url 'quiz:createQuiz' courseOrActivity activity.id %}" class="col-lg-3 btn btn-secondary btn-sm">Crear un Test</a>
+                        {% endif %}
+                    </div>
+                    {% if quizListActivity %}
+                        <div class="quizElements">
+                            {% for quiz in quizListActivity %}
+                                <a href="{% url 'quiz:startQuiz' quiz.id %}" class="quizElements">
+                                <div class="card">
+                                    <div class="card-text">
+                                        {% if quiz.maximum_date is not None %}
+                                            <span class="date">Fecha límite: {{quiz.maximum_date}}</span>
+                                        {% else %}
+                                            <span class="date">Sin fecha límite</span>
+                                        {% endif %}
+                                        <h2 class="clearh2">{{ quiz.title }}</h2>
+                                        <p>{{ quiz.description }}</p>
+                                        
+                                    </div>
+                                    {% with list_info=dic_test|get_item_from_index:quiz.id %}
+                                        <div class="card-stats">
+                                            <div class="stat">
+                                                <div class="value">{{list_info|get_item_from_index:0}}</div>
+                                                <div class="type">Intentos</div>
+                                            </div>
+                                            <div class="stat border">
+                                                <div class="value">
+                                                    {% if list_info|get_item_from_index:1 is None %}
+                                                        -
+                                                    {% else %}
+                                                        {{list_info|get_item_from_index:1}}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="type">Calificación</div>
+                                            </div>
+                                            <div class="stat">
+                                                <div class="value">
+                                                    {% if list_info|get_item_from_index:2 is None %}
+                                                        -
+                                                    {% else %}
+                                                        {{list_info|get_item_from_index:2}}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="type">Acertadas</div>
+                                            </div>
+                                        </div>
+                                    {% endwith %}
+                                </div>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="col-12">
+                            <p>Lo sentimos, no hay tests disponibles.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div> 
 <!-- ENCUESTAS DE SATISFACCIÓN -->
-        <div class="row py-2 text-center">
-            {% if not isOwner and show_review %}
-            <div class="col-12">
-                <a href="{% url 'review:create' activity.id activity.title %}" class="btn btn-warning btn-sm">Puntuar esta actividad</a>
+            <div class="row py-2 text-center">
+                {% if not isOwner and show_review %}
+                    <div class="col-12">
+                        <a href="{% url 'review:create' activity.id activity.title %}" class="btn btn-warning btn-sm">Puntuar esta actividad</a>
+                    </div>
+                {% endif %}
             </div>
-            {% endif %}
-        </div>
 
 <!-- BORRADO (SOLO DUEÑO Y ADMIN) -->
-        <div class="row py-2">
-            {% if isOwner or user.is_superuser %}
-            <a href="{% url 'activity:delete' activity.id %}" class="mx-2 btn btn-danger btn-sm">Borrar actividad</a>
-            <a href="{% url 'review:list' activity.id activity.title 'Activity' %}" class="mx-2 btn btn-warning btn-sm">Ver encuestas de satisfacción</a>
-            {% endif %}
+            <div class="row py-2">
+                {% if isOwner or user.is_superuser %}
+                    <a href="{% url 'activity:delete' activity.id %}" class="ml-4 mr-2 btn btn-danger btn-sm">Borrar actividad</a>
+                    {% if activity.restricted_entry %}
+                        <a href="{% url 'activity:activityrequest' activity.id %}" class="mx-2 btn btn-info btn-sm">Ver solicitudes</a>
+                        <a href="{% url 'activity:users' activity.id %}" class="mx-2 btn btn-info btn-sm">Ver usuarios inscritos</a>
+                    {% endif %}
+                    <a href="{% url 'review:list' activity.id activity.title 'Activity' %}" class="mx-2 btn btn-info btn-sm">Ver encuestas de satisfacción</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </section>

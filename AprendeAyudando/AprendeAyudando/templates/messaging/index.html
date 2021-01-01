@@ -38,7 +38,7 @@
                                     <ol id="prettyList" style="width:92%;">
                                         {% for message in all_messages %}
                                             <li id="prettyListItem">
-                                                <a href="{% url 'messaging:viewMessage' message.id %}" class="text-info">
+                                                <a href="{% url 'messaging:viewMessage' message.id %}" class="text-dark text-decoration-none">
                                                     De: {{ message.user_origin.username }}, Para: {{ message.user_destination.username }}
                                                     - {{ message.title }}
                                                 </a>
@@ -55,7 +55,7 @@
                                     <ol id="prettyList" style="width:92%;">
                                         {% for received_message in list_received_message %}
                                             <li id="prettyListItem">
-                                                <a href="{% url 'messaging:viewMessage' received_message.id %}">
+                                                <a href="{% url 'messaging:viewMessage' received_message.id %}" class="text-dark text-decoration-none">
                                                     De: {{ received_message.user_origin.first_name }} {{ received_message.user_origin.last_name }}
                                                     - {{ received_message.title }}
                                                 </a>
@@ -72,7 +72,7 @@
                                     <ol id="prettyList" style="width:92%;">
                                         {% for sent_message in list_sent_messages %}
                                             <li id="prettyListItem">
-                                                <a href="{% url 'messaging:viewMessage' sent_message.id %}">
+                                                <a href="{% url 'messaging:viewMessage' sent_message.id %}" class="text-dark text-decoration-none">
                                                     Para: {{ sent_message.user_destination.first_name }} {{ sent_message.user_destination.last_name }}
                                                     - {{ sent_message.title }}
                                                 </a>
