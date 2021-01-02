@@ -141,6 +141,9 @@ def join(request, activity_id):
     if request.user not in activity.enrolled_users.all() and not isOwner and activity.restricted_entry:
         return inscription(request, activity_id)
 
+    #-------------------------------------ActivityRequest-----------------------------------
+    numActivityRequest = ActivityRequest.objects.filter(activity=activity).count
+
     #-----------------------------------------FOROS-----------------------------------------
     forumListCourse = Forum.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
 
@@ -185,6 +188,7 @@ def join(request, activity_id):
         'isOwner': isOwner,
         'show_de_enroll': show_de_enroll,
         'show_review' : show_review,
+        'numActivityRequest':numActivityRequest,
         'forumListCourse': forumListCourse,
         'resourceListCourse': resourceListCourse,
         'dic_test':dic_test,

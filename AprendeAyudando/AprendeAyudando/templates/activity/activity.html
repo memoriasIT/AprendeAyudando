@@ -199,7 +199,12 @@
                 {% if isOwner or user.is_superuser %}
                     <a href="{% url 'activity:delete' activity.id %}" class="ml-4 mr-2 btn btn-danger btn-sm">Borrar actividad</a>
                     {% if activity.restricted_entry %}
-                        <a href="{% url 'activity:activityrequest' activity.id %}" class="mx-2 btn btn-info btn-sm">Ver solicitudes</a>
+                            <a href="{% url 'activity:activityrequest' activity.id %}" class="mx-2 btn btn-info btn-sm position-relative" type="button">
+                                Ver solicitudes
+                                {% if numActivityRequest > 0 %}
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger text-white">+{{numActivityRequest}}</span>
+                                {% endif %}
+                            </a>
                         <a href="{% url 'activity:users' activity.id %}" class="mx-2 btn btn-info btn-sm">Ver usuarios inscritos</a>
                     {% endif %}
                     <a href="{% url 'review:list' activity.id activity.title 'Activity' %}" class="mx-2 btn btn-info btn-sm">Ver encuestas de satisfacción</a>
