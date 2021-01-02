@@ -39,7 +39,6 @@ def create(request, id_enrollable, title_enrollable):
         review.save()
         ctx['success'] = True
         return render(request, 'review/create_review.html', ctx)
-        # return account(request) 
 
     return render(request, 'review/create_review.html', ctx)
 

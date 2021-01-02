@@ -11,6 +11,7 @@ from AprendeAyudando.templatetags.auth_extras import COURSE, ACTIVITY
 from activity.views import join as viewsActivityJoin
 from courses.views import join as viewsCourseJoin
 from django.http import HttpResponseForbidden
+from django.core.mail import send_mail
 
 @login_required
 @permission_required('resources.add_resource', raise_exception=True)
@@ -39,6 +40,16 @@ def createResource(request, courseOrActivity, activityCourseFk):
             resourceLink = new_resource_link
         )
         new_resource.save()
+
+        type = new_resource.activityCourseType
+        enrollable = get_object_or_404(Course, pk=new_resource.activityCourseFk) if type == COURSE else get_object_or_404(Activity, pk=new_resource.activityCourseFk)
+        teacher = enrollable.teacher if type == COURSE else enrollable.entity
+        for user in enrollable.enrolled_users.all():
+            subject = '[{}] Nuevo recurso: {}'.format(enrollable.title, new_resource.resourceText)
+            message = 'El profesor: \"{}\" ha añadido un nuevo recurso a \"{}\"\n\n{}: {}'.format(teacher.username, enrollable.title, new_resource.resourceText, new_resource.resourceLink)
+            email_from = 'infoaprendeayudando@gmail.com'
+            email_to = [user.email]
+            send_mail(subject, message, email_from, email_to, fail_silently=True)
 
         if(courseOrActivity == COURSE):
             return viewsCourseJoin(request, activityCourseFk)
