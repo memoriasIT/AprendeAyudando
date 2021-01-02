@@ -12,6 +12,9 @@ from forum.models import Forum, Debate, Message, Reply
 from AprendeAyudando.templatetags.auth_extras import COURSE, ACTIVITY
 from django.http import HttpResponseForbidden
 from django.core.mail import send_mail
+from messaging.models import *
+from django.contrib.auth.models import User, Group
+
 
 #-----------------------------------------FOROS------------------------------------------
 
@@ -127,6 +130,14 @@ def createDebate(request, forum_id):
             email_from = 'infoaprendeayudando@gmail.com'
             email_to = [user.email]
             send_mail(subject, message, email_from, email_to, fail_silently=True)
+
+            mm = MessagingMessage.objects.create(
+                title=subject,
+                text=message,
+                user_origin=User.objects.get(email=email_from),
+                user_destination=User.objects.get(email=email_to[0])
+            )
+            mm.save()
 
         return viewDebate(request, new_debate_id)
     return render(request, 'forum/createDebate.html', {'forum': forum})

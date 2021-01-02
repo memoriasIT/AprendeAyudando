@@ -11,6 +11,9 @@ from AprendeAyudando.templatetags.auth_extras import COURSE, ACTIVITY
 from activity.views import join as viewsActivityJoin
 from courses.views import join as viewsCourseJoin
 from django.http import HttpResponseForbidden
+from messaging.models import *
+from django.contrib.auth.models import User, Group
+
 from django.core.mail import send_mail
 
 @login_required
@@ -50,6 +53,14 @@ def createResource(request, courseOrActivity, activityCourseFk):
             email_from = 'infoaprendeayudando@gmail.com'
             email_to = [user.email]
             send_mail(subject, message, email_from, email_to, fail_silently=True)
+            
+            mm = MessagingMessage.objects.create(
+                title=subject,
+                text=message,
+                user_origin=User.objects.get(email=email_from),
+                user_destination=User.objects.get(email=email_to[0])
+            )
+            mm.save()
 
         if(courseOrActivity == COURSE):
             return viewsCourseJoin(request, activityCourseFk)

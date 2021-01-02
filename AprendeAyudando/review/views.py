@@ -18,6 +18,8 @@ from AprendeAyudando.views import has_group
 from django.db.models import Q
 
 from .models import Review
+from messaging.models import *
+from django.contrib.auth.models import User, Group
 
 
 @login_required
@@ -45,6 +47,14 @@ def create(request, id_enrollable, title_enrollable):
         email_from = 'infoaprendeayudando@gmail.com'
         email_to = [request.user.email]
         send_mail(subject, message, email_from, email_to, fail_silently=True)
+
+        mm = MessagingMessage.objects.create(
+            title=subject,
+            text=message,
+            user_origin=User.objects.get(email=email_from),
+            user_destination=User.objects.get(email=email_to[0])
+        )
+        mm.save()
 
         return render(request, 'review/create_review.html', ctx)
 

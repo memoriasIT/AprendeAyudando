@@ -10,6 +10,8 @@ from .models import PROFESOR, ENTIDADPUBLICOPRIVADA, ADMINISTRADOR, ESTUDIANTE
 from courses.models import Course
 from activity.models import Activity
 from django.core.mail import send_mail
+from messaging.models import *
+
 
 @login_required
 @permission_required('request_permissions.add_request_permissions', raise_exception=True)
@@ -75,6 +77,14 @@ def accept(request, request_id):
     email_from = 'infoaprendeayudando@gmail.com'
     email_to = [new_user_info.user.email]
     send_mail(subject, message, email_from, email_to, fail_silently=True)
+
+    mm = MessagingMessage.objects.create(
+        title=subject,
+        text=message,
+        user_origin=User.objects.get(email=email_from),
+        user_destination=User.objects.get(email=email_to[0])
+    )
+    mm.save()
     
     request_selected.delete()
 
