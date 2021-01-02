@@ -24,9 +24,20 @@
                     <tbody>
                     {% for user in userList %}
                         <tr class="text-center">
-                            <td><strong>{{ user.username }}</strong></td>
                             <td>
-                                <a class="btn btn-danger btn-sm" href="{% url 'activity:removeUser' activity.id user.id %}">Expulsar</a>
+                                <strong>{{ user.username }}</strong>
+                                {% if user.is_superuser %}
+                                    <div class="badge bg-warning text-wrap rounded-circle" style="width: 4rem;">
+                                        ADMIN
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not user.is_superuser %}
+                                    <a class="btn btn-danger btn-sm" href="{% url 'activity:removeUser' activity.id user.id %}">Expulsar</a>
+                                {% else %}
+                                    <a class="btn btn-danger btn-sm disabled" href="#" aria-disabled="true">Expulsar</a>
+                                {% endif %}
                             </td>
                         </tr>
                     {% endfor %}
