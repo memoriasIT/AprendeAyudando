@@ -32,7 +32,7 @@
                         {% if user|is_owner:course.teacher or user|has_group:"Estudiante" or user.is_superuser %}
                             <li id="prettyListItem"><a href="{% url 'courses:join' course.id %}">{{ course.title }}</a></li>
                         {% else %}
-                            <li id="prettyListItem"><span style="color:#db685a;">{{ course.title }}</span></li>
+                            <li id="prettyListItem"><span style="color:#818181;">{{ course.title }}</span></li>
                         {% endif %}
                     {% endfor %}
                 </ol>

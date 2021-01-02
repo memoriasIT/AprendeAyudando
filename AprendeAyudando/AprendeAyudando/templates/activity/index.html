@@ -33,7 +33,7 @@
                         {% if user|is_owner:activity.entity or user|has_group:"Estudiante" or user.is_superuser or not activity.restricted_entry %}
                             <li id="prettyListItem"><a href="{% url 'activity:join' activity.id %}">{{ activity.title }}</a></li>
                         {% else %}
-                            <li id="prettyListItem"><span style="color:#db685a;">{{ activity.title }}</span></li>
+                            <li id="prettyListItem"><span style="color:#818181;">{{ activity.title }}</span></li>
                         {% endif %}
                     {% endfor %}
                 </ol>
