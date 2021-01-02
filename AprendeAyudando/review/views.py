@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from AprendeAyudando.views import account
 from django.contrib.auth.models import User, Group
+from django.contrib import messages
 
 # Session Handling
 from django.contrib.auth.decorators import login_required
@@ -23,6 +24,7 @@ def create(request, id_enrollable, title_enrollable):
     
     ctx = {
         'enrollable_id': id_enrollable,
+        'success': False,
         'enrollable_title' : title_enrollable
     }
 
@@ -35,7 +37,9 @@ def create(request, id_enrollable, title_enrollable):
             improvements = request.POST["improvements"]
         )
         review.save()
-        return account(request) 
+        ctx['success'] = True
+        return render(request, 'review/create_review.html', ctx)
+        # return account(request) 
 
     return render(request, 'review/create_review.html', ctx)
 

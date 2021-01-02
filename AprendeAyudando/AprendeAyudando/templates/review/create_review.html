@@ -10,24 +10,29 @@
 <section class="bg-white text-dark py-5 min-vh-100">
     
     <div class="container py-5">
-        <h1>Crear Review para: {{ enrollable_title }}</h1>
+        {% if not success %}
+            <h1>Crear Review para: {{ enrollable_title }}</h1>
 
-        <form action="{% url 'review:create' enrollable_id enrollable_title %}" method="POST">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="rating"><strong>Valore de 1 a 10 su experiencia en: <span class="text-secondary">{{ enrollable_title }}</span></strong></label>
-                <input class="form-control text-center col-1" type="number" max="10" min="1" name="rating" id="rating">
-            </div>
-            <div class="form-group">
-                <label for="problems"><strong>Comente posibles problemas con esta actividad:</strong></label>
-                <textarea class="form-control text-center" name="problems" id= "problems" rows="3"></textarea>
-            </div>
-            <div class="form-group">
-                <label for="new_activity_description"><strong>Aporta alguna posible idea para mejorar el contenido de esta actividad:</strong></strong></label>
-                <textarea class="form-control text-center" name="improvements" id= "improvements" rows="3"></textarea>
-            </div>
-            <input type="submit" value="Crear Review" class="btn btn-success btn-lg">
-        </form>
+            <form action="{% url 'review:create' enrollable_id enrollable_title %}" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="rating"><strong>Valore de 1 a 10 su experiencia en: <span class="text-secondary">{{ enrollable_title }}</span></strong></label>
+                    <input class="form-control text-center col-1" type="number" max="10" min="1" name="rating" id="rating" required>
+                </div>
+                <div class="form-group">
+                    <label for="problems"><strong>Comente posibles problemas con esta actividad:</strong></label>
+                    <textarea class="form-control text-center" name="problems" id= "problems" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="new_activity_description"><strong>Aporta alguna posible idea para mejorar el contenido de esta actividad:</strong></strong></label>
+                    <textarea class="form-control text-center" name="improvements" id= "improvements" rows="3" required></textarea>
+                </div>
+                <input type="submit" value="Puntuar" class="btn btn-success btn-lg">
+            </form>
+        {% else %}
+            <h1> Gracias por puntuar: <span class="text-secondary">{{ enrollable_title }}</span></h1>
+            <a href="{% url 'account' %}" class="mr-2 btn btn-danger btn-sm" style="margin-top: 10%;">Volver</a>
+        {% endif %}
     </div>
 </section>
 {% endblock %}
