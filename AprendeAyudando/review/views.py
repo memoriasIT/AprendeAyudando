@@ -2,6 +2,7 @@ from django.shortcuts import render
 from AprendeAyudando.views import account
 from django.contrib.auth.models import User, Group
 from django.contrib import messages
+from django.core.mail import send_mail
 
 # Session Handling
 from django.contrib.auth.decorators import login_required
@@ -38,6 +39,13 @@ def create(request, id_enrollable, title_enrollable):
         )
         review.save()
         ctx['success'] = True
+
+        subject = '{} - Encuesta Satisfacción'.format(title_enrollable, request.user.username)
+        message = 'Hola {}. Gracias por puntuar nuestra actividad: {}'.format(request.user.username, title_enrollable)
+        email_from = 'infoaprendeayudando@gmail.com'
+        email_to = [request.user.email]
+        send_mail(subject, message, email_from, email_to, fail_silently=True)
+
         return render(request, 'review/create_review.html', ctx)
 
     return render(request, 'review/create_review.html', ctx)

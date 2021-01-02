@@ -9,6 +9,7 @@ from user_info.models import UserInfo
 from .models import PROFESOR, ENTIDADPUBLICOPRIVADA, ADMINISTRADOR, ESTUDIANTE
 from courses.models import Course
 from activity.models import Activity
+from django.core.mail import send_mail
 
 @login_required
 @permission_required('request_permissions.add_request_permissions', raise_exception=True)
@@ -68,6 +69,12 @@ def accept(request, request_id):
         requester.is_staff = True
         requester.is_admin = True
         requester.save()"""
+
+    subject = 'Solicitud de rol aceptada'
+    message = 'Hola {}. Se le ha sido garantizado el rol de \"{}\" tal y como pidió en su solicitud. Se han eliminado sus anteriores vínculos con los cursos y actividades en las que estuviera inscrito. Desde ahora puede empezar a crear sus {}.\nEsperamos que disfrute su experiencia.'.format(new_user_info.user.username, request_selected.role, "propios cursos" if request_selected.role == PROFESOR else "propias actividades")
+    email_from = 'infoaprendeayudando@gmail.com'
+    email_to = [new_user_info.user.email]
+    send_mail(subject, message, email_from, email_to, fail_silently=True)
     
     request_selected.delete()
 
