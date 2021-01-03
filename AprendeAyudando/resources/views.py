@@ -38,20 +38,24 @@ def createResource(request, courseOrActivity, activityCourseFk):
     if request.method=="POST":
         new_resource_name=request.POST["new_resource_name"]
 
-        if request.POST["isLocalFile"] == 'on':
-            isLocalFile = True
-        else:
+        try:
+            if request.POST["isLocalFile"] == 'on':
+                isLocalFile = True
+            else:
+                isLocalFile = False
+        except:
             isLocalFile = False
 
 
         new_resource_link=request.POST.get("new_resource_link", "")
 
-        file = request.FILES['file']
-        # file = request.POST.get('file', None)
-        print(file.name)
-        print(file.size)
-        fs = FileSystemStorage()
-        fs.save(file.name, file)
+        try:
+            file = request.FILES['file']
+            fs = FileSystemStorage()
+            fs.save(file.name, file)
+        except:
+            file = None
+
 
         try:
             if request.POST["isShownInCalendar"] == 'on':
