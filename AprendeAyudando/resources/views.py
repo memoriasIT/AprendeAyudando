@@ -14,12 +14,14 @@ from django.http import HttpResponseForbidden
 from messaging.models import *
 from django.contrib.auth.models import User, Group
 
+
 from django.core.mail import send_mail
+
 
 @login_required
 @permission_required('resources.add_resource', raise_exception=True)
 def createResource(request, courseOrActivity, activityCourseFk):
-    
+
     #------------------------CONTROL DE ACCESO-------------------
     if courseOrActivity == COURSE:
         course = get_object_or_404(Course, id=activityCourseFk)
@@ -33,14 +35,27 @@ def createResource(request, courseOrActivity, activityCourseFk):
     #---------------------------FORM POST----------------------
     if request.method=="POST":
         new_resource_name=request.POST["new_resource_name"]
+
+        
+        isLocalFile = request.POST.get('isLocalFile', False)
+
         new_resource_link=request.POST["new_resource_link"]
+        file = request.POST["file"]
+
+        isShownInCalendar = request.POST.get('isShownInCalendar', False)
+
+        dateInCalendar = request.POST["dateInCalendar"]
         if not new_resource_link.startswith('http://') and not new_resource_link.startswith('https://'):
             new_resource_link='http://'+new_resource_link
         new_resource = Resource.objects.create(
             activityCourseFk= activityCourseFk,
             activityCourseType=courseOrActivity,
             resourceText = new_resource_name,
-            resourceLink = new_resource_link
+            isLocalFile = isLocalFile,
+            resourceLink = new_resource_link,
+            file = file,
+            isShownInCalendar = isShownInCalendar,
+            dateInCalendar = dateInCalendar
         )
         new_resource.save()
 
