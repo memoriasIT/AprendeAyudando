@@ -106,7 +106,12 @@
                             <ol id="prettyList" style="width:92%;">
                                 {% for resource in resourceListCourse %}
                                     <li id="prettyListItem">
-                                        <a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
+                                        {% if resource.isLocalFile %} 
+                                            <a href="{{ resource.file.url }}" target="_blank">{{ resource.resourceText }}</a>
+                                        {% else %}
+                                            <a href="{{ resource.resourceLink }}" target="_blank">{{ resource.resourceText }}</a>
+                                        {% endif %}
+
                                         {% if isOwner or user.is_superuser %}
                                             <a class="button pink" href="{% url 'resources:delete' resource.id %}">X</a>
                                         {% endif %}
