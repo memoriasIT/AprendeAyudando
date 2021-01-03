@@ -1,6 +1,13 @@
 {% extends "registration/base.html" %}
 {% block title %}AprendeAyudando - Inicio de sesión{% endblock %}
 
+{% block style %}
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'login/style.css' %}">
+{% endblock %}
+
 {% block content %}
 <section class="bg-white text-dark min-vh-100">
   <div class="container-fluid text-center py-5">
@@ -32,7 +39,7 @@
               </div>
 
             <div class="col py-1 text-center">
-              <input type="submit" value="Login" class="btn btn-lg btn-success">
+              <input type="submit" value="Login" class="btn btn-lg btn-success" id="loginbtn">
             </div>
           </form>
       </div>
