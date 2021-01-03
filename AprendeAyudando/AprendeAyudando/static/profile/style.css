@@ -9,13 +9,7 @@
     .leftPannel { grid-area: 1 / 1 / 2 / 2; }
     .rightPannel { grid-area: 1 / 2 / 2 / 3; } 
 
-ul {
-    text-align: left;
-    list-style-type: none;
-}
-ul.leftPadding {
-    padding-left: 5.5em;
-}
+
 /* // TODO what is email_logo  */
 .user_logo { 
     background: url('/static/general/images/email_logo.png') no-repeat left top;

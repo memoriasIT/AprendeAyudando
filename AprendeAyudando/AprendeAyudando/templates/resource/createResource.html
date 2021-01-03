@@ -29,30 +29,29 @@
         </tbody>
     </table>
     
-    <form action="{% url 'resources:createResource' courseOrActivity activityCourseFk %}" method="POST" class="">
+    <form action="{% url 'resources:createResource' courseOrActivity activityCourseFk %}" method="POST" class="" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             <label for="new_resource_name">Nombre del recurso:</label>
-            <input type="text" name="new_resource_name" class="form-control text-center" id="">
+            <input type="text" name="new_resource_name" class="form-control text-center" id="" required>
         </div>
         <div class="form-group">
             <label for="isLocalFile">¿Es un recurso interno? (Externo es un link, interno un fichero)</label>
-            <input type="checkbox" name="isLocalFile" id="id_isLocalFile">
-            <!-- onclick="lockExterno(this)" -->
+            <input type="checkbox" name="isLocalFile" id="id_isLocalFile" onclick="lockExterno(this)">
             <br>
             <label for="new_resource_link">Link del recurso:</label>
             <input type="text" name="new_resource_link" class="form-control text-center" id="resourceLink">
             <br>
             <label for="file">Selecciona un archivo para subir:</label>
-            <input type="file" name="file" value="file" id="file">
+            <input type="file" name="file" value="file" id="file" disabled="true">
         </div>
         <div class="form-group">
             <label for="isLocalFile">¿Se muestra en el calendario general?</label>
-            <input type="checkbox" name="isShownInCalendar" id="isShownInCalendar">
+            <input type="checkbox" name="isShownInCalendar" id="id_isShownInCalendar" onclick="lockFechaCalendario(this)">
 
             <br>
             <label for="dateInCalendar">Fecha para mostrar en el calendario</label><br>
-            <input type="date" name="dateInCalendar" placeholder="dd-mm-yyyy" value=""min="1997-01-01" max="2030-12-31"> 
+            <input type="date" name="dateInCalendar" id="calendarioFecha" placeholder="yyyy-mm-dd" min="1997-01-01" max="2030-12-31" disabled="true"> 
             
         </div>
         <input type="submit" value="Crear Recurso" class="btn btn-success btn-lg">
@@ -60,13 +59,23 @@
 </div>
 
 
-<!-- <script>
+<script>
 function lockExterno(checkbox){
     if(checkbox.checked){
         document.getElementById('resourceLink').disabled = true;
+        document.getElementById('file').disabled = false;
     } else{
+        document.getElementById('file').disabled = true;
         document.getElementById('resourceLink').disabled = false;
     }
 }
-</script> -->
+
+function lockFechaCalendario(checkbox){
+    if(checkbox.checked){
+        document.getElementById('calendarioFecha').disabled = false;
+    } else{
+        document.getElementById('calendarioFecha').disabled = true;
+    }
+}
+</script>
 {% endblock %}

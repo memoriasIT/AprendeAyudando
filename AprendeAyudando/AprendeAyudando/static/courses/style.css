@@ -16,7 +16,7 @@
 .courseElementRight { grid-area: 1 / 2 / 2 / 3; }
 .courseElementContent { grid-area: 2 / 1 / 3 / 3; } 
 
-ul {
+.prettyList ul {
     text-align: left;
     margin-left: 0%;
     list-style-type: none;
@@ -61,7 +61,7 @@ ul {
     padding: .4em .4em .4em .8em;
     *padding: .4em;
     margin: .5em 0 .5em 2.5em;
-    background: #ddd;
+    background: white;
     color: #444;
     text-decoration: none;
     transition: all .3s ease-out;   
@@ -84,6 +84,7 @@ ul {
     line-height: 2em;
     text-align: center;
     font-weight: bold;
+    color: white;
 }
 
   #prettyListItem:after{
@@ -96,6 +97,17 @@ ul {
     transition: all .3s ease-out;               
 }
 
+#prettyListItem a:hover {
+	color: #393939;
+	text-decoration: underline;
+}
+
+#prettyListItem  a {
+	text-decoration: none;
+	background-color: transparent;
+	color: #5d5d5d !important;
+}
+
   #prettyListItem:hover:after{
     left: -.5em;
     border-left-color: #fa8072;             
@@ -103,7 +115,7 @@ ul {
 
 .quizElements{
     display: grid;
-    grid-template-columns: 33% 33% 33%;
+    grid-template-columns: 50% 50%;
 }
 a.quizElements{
     margin: 30px;
@@ -114,33 +126,33 @@ a.borrarStyle{
     all: unset;
 }
 .card {
-    display: grid;
-    text-align: center;
-    grid-template-columns: 300px;
-    grid-template-rows: 210px 80px;
-    grid-template-areas: "text" "stats";
-    border-radius: 18px;
-    font-family: 'Roboto', sans-serif;
-    text-align: center;
-    transition: 0.5s ease;
-    cursor: pointer;
-    width: 300px;
-    transform: scale(1.005);
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+	display: grid;
+	text-align: center;
+	grid-template-columns: 300px;
+	/* grid-template-rows: 210px 80px; */
+	grid-template-areas: "text" "stats";
+	border-radius: 18px;
+	font-family: 'Roboto', sans-serif;
+	text-align: center;
+	transition: 0.5s ease;
+	cursor: pointer;
+	width: 300px;
+	transform: scale(1.005);
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.6);
 }
 .card-text {
-    grid-area: text;
-    background: rgb(250, 219, 216);
-    padding-top: 12px;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-bottom: 12px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
+	grid-area: text;
+	background: rgb(235, 234, 234);
+	padding-top: 12px;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-bottom: 12px;
+	border-top-left-radius: 15px;
+	border-top-right-radius: 15px;
 }
 .card-text .date {
-    color: rgb(255, 7, 110);
-    font-size:14px;
+	color: rgb(93, 93, 93);
+	font-size: 14px;
 }
 .card-text p {
     color: grey;
@@ -148,17 +160,18 @@ a.borrarStyle{
     font-weight: 300;
 }
 .card-text h2 {
-    margin-top:0px;
-    font-size:28px;
+	margin-top: 0px;
+	font-size: 28px;
+	color: #5d5d5d;
 }
 .card-stats {
-    grid-area: stats; 
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: 1fr;
-    border-bottom-left-radius: 15px;
-    border-bottom-right-radius: 15px;
-    background: rgb(253, 5, 108);
+	grid-area: stats;
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr;
+	grid-template-rows: 1fr;
+	border-bottom-left-radius: 15px;
+	border-bottom-right-radius: 15px;
+	background: rgba(69, 69, 69, 0.87);
 }
 .card-stats .stat {
     display: flex;
@@ -175,4 +188,12 @@ a.borrarStyle{
 .clearh2{
     margin-block-start: 0em !important;
     margin-block-end: 0em !important;
+}
+
+
+@media only screen and (max-width: 1000px) {
+    .quizElements{
+        display: grid;
+        grid-template-columns: 100%;
+    }
 }

@@ -5,12 +5,16 @@
 		<meta charset="utf-8">
 		<title>{% block title %} AprendeAyudando {% endblock %}</title>
 		<link rel="stylesheet" type="text/css" href="{% static 'general/bs5/css/bootstrap.css' %}" />
+		<link rel="stylesheet" type="text/css" href="{% static 'general/custom.css' %}" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 		<link rel="icon" type="icon" href="/static/general/images/logoTransparent.png">
 		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 		<link rel="preconnect" href="https://fonts.gstatic.com">
 		<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100;200;300&display=swap" rel="stylesheet">
-		
+
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 		
 		{% block style %}
 		{% endblock %}
@@ -100,18 +104,5 @@
 				</div>
 			</div>
 		</footer>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
-		<script>
-			$(document).ready(function() {
-				$( ".ml-auto .nav-item" ).bind( "click", function(event) {
-					event.preventDefault();
-					var clickedItem = $( this );
-					$( ".ml-auto .nav-item" ).each( function() {
-						$( this ).removeClass( "active" );
-					});
-					clickedItem.addClass( "active" );
-				});
-			});
-		</script>  
 	</body>
 </html>

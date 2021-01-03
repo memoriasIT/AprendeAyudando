@@ -36,9 +36,11 @@ def createForum(request, courseOrActivity, activityCourseFk):
 
     if request.method=="POST":
         new_forum_name=request.POST["new_forum_name"]
+        new_forum_description=request.POST["new_course_description"]
         new_forum = Forum.objects.create(
             title=new_forum_name,
             author=request.user,
+            description=new_forum_description,
             activityCourseFk=activityCourseFk,
             activityCourseType=courseOrActivity
         )

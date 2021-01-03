@@ -10,11 +10,11 @@
             {% csrf_token %}
             <div class="form-group">
                 <label for="new_course_name">Nombre del curso:</label>
-                <input type="text" name="new_course_name" class="form-control text-center" id="">
+                <input type="text" name="new_course_name" class="form-control text-center" id="" required>
             </div>
 
             <div class="form-group">
-                <label for="new_course_description">Descripción</label>
+                <label for="new_course_description">Descripción:</label>
                 <textarea class="form-control text-center" name="new_course_description" rows="3"></textarea>
             </div>
             <input type="submit" value="Crear Curso" class="btn btn-success btn-lg">
