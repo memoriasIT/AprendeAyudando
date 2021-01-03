@@ -14,7 +14,7 @@
             <form action="{% url 'user_register' %}" method="post">
                 {% csrf_token %}
                 {% if error_message %}
-                    <p class="bg-danger p-d ml-b">{{ error_message }}</p>
+                    <p class="text-danger p-d ml-b">{{ error_message }}</p>
                 {% endif %}
             
                 <div class="form-group clearfix py-1 text-center">

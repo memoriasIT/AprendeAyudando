@@ -10,63 +10,72 @@
 <section class="bg-white text-dark py-5 min-vh-100">
     <div class="container py-5">
             <!--DESCRIPCION-->
-            <div class="container">
-                <h1>{{ forum.title }}</h1>
-                {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
-                
-                {% if success %}
-                    <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en el foro: {{ forum.title }}</p>
-                {% else %}
-                    {% if isAuthor or user.is_superuser %}
-                        {% if isAuthor %}
-                            <p>Bienvenido a tu foro: <strong>{{ forum.title }}</strong></p>
+            <div class="container py-2">
+                <div class="shadow p-3 mb-5 bg-white rounded">
+                    <div class="row">
+                        <div class="col-12">
+                            <h1 class="border-bottom">{{ forum.title }}</h1>
+                        </div>
+                        <div class="col-12 py-1">
+                            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+                        </div>
+                        <div class="col-6">
+                            {% if success %}
+                            <p>Bienvenido {{ usuario.first_name }}, ahora estás inscrito en el foro: {{ forum.title }}</p>
+                            {% else %}
+                                {% if isAuthor or user.is_superuser %}
+                                    {% if isAuthor %}
+                                        <p>Bienvenido a tu foro: <strong>{{ forum.title }}</strong></p>
+                                    {% else %}
+                                        <p>Bienvenido al foro de: <strong>{{ forum.author.first_name }}</strong></p>
+                                    {% endif %}
+                                {% elif isCourse %}
+                                    <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> del profesor <strong>{{ forum.author.first_name }}</strong></p>
+                                {% else %}
+                                    <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> de la entidad público/privada <strong>{{ forum.author.first_name }}</strong></p>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                        <div class="col-12">
+                            <p>{{forum.description}}</p>
+                        </div>  
+                    </div>
+                    <!--DEBATES-->
+                    <div class="shadow-none p-3 mb-3 bg-light rounded">
+                        <div class="row">
+                            <div class="col-6">
+                                <h4 class="border-bottom">Debates</h4>
+                            </div>
+                            <div class="col-6 text-right">
+                                <a  href="{% url 'forum:createDebate' forum.id %}" class="btn btn-secondary btn-sm">Añadir un nuevo debate</a>
+                            </div>
+                            <div class="col-12">
+                                {% if debatesList %}
+                                <ol id="prettyList">
+                                    {% for debate in debatesList %}
+                                        <li id="prettyListItem"><a href="{% url 'forum:viewDebate' debate.id %}">{{ debate.title }}</a></li>
+                                    {% endfor %}
+                                </ol>
+                                {% else %}
+                                    <p>Lo sentimos, no hay debates disponibles.</p>
+                                {% endif %}</p>
+                            </div> 
+                        </div>
+                    </div>
+                    <!--VOLVER A CURSO/ACTIVIDAD-->
+                    <div class="container text-center">
+                        {% if isCourse %}
+                        <a style="margin-bottom: 50px;" href="{% url 'courses:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a curso</a>
                         {% else %}
-                            <p>Bienvenido al foro de: <strong>{{ forum.author.first_name }}</strong></p>
+                        <a style="margin-bottom: 50px;" href="{% url 'activity:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a actividad</a>   
                         {% endif %}
-                    {% elif isCourse %}
-                        <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> del profesor <strong>{{ forum.author.first_name }}</strong></p>
-                    {% else %}
-                        <p>Hola {{ usuario.first_name }}, te encuentras en el foro: <strong>{{ forum.title }}</strong> de la entidad público/privada <strong>{{ forum.author.first_name }}</strong></p>
-                    {% endif %}
-                {% endif %}
-            </div>
-
-            <!-- DEBATES -->
-            <div class="container">
-                <div class="row">
-                    <div class="col-6">
-                        <h4>Debates:</h4>
-                    </div>
-                    <div class="col-6 text-right">
-                        <a  href="{% url 'forum:createDebate' forum.id %}" class="btn btn-secondary btn-sm">Añadir un nuevo debate</a>
-                    </div>
-                    <div class="col-12">
-                        <p>{% if debatesList %}
-                        <ol id="prettyList">
-                            {% for debate in debatesList %}
-                                <li id="prettyListItem"><a href="{% url 'forum:viewDebate' debate.id %}">{{ debate.title }}</a></li>
-                            {% endfor %}
-                        </ol>
-                        {% else %}
-                            <p>Lo sentimos, no hay debates disponibles.</p>
-                        {% endif %}</p>
+                        <!--BORRAR FORO-->
+                        {% if isAuthor is True %}
+                        <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="btn btn-danger btn-sm">Borrar foro</a>
+                        {% endif %}
                     </div>
                 </div>
-            </div> 
-
-            <!--VOLVER A CURSO/ACTIVIDAD-->
-            <div class="container text-center">
-                {% if isCourse %}
-                <a style="margin-bottom: 50px;" href="{% url 'courses:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a curso</a>
-                {% else %}
-                    <a style="margin-bottom: 50px;" href="{% url 'activity:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a actividad</a>   
-                {% endif %}
-                <!--BORRAR FORO-->
-                {% if isAuthor is True %}
-                    <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="btn btn-danger btn-sm">Borrar foro</a>
-                {% endif %}
             </div>
-            
         </div>
     </section>
 {% endblock %}
