@@ -8,7 +8,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
 import random
 import string
@@ -117,17 +117,43 @@ def recoverpassword(request):
                 chars = string.ascii_uppercase+string.ascii_lowercase+string.digits
 
                 newPass = ''.join(random.choice(chars) for x in range(size))
-                subject = 'Solicitud de nueva contraseña'
-                message = 'Ha solicitado una nueva contraseña en la plataforma AprendeAyudando. Su nueva contraseña es: %s.' %newPass
-                email_from = settings.EMAIL_HOST_USER 
-                email_to = [infForm['email']]
                 
                 user = User.objects.get(email=infForm['email'])
                 user.set_password(newPass)
                 user.save()
-                
-                send_mail(subject, message, email_from, email_to)
 
+                subject = 'Solicitud de nueva contraseña'
+                email_from = settings.EMAIL_HOST_USER 
+                email_to = [infForm['email']]
+                text_content = "ERROR"
+                html_content = """  <table style="max-width: 600px; text-align: center; padding: 10px; margin:0 auto; border-collapse: collapse;">
+                                        <tr>
+                                            <td style="background-color: #ecf0f1; text-align: center; padding: 0">
+                                                <a href="https://aprendeayudando.herokuapp.com/">
+                                                    <img width="20%" style="display:block; margin: 1.5% 3%; text-align: center;" src="https://aprendeayudando.herokuapp.com/static/general/images/logoTransparent.png">
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td style="background-color: #ecf0f1">
+                                                <div style="color: #34495e; margin: 4% 10% 2%; text-align: center;font-family: sans-serif">
+                                                    <h2 style="color: #ff7d97; margin: 0 0 7px">¿Ha olvidado su contraseña?</h2>
+                                                    <p style="margin: 2px; font-size: 15px">""" +  "Buenas, %s %s</p>" %(user.first_name, user.last_name) + """<p style="margin: 2px; font-size: 15px">
+                                                        Ha solicitado una nueva contraseña en la plataforma AprendeAyudando, su nueva contraseña es: <strong>""" + "%s" %newPass + """</strong></p>
+                                                    <br>
+                                                    <div style="width: 100%; text-align: center">
+                                                        <a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href="https://aprendeayudando.herokuapp.com/accounts/login/">Iniciar Sesión</a>	
+                                                    </div>
+                                                    <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">AprendeAyudando 2021</p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </table>"""
+
+                msg = EmailMultiAlternatives(subject, text_content, email_from, email_to)
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
                 
                 return render(request, template, {
                     'form': miForm,
@@ -192,11 +218,37 @@ def update(request, username):
                     user.save()
 
                     subject = 'Cambio de contraseña'
-                    message = 'Buenas %s %s.\nEn su cuenta de la plataforma AprendeAyudando la contraseña ha sido modificada.\nSi usted no ha cambiado la contraseña pulse sobre el siguiente enlace para recuperarla\n\nhttp://127.0.0.1:8000/recoverpassword/\n\nMuchas gracias.\nUn saludo.' %(user.first_name, user.last_name)
                     email_from = settings.EMAIL_HOST_USER 
                     email_to = [infForm['email']]
-                
-                    send_mail(subject, message, email_from, email_to)
+                    text_content = "ERROR"
+                    html_content = """  <table style="max-width: 600px; text-align: center; padding: 10px; margin:0 auto; border-collapse: collapse;">
+                                            <tr>
+                                                <td style="background-color: #ecf0f1; text-align: center; padding: 0">
+                                                    <a href="https://aprendeayudando.herokuapp.com/">
+                                                        <img width="20%" style="display:block; margin: 1.5% 3%; text-align: center;" src="https://aprendeayudando.herokuapp.com/static/general/images/logoTransparent.png">
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            
+                                            <tr>
+                                                <td style="background-color: #ecf0f1">
+                                                    <div style="color: #34495e; margin: 4% 10% 2%; text-align: center;font-family: sans-serif">
+                                                        <h2 style="color: #ff7d97; margin: 0 0 7px">Cambio de Contraseña</h2>
+                                                        <p style="margin: 2px; font-size: 15px">""" +  "Buenas, %s %s</p>" %(user.first_name, user.last_name) + """<p style="margin: 2px; font-size: 15px">
+                                                            En su cuenta de la plataforma AprendeAyudando la contraseña ha sido modificada, si usted no ha cambiado la contraseña pulse en el siguiente botón para recuperarla.</p>
+                                                        <br>
+                                                        <div style="width: 100%; text-align: center">
+                                                            <a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href="https://aprendeayudando.herokuapp.com/recoverpassword/">Recuperar Contraseña</a>	
+                                                        </div>
+                                                        <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">AprendeAyudando 2021</p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </table>"""
+
+                    msg = EmailMultiAlternatives(subject, text_content, email_from, email_to)
+                    msg.attach_alternative(html_content, "text/html")
+                    msg.send()
 
                 else:
                     user.save()
