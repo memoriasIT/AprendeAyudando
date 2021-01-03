@@ -14,6 +14,8 @@ from django.http import HttpResponseForbidden
 from messaging.models import *
 from django.contrib.auth.models import User, Group
 
+from django.core.files.storage import FileSystemStorage
+
 
 from django.core.mail import send_mail
 
@@ -43,11 +45,20 @@ def createResource(request, courseOrActivity, activityCourseFk):
 
 
         new_resource_link=request.POST.get("new_resource_link", "")
-        file = request.POST.get('file', None)
 
-        if request.POST["isShownInCalendar"] == 'on':
-            isShownInCalendar = True
-        else:
+        file = request.FILES['file']
+        # file = request.POST.get('file', None)
+        print(file.name)
+        print(file.size)
+        fs = FileSystemStorage()
+        fs.save(file.name, file)
+
+        try:
+            if request.POST["isShownInCalendar"] == 'on':
+                isShownInCalendar = True
+            else:
+                isShownInCalendar = False
+        except:
             isShownInCalendar = False
 
         dateInCalendar = request.POST.get('dateInCalendar', None)

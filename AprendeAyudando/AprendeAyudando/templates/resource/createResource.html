@@ -29,7 +29,7 @@
         </tbody>
     </table>
     
-    <form action="{% url 'resources:createResource' courseOrActivity activityCourseFk %}" method="POST" class="">
+    <form action="{% url 'resources:createResource' courseOrActivity activityCourseFk %}" method="POST" class="" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="form-group">
             <label for="new_resource_name">Nombre del recurso:</label>
