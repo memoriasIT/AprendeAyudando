@@ -177,3 +177,11 @@ a.borrarStyle{
     margin-block-start: 0em !important;
     margin-block-end: 0em !important;
 }
+
+
+@media only screen and (max-width: 1000px) {
+    .quizElements{
+        display: grid;
+        grid-template-columns: 100%;
+    }
+}
