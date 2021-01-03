@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from AprendeAyudando.views import account
 from django.contrib.auth.models import User, Group
+from django.contrib import messages
+from django.core.mail import send_mail
 
 # Session Handling
 from django.contrib.auth.decorators import login_required
@@ -16,6 +18,8 @@ from AprendeAyudando.views import has_group
 from django.db.models import Q
 
 from .models import Review
+from messaging.models import *
+from django.contrib.auth.models import User, Group
 
 
 @login_required
@@ -23,6 +27,7 @@ def create(request, id_enrollable, title_enrollable):
     
     ctx = {
         'enrollable_id': id_enrollable,
+        'success': False,
         'enrollable_title' : title_enrollable
     }
 
@@ -35,7 +40,23 @@ def create(request, id_enrollable, title_enrollable):
             improvements = request.POST["improvements"]
         )
         review.save()
-        return account(request) 
+        ctx['success'] = True
+
+        subject = '{} - Encuesta Satisfacción'.format(title_enrollable, request.user.username)
+        message = 'Hola {}. Gracias por puntuar nuestra actividad: {}'.format(request.user.username, title_enrollable)
+        email_from = 'infoaprendeayudando@gmail.com'
+        email_to = [request.user.email]
+        send_mail(subject, message, email_from, email_to, fail_silently=True)
+
+        mm = MessagingMessage.objects.create(
+            title=subject,
+            text=message,
+            user_origin=User.objects.get(email=email_from),
+            user_destination=User.objects.get(email=email_to[0])
+        )
+        mm.save()
+
+        return render(request, 'review/create_review.html', ctx)
 
     return render(request, 'review/create_review.html', ctx)
 

@@ -29,12 +29,12 @@
                     <td><strong>{{ selected_request.requester.username }}</strong></td>
                     <td><strong>{{ selected_request.role }}</strong></td>
                     <td>
-                        <ul class="actions" style="margin-top: 25px;">
+                        <ul class="actions">
                             <li style="margin-left: 20%;">
                                 <a href="{% url 'request_permissions:deny' selected_request.id %}" class="button special" type="submit" name="deny">Denegar</a>
                             </li>
                             <li style="margin-left: 20%;">
-                                <a href="{% url 'request_permissions:accept' selected_request.id %}" class="letraEnBlanco" type="submit" name="accept">Aceptar</a>
+                                <a href="{% url 'request_permissions:accept' selected_request.id %}" type="submit" name="accept">Aceptar</a>
                             </li>
                         </ul>
                     </td>

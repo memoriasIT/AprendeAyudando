@@ -8,8 +8,13 @@ from activity.models import Activity
 from activity.views import join as viewsActivityJoin
 from courses.views import join as viewsCourseJoin
 from forum.models import Forum, Debate, Message, Reply
+
 from AprendeAyudando.templatetags.auth_extras import COURSE, ACTIVITY
 from django.http import HttpResponseForbidden
+from django.core.mail import send_mail
+from messaging.models import *
+from django.contrib.auth.models import User, Group
+
 
 #-----------------------------------------FOROS------------------------------------------
 
@@ -117,6 +122,23 @@ def createDebate(request, forum_id):
             content=initial_message_content, debate = new_debate, initial=True)
         initial_message.save()
 
+        # Mensaje a los emails de los usuarios inscritos en el curso/actividad
+        title = get_object_or_404(Course, pk=initial_message.debate.forum.activityCourseFk).title if initial_message.debate.forum.activityCourseType == COURSE else get_object_or_404(Activity, pk=initial_message.debate.forum.activityCourseFk).title
+        for user in new_debate.forum.enrolled_users.all():
+            subject = '[{}] {}'.format(title, new_debate.title)
+            message = 'De: {}\n{}'.format(user.username, initial_message.content)
+            email_from = 'infoaprendeayudando@gmail.com'
+            email_to = [user.email]
+            send_mail(subject, message, email_from, email_to, fail_silently=True)
+
+            mm = MessagingMessage.objects.create(
+                title=subject,
+                text=message,
+                user_origin=User.objects.get(email=email_from),
+                user_destination=User.objects.get(email=email_to[0])
+            )
+            mm.save()
+
         return viewDebate(request, new_debate_id)
     return render(request, 'forum/createDebate.html', {'forum': forum})
     
@@ -169,6 +191,15 @@ def reply(request, message_id):
 
         reply = Reply.objects.create(originalMessage=originalMessage, replyMessage = replyMessage)
         reply.save()
+
+        # Mensaje a los emails de los usuarios inscritos en el curso/actividad
+        title = get_object_or_404(Course, pk=originalMessage.debate.forum.activityCourseFk).title if originalMessage.debate.forum.activityCourseType == COURSE else get_object_or_404(Activity, pk=originalMessage.debate.forum.activityCourseFk).title
+        for user in originalMessage.debate.forum.enrolled_users.all():
+            subject = '[{}] Re-{}'.format(title, originalMessage.debate.title)
+            message = 'De: {}\n{}'.format(user.username, replyMessage.content)
+            email_from = 'infoaprendeayudando@gmail.com'
+            email_to = [user.email]
+            send_mail(subject, message, email_from, email_to, fail_silently=True)
 
         return viewDebate(request, originalMessage.debate.id)
     return render(request, 'forum/reply.html', {'originalMessage': originalMessage})
