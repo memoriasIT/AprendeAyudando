@@ -14,6 +14,8 @@ from django.http import HttpResponseForbidden
 from messaging.models import *
 from django.contrib.auth.models import User, Group
 
+from django.core.files.storage import FileSystemStorage
+
 
 from django.core.mail import send_mail
 
@@ -36,15 +38,34 @@ def createResource(request, courseOrActivity, activityCourseFk):
     if request.method=="POST":
         new_resource_name=request.POST["new_resource_name"]
 
-        
-        isLocalFile = request.POST.get('isLocalFile', False)
+        try:
+            if request.POST["isLocalFile"] == 'on':
+                isLocalFile = True
+            else:
+                isLocalFile = False
+        except:
+            isLocalFile = False
 
-        new_resource_link=request.POST["new_resource_link"]
-        file = request.POST["file"]
 
-        isShownInCalendar = request.POST.get('isShownInCalendar', False)
+        new_resource_link=request.POST.get("new_resource_link", "")
 
-        dateInCalendar = request.POST["dateInCalendar"]
+        try:
+            file = request.FILES['file']
+            fs = FileSystemStorage()
+            fs.save(file.name, file)
+        except:
+            file = None
+
+
+        try:
+            if request.POST["isShownInCalendar"] == 'on':
+                isShownInCalendar = True
+            else:
+                isShownInCalendar = False
+        except:
+            isShownInCalendar = False
+
+        dateInCalendar = request.POST.get('dateInCalendar', None)
         if not new_resource_link.startswith('http://') and not new_resource_link.startswith('https://'):
             new_resource_link='http://'+new_resource_link
         new_resource = Resource.objects.create(
