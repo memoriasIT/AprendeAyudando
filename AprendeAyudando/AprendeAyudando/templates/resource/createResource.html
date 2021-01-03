@@ -36,11 +36,12 @@
             <input type="text" name="new_resource_name" class="form-control text-center" id="">
         </div>
         <div class="form-group">
-            <label for="isLocalFile">¿Es un recurso externo? (Externo es un link, interno un fichero)</label>
+            <label for="isLocalFile">¿Es un recurso interno? (Externo es un link, interno un fichero)</label>
             <input type="checkbox" name="isLocalFile" id="id_isLocalFile">
+            <!-- onclick="lockExterno(this)" -->
             <br>
             <label for="new_resource_link">Link del recurso:</label>
-            <input type="text" name="new_resource_link" class="form-control text-center" id="">
+            <input type="text" name="new_resource_link" class="form-control text-center" id="resourceLink">
             <br>
             <label for="file">Selecciona un archivo para subir:</label>
             <input type="file" name="file" value="file" id="file">
@@ -57,4 +58,15 @@
         <input type="submit" value="Crear Recurso" class="btn btn-success btn-lg">
     </form>
 </div>
+
+
+<!-- <script>
+function lockExterno(checkbox){
+    if(checkbox.checked){
+        document.getElementById('resourceLink').disabled = true;
+    } else{
+        document.getElementById('resourceLink').disabled = false;
+    }
+}
+</script> -->
 {% endblock %}
