@@ -84,6 +84,7 @@
     line-height: 2em;
     text-align: center;
     font-weight: bold;
+    color: white;
 }
 
   #prettyListItem:after{
@@ -94,6 +95,17 @@
     top: 50%;
     margin-top: -.5em;
     transition: all .3s ease-out;               
+}
+
+#prettyListItem a:hover {
+	color: #393939;
+	text-decoration: underline;
+}
+
+#prettyListItem  a {
+	text-decoration: none;
+	background-color: transparent;
+	color: #5d5d5d !important;
 }
 
   #prettyListItem:hover:after{
