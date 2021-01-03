@@ -1,5 +1,5 @@
 from django import template
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, User
 
 #Constantes
 COURSE = 'curso'
@@ -26,3 +26,7 @@ def is_owner(user, request_user):
 @register.filter(name='get_item_from_index')
 def get_list_items_card(list, quiz_id):
     return list[quiz_id]
+
+@register.filter(name='get_user_from_id')
+def get_user_from_id(querySet_of_users, user_id):
+    return querySet_of_users.get(id=user_id)

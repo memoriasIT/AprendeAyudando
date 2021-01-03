@@ -3,17 +3,20 @@
 
 {% block content %}
 
-<section class="wrapper align-center login">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
-
-    <div class="container 75% minHeightSmaller">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
         <h2>Solicitar permisos de Entidad Público/Privada</h2>
         <form action="{% url 'request_permissions:create' 'EntidadPublicoPrivada' %}" method="POST">
             {% csrf_token %}
-            <p>Nombre de la organización: <input type="text" name="org" id=""></p>
-            <p>Número de teléfono: <input type="text" name="telefono" id=""></p>
-            <input type="submit" value="Enviar">
+            <div class="form-group">
+                <label for="org">Nombre de la organización:</label>
+                <input type="text" name="org" class="form-control text-center" id="">
+            </div>
+            <div class="form-group">
+                <label for="telefono">Número de teléfono:</label>
+                <input type="text" name="telefono" class="form-control text-center" id="">
+            </div>
+            <input type="submit" value="Enviar solicitud" class="btn btn-secondary btn-lg">
         </form>
     </div>
 </section>

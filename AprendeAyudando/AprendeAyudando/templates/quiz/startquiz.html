@@ -7,45 +7,54 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container 75% align-center minHeight">
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5">
         <!--Administracion-->
         {% if isOwner or user.is_superuser %}
-            <h2 class="bigger">Administración</h2>
-            <a href="{% url 'quiz:administrationQuiz' quiz.id %}" class="button pink">Cambiar Datos</a>
+            <h2>Administración</h2>
+            <a href="{% url 'quiz:administrationQuiz' quiz.id %}" class="btn btn-warning">Editar Test</a>
+            <a href="{% url 'quiz:viewQualifications' quiz.id %}" class="btn btn-danger">Ver calificaciones</a>
             <br>
         {% endif %}
         <!--Test-->
-        <h2 class="bigger" style="margin-top: 60px;">Test</h2>
+        <h2 style="margin-top: 60px;">Test</h2>
         {% if expired %}
             <p><strong>Este test ya no se puede realizar. Su fecha límite fue {{quiz.maximum_date}}</strong></p>
         {% else %}
             {% if not exist_started_qualification and not exist_finished_qualification %}
                 <p>Esta seguro de inicializar el test <strong>{{quiz.title}}</strong>?</p>
-                <a href="{% url 'quiz:doQuiz' quiz.id %}" class="button pink">Empezar Test</a>
+                {% if quiz.course is not None %}
+                    <a href="{% url 'courses:join' quiz.course.id %}" class="btn btn-outline-dark">Volver al curso</a>
+                {% else %}
+                    <a href="{% url 'activity:join' quiz.activity.id %}" class="btn btn-outline-dark">Volver a la actividad</a>
+                {% endif %}
+                <a href="{% url 'quiz:doQuiz' quiz.id %}" class="btn btn-secondary">Empezar Test</a>
             {% elif not exist_started_qualification and exist_finished_qualification and quiz.repeatable %}
                 <p><strong>Ya ha realizado este test. Este Test se puede repetir. Desea repetir el Test?</strong></p>
                 {% if quiz.course is not None %}
-                    <a href="{% url 'courses:join' quiz.course.id %}" class="button pink">Volver al curso</a>
+                    <a href="{% url 'courses:join' quiz.course.id %}" class="btn btn-outline-dark">Volver al curso</a>
                 {% else %}
-                    <a href="{% url 'activity:join' quiz.activity.id %}" class="button pink">Volver a la actividad</a>
+                    <a href="{% url 'activity:join' quiz.activity.id %}" class="btn btn-outline-dark">Volver a la actividad</a>
                 {% endif %}
-                <a href="{% url 'quiz:doQuiz' quiz.id %}" class="button pink">Repetir Test</a>
+                <a href="{% url 'quiz:doQuiz' quiz.id %}" class="btn btn-secondary">Repetir Test</a>
             {% elif exist_started_qualification %}
                 <p><strong>No ha terminado completamente el Test. Desea seguir con el Test?</strong></p>
                 {% if quiz.course is not None %}
-                    <a href="{% url 'courses:join' quiz.course.id %}" class="button pink">Volver al curso</a>
+                    <a href="{% url 'courses:join' quiz.course.id %}" class="btn btn-outline-dark">Volver al curso</a>
                 {% else %}
-                    <a href="{% url 'activity:join' quiz.activity.id %}" class="button pink">Volver a la actividad</a>
+                    <a href="{% url 'activity:join' quiz.activity.id %}" class="btn btn-outline-dark">Volver a la actividad</a>
                 {% endif %}
-                <a href="{% url 'quiz:doQuiz' quiz.id %}" class="button pink">Seguir con el Test</a>
+                <a href="{% url 'quiz:doQuiz' quiz.id %}" class="btn btn-secondary">Seguir con el Test</a>
             {% else %}
                 <p>Ya ha terminado con el Test. Este test no se puede repetir.</p>
                 {% if quiz.course is not None %}
-                    <a href="{% url 'courses:join' quiz.course.id %}" class="button pink">Volver al curso</a>
+                    <a href="{% url 'courses:join' quiz.course.id %}" class="btn btn-outline-dark">Volver al curso</a>
                 {% else %}
-                    <a href="{% url 'activity:join' quiz.activity.id %}" class="button pink">Volver a la actividad</a>
+                    <a href="{% url 'activity:join' quiz.activity.id %}" class="btn btn-outline-dark">Volver a la actividad</a>
                 {% endif %}
             {% endif %}
         {% endif %}
     </div>
+</section>
+    
 {% endblock %}

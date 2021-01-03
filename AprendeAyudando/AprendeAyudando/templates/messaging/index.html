@@ -1,0 +1,95 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Mensajería{% endblock %}
+{% load auth_extras %}
+
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'messaging/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
+        <div class="row">
+            <h2 class="col-6 mr-auto mb-4 text-left">Mensajes</h2>
+            <div class="col-6 mr-auto mb-4 text-right">
+                <a href="{% url 'messaging:doMessage' %}" class="btn btn-secondary">Redactar Mensaje</a>
+            </div>
+        </div>
+
+        <div class=" listaActividades activityElement">
+            <div class="activityElementContent">
+                <!--Prueba-->
+                <div class="row">
+                    <div class="col-2">
+                        <div class="list-group" id="list-tab" role="tablist">
+                            <a class="list-group-item list-group-item-action active" id="list-all-list" data-bs-toggle="list" href="#list-all" role="tab" aria-controls="all">Mostrar Todo</a>
+                            <a class="list-group-item list-group-item-action" id="list-received-list" data-bs-toggle="list" href="#list-received" role="tab" aria-controls="received">Recibidos</a>
+                            <a class="list-group-item list-group-item-action" id="list-sent-list" data-bs-toggle="list" href="#list-sent" role="tab" aria-controls="sent">Enviados</a>
+                        </div>
+                    </div>
+
+                    <div class="col-10">
+                        <div class="tab-content" id="nav-tabContent">
+
+                            <div class="tab-pane fade show active" id="list-all" role="tabpanel">
+                                {% if all_messages %}
+                                    <ol id="prettyList" style="width:92%;">
+                                        {% for message in all_messages %}
+                                            <li id="prettyListItem">
+                                                <a href="{% url 'messaging:viewMessage' message.id %}" class="text-dark text-decoration-none">
+                                                    De: {{ message.user_origin.username }}, Para: {{ message.user_destination.username }}
+                                                    - {{ message.title }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                {% else %}
+                                    <p>No has recibido ni enviado ningún mensaje.</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="tab-pane fade" id="list-received" role="tabpanel" aria-labelledby="list-received-list">
+                                {% if list_received_message %}
+                                    <ol id="prettyList" style="width:92%;">
+                                        {% for received_message in list_received_message %}
+                                            <li id="prettyListItem">
+                                                <a href="{% url 'messaging:viewMessage' received_message.id %}" class="text-dark text-decoration-none">
+                                                    De: {{ received_message.user_origin.first_name }} {{ received_message.user_origin.last_name }}
+                                                    - {{ received_message.title }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                {% else %}
+                                    <p>No has recibido ningún mensaje.</p>
+                                {% endif %}
+                            </div>
+
+                            <div class="tab-pane fade" id="list-sent" role="tabpanel" aria-labelledby="list-sent-list">
+                                {% if list_sent_messages %}
+                                    <ol id="prettyList" style="width:92%;">
+                                        {% for sent_message in list_sent_messages %}
+                                            <li id="prettyListItem">
+                                                <a href="{% url 'messaging:viewMessage' sent_message.id %}" class="text-dark text-decoration-none">
+                                                    Para: {{ sent_message.user_destination.first_name }} {{ sent_message.user_destination.last_name }}
+                                                    - {{ sent_message.title }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ol>
+                                {% else %}
+                                    <p>No has enviado ningún mensaje.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</section>
+
+{% endblock %}

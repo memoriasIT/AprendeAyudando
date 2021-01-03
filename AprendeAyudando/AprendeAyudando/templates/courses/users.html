@@ -2,27 +2,55 @@
 {% block title %}AprendeAyudando - Miembros del curso{% endblock %}
 
 {% block content %}
-<section class="wrapper login">
+<section class="bg-white text-dark py-5 min-vh-100">
     {% load static %}
     {% load auth_extras %}
     <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
 
-    <div class="container 100%">
-        <div class="courseElement">
-            <h2 class="courseTitle">Miembros del curso</h2>
-            <div class="courseElementContent">
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-12">
+                <h3 class="pb-3">Usuarios matriculados</h3>
+            </div>
+            <div class="col-12">
                 {% if userList %}
-                <ol id="prettyList" style="width:92%;">
-                    {% for u in userList %}
-                            <li id="prettyListItem">{{ u.email}}</a></li>
-                            <a class="button pink" href="{% url 'courses:removeUser' course.id u.id %}">X</a>
+                <table class="table">
+                    <thead>
+                        <tr class="text-center">
+                            <th><strong style="font-size:20px">Nombre usuario</strong></th>
+                            <th><strong style="font-size:20px">Acción</strong></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for user in userList %}
+                        <tr class="text-center">
+                            <td><strong>{{ user.username }}</strong>
+                                {% if user.is_superuser %}
+                                    <div class="badge bg-warning text-wrap rounded-circle" style="width: 4rem;">
+                                        ADMIN
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not user.is_superuser %}
+                                    <a class="btn btn-danger btn-sm" href="{% url 'courses:removeUser' course.id user.id %}">Expulsar</a>
+                                {% else %}
+                                    <a class="btn btn-danger btn-sm disabled" href="#" aria-disabled="true">Expulsar</a>
+                                {% endif %}
+                            </td>
+                        </tr>
                     {% endfor %}
-                </ol>
+                    </tbody>
+                </table>
                 {% else %}
-                    <p>No hay usuarios matriculados todavía.</p>
+                <p>No hay usuarios matriculados todavía.</p>
                 {% endif %}
-            </div> 
-        </div> 
+            </div>
+            <div class="col-12 text-center">
+                <a href="{% url 'courses:join' course.id %}" class="btn btn-outline-dark btn-sm">Volver a curso</a>  
+            </div>
+        </div>
+        
     </div>
 
 </section>

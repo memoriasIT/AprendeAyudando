@@ -1,0 +1,30 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Ver Mensaje{% endblock %}
+{% load auth_extras %}
+
+{% block style %}
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+{% endblock %}
+
+{% block content %}
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container text-center">
+            <h3 style="font-size:25px">{{ message.title }}</h3>
+            <hr>
+            
+            <p>Autor: <strong class="primary">{{ message.user_origin }}</strong></p>
+            <p class="text-justify">{{ message.text }}</p>
+            <form action="{% url 'messaging:viewMessage' message.id %}" method="POST">
+                {% csrf_token %}
+                <a href="{% url 'messaging:index' %}" class="btn btn-outline-dark">Volver</a>
+                {% if not user == message.user_origin %}
+                    <input type="submit" class="btn btn-large btn-secondary" value="Responder Mensaje">
+                {% else %}
+                    <input type="submit" class="btn btn-large btn-secondary" value="Enviar otro Mensaje">
+                {% endif %}
+            </form>
+    </div>
+
+</section>
+{% endblock %}

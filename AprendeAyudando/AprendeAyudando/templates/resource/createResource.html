@@ -2,14 +2,15 @@
 {% block title %}AprendeAyudando - Crear Curso{% endblock %}
 
 {% block content %}
-<div class="container 75% align-center minHeight">
-    <h1 class="bigger">Crear un recurso nuevo</h1>
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5">
+    <h1>Crear un recurso nuevo</h1>
     <p>AprendeAyudando recomienda los siguientes links de acceso gratuito, sin embargo, puede colocar cualquier link</p>
-    <table class="alt">
+    <table class="table text-center">
         <thead>
             <tr>
-                <th style="text-align:center;"><strong style="font-size:20px">Tipo de recurso</strong></th>
-                <th style="text-align:center;"><strong style="font-size:20px">Página</strong></th>
+                <th><strong style="font-size:20px">Tipo de recurso</strong></th>
+                <th><strong style="font-size:20px">Página</strong></th>
             </tr>
         </thead>
         <tbody>
@@ -27,14 +28,18 @@
             </tr>
         </tbody>
     </table>
-    <hr class="major">
     
-    <form action="{% url 'resources:createResource' courseOrActivity activityCourseFk %}" method="POST">
+    <form action="{% url 'resources:createResource' courseOrActivity activityCourseFk %}" method="POST" class="text-center">
         {% csrf_token %}
-        <p>Nombre del recurso: <input type="text" name="new_resource_name" id=""></p>
-        <p>Link del recurso: <input type="text" name="new_resource_link" id=""></p>
-
-        <input type="submit" value="Crear Recurso">
+        <div class="form-group">
+            <label for="new_resource_name">Nombre del recurso:</label>
+            <input type="text" name="new_resource_name" class="form-control text-center" id="">
+        </div>
+        <div class="form-group">
+            <label for="new_resource_link">Link del recurso:</label>
+            <input type="text" name="new_resource_link" class="form-control text-center" id="">
+        </div>
+        <input type="submit" value="Crear Recurso" class="btn btn-success btn-lg">
     </form>
 </div>
 {% endblock %}

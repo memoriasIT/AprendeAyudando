@@ -148,7 +148,7 @@ def join(request, course_id):
 
     context = {
         'course': course,
-        'success': success,
+        #'success': success,
         'usuario': request.user,
         'isOwner': isOwner,
         'show_de_enroll':show_de_enroll,
@@ -191,10 +191,10 @@ def createCourse(request):
         new_course.save()
         isOwner = True
 
-        context = {
+        """context = {
             'course': new_course,
             'isOwner': isOwner,
-        }
+        }"""
         return join(request, new_course.id)
 
     return render(request, 'courses/create.html',{})

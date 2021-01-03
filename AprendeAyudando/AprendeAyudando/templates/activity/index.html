@@ -2,38 +2,38 @@
 {% block title %}AprendeAyudando - Actividades disponibles{% endblock %}
 
 {% block content %}
-<section class="wrapper login">
+<section class="bg-white text-dark py-5 min-vh-100">
     {% load static %}
     {% load auth_extras %}
-    <link rel="stylesheet" type="text/css" href="{% static 'activity/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
 
-    <div class="container 100% listaActividades">
-        <div class="activityElement">
-            <div class="activityElementLeft"> 
+    <div class="container py-5">
+        <div class="row">
+            <div class="col ml-auto mb-4"> 
                 {% if filtered_by_enrolled %}
-                    <h2 class="activityTitle">Tus actividades</h2>
+                    <h1>Tus actividades</h1>
                 {% else %}
-                    <h2 class="activityTitle">Actividades disponibles</h2>
+                    <h1>Actividades disponibles</h1>
                 {% endif %}
             </div>
-            <div class="activityElementRight"> 
-                {% if is_entity %}
-                    <a style="margin-top: 25px;" href="{% url 'activity:create' %}" class="button pink">Añadir actividad</a>
-                {% elif user|has_group:"Profesor" %}
+            <div class="col mr-auto mb-4 text-right"> 
+                {% if user|has_group:"Profesor" %}
                     <p>Aviso: Necesitas ser Estudiante para poder acceder a la información de las actividades restringidas.</p>
                 {% elif user|is_guest %}
                     <p>Aviso: Necesitas registrarte para poder acceder a la información de los cursos.</p>
+                {% elif is_entity %}
+                    <a href="{% url 'activity:create' %}" class="btn btn-secondary">Añadir actividad</a>
                 {% endif %}
             </div>
 
-            <div class="activityElementContent"> 
+            <div class="col-12"> 
                 {% if activityList %}
-                <ol id="prettyList" style="width:92%;">
+                <ol id="prettyList">
                     {% for activity in activityList %}
                         {% if user|is_owner:activity.entity or user|has_group:"Estudiante" or user.is_superuser or not activity.restricted_entry %}
                             <li id="prettyListItem"><a href="{% url 'activity:join' activity.id %}">{{ activity.title }}</a></li>
                         {% else %}
-                            <li id="prettyListItem"><span style="color:#db685a;">{{ activity.title }}</span></li>
+                            <li id="prettyListItem"><span style="color:#818181;">{{ activity.title }}</span></li>
                         {% endif %}
                     {% endfor %}
                 </ol>

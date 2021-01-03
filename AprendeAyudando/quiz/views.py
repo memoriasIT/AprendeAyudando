@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.models import Group, User
 # Session Handling
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
@@ -22,16 +23,17 @@ from activity.models import Activity
 from random import random, randint
 
 #Queries
-from django.db.models import Q
+from django.db.models import Q, Max, Count
 
 #Constants
 from AprendeAyudando.templatetags.auth_extras import ACTIVITY, COURSE
 
+#Time
 from django.utils import timezone
 
 #-----------------------------------------CREACIÓN DE TESTS---------------------------------------------
 @login_required
-@permission_required('quiz.add_quizcourse', raise_exception=True)
+@permission_required('quiz.add_quiz', raise_exception=True)
 def createQuiz(request, courseOrActivity, courseOrActivity_id):
 
     if(courseOrActivity == COURSE):
@@ -82,6 +84,7 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
                 repeatable=new_quiz_is_repeatable,
                 show_qualification=new_quiz_show_qualification,
                 activity=activity,
+                maximum_date=new_quiz_date,
                 show_quiz=new_show_quiz
             )
         new_quiz.save()
@@ -92,30 +95,45 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
     return render(request, 'quiz/createquiz.html', ctx)
 
 @login_required
-@permission_required('quiz.add_questioncourse', raise_exception=True)
-def createQuestions(request, courseOrActivity, courseOrActivity_id, quiz_id, number_questions):
+@permission_required('quiz.add_question', raise_exception=True)
+def createQuestions(request, quiz_id, number_questions):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
 
     #----------------------------------ACTIVIDAD O CURSO?------------------------------------
-    if(courseOrActivity == COURSE):
+    """if(courseOrActivity == COURSE):
         course = get_object_or_404(Course, pk=courseOrActivity_id)
         quiz = get_object_or_404(Quiz, pk=quiz_id)
         isOwner = is_owner(request.user, course.teacher)
     else:
         activity = get_object_or_404(Activity, pk=courseOrActivity_id)
         quiz = get_object_or_404(Quiz, pk=quiz_id)
-        isOwner = is_owner(request.user, activity.entity)
+        isOwner = is_owner(request.user, activity.entity)"""
 
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
-    if not isOwner and not request.user.is_superuser:
-        return HttpResponseForbidden()
+    """if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()"""
     
     #-----------------------------------ELEMENTOS PARA HTML-----------------------------------
     ctx = {
         'isOwner':isOwner,
         'quiz':quiz,
-        'courseOrActivity':courseOrActivity,
-        'courseOrActivity_id':courseOrActivity_id,
-        'number_questions':number_questions
+        #'courseOrActivity':courseOrActivity,
+        'activity_or_course_id':activity_or_course_id,
+        'number_questions':number_questions,
+        'is_course':is_course
     }
 
     #-------------------------------------POST FORM-------------------------------------------
@@ -142,30 +160,49 @@ def createQuestions(request, courseOrActivity, courseOrActivity_id, quiz_id, num
     return render(request, 'quiz/createquestion.html', ctx)
 
 @login_required
-@permission_required('quiz.add_answercourse', raise_exception=True)
-def createAnswers(request, courseOrActivity, courseOrActivity_id, question_id, number_questions, number_answers):
-    if(courseOrActivity == COURSE):
+@permission_required('quiz.add_answer', raise_exception=True)
+def createAnswers(request, question_id, number_questions, number_answers):
+    question = get_object_or_404(Question, pk=question_id)
+    quiz = question.quiz
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+
+
+    """if(courseOrActivity == COURSE):
         course = get_object_or_404(Course, pk=courseOrActivity_id)
         question = get_object_or_404(Question, pk=question_id)
         isOwner = is_owner(request.user, course.teacher)
     else:
         activity = get_object_or_404(Activity, pk=courseOrActivity_id)
         question = get_object_or_404(Question, pk=question_id)
-        isOwner = is_owner(request.user, activity.entity)
+        isOwner = is_owner(request.user, activity.entity)"""
 
     #-----------------------------------CONTROL DE ACCESO-----------------------------------
-    if not isOwner and not request.user.is_superuser:
-        return HttpResponseForbidden()
+    """if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()"""
     
     #-----------------------------------ELEMENTOS PARA HTML-----------------------------------
     ctx = {
         'isOwner':isOwner,
-        'courseOrActivity':courseOrActivity,
-        'courseOrActivity_id':courseOrActivity_id,
-        'quiz': question.quiz,
+        #'courseOrActivity':courseOrActivity,
+        'activity_or_course_id':activity_or_course_id,
+        'is_course':is_course,
+        'quiz': quiz,
         'number_answers': number_answers,
-        'constant_activity': ACTIVITY,
-        'constant_course': COURSE,
+        #'constant_activity': ACTIVITY,
+        #'constant_course': COURSE,
     }
 
     #----------------------------------------FORM---------------------------------------------
@@ -209,7 +246,10 @@ def startQuiz(request, quiz_id):
         activity_or_course_id = quiz.course.id
 
     #-------------------------------------------------------------------------------------
-    expired = timezone.now() > quiz.maximum_date
+    if quiz.maximum_date:
+        expired = timezone.now() > quiz.maximum_date
+    else:
+        expired = False
 
     #----------------------------COMPROBACION DE REPETICION DEL TEST----------------------
     exist_finished_qualification = None
@@ -323,6 +363,40 @@ def doQuizQuestionAsked(request, question_id):
     else:
         return HttpResponseForbidden()
 
+
+#---------------------------------------ADMINISTRACION DEL TEST-------------------------------------
+@login_required
+@permission_required('quiz.change_quiz', raise_exception=True)
+def administrationQuiz(request, quiz_id):
+    quiz = get_object_or_404(Quiz, pk=quiz_id)
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    
+    #-----------------------------OBTENCION DE QUESTION Y ANSWERS---------------------------
+    list_questions = Question.objects.filter(quiz=quiz_id)
+    dic_answers = {}
+    for question in list_questions:
+        list_answers = Answer.objects.filter(question=question)
+        dic_answers[question.id] = list_answers
+    
+    ctx = {
+        'list_questions':list_questions,
+        'dic_answers': dic_answers,
+        'quiz':quiz
+    }
+    return render(request, 'quiz/administrationquiz.html', ctx)
+
 @login_required
 @permission_required('quiz.delete_quiz', raise_exception=True)
 def deleteQuiz(request, quiz_id):
@@ -358,38 +432,6 @@ def deleteQuiz(request, quiz_id):
         'quiz':quiz
     }
     return render(request, 'quiz/deletequiz.html', ctx)
-
-@login_required
-@permission_required('quiz.change_quiz', raise_exception=True)
-def administrationQuiz(request, quiz_id):
-    quiz = get_object_or_404(Quiz, pk=quiz_id)
-
-    #-----------------------------------CONTROL DE ACCESO-----------------------------------
-    if quiz.course == None:
-        isOwner = quiz.activity.entity == request.user
-        is_course = False
-        activity_or_course_id = quiz.activity.id
-    else:
-        isOwner = quiz.course.teacher == request.user
-        is_course = True
-        activity_or_course_id = quiz.course.id
-    
-    if not isOwner and not request.user.is_superuser:
-        return HttpResponseForbidden()
-    
-    #-----------------------------OBTENCION DE QUESTION Y ANSWERS---------------------------
-    list_questions = Question.objects.filter(quiz=quiz_id)
-    dic_answers = {}
-    for question in list_questions:
-        list_answers = Answer.objects.filter(question=question)
-        dic_answers[question.id] = list_answers
-    
-    ctx = {
-        'list_questions':list_questions,
-        'dic_answers': dic_answers,
-        'quiz':quiz
-    }
-    return render(request, 'quiz/administrationquiz.html', ctx)
 
 @login_required
 @permission_required('quiz.delete_question', raise_exception=True)
@@ -543,7 +585,7 @@ def updateAnswers(request, question_id, number_answers):
     return render(request, 'quiz/updateanswers.html', ctx)
 
 @login_required
-@permission_required('quiz.change_answer', raise_exception=True)
+@permission_required('quiz.change_quiz', raise_exception=True)
 def updateQuiz(request, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)
 
@@ -579,3 +621,44 @@ def updateQuiz(request, quiz_id):
         'quiz':quiz
     }
     return render(request, 'quiz/updatequiz.html', ctx)
+
+@login_required
+@permission_required('quiz.view_qualification', raise_exception=True)
+def viewQualifications(request, quiz_id):
+    quiz = get_object_or_404(Quiz, id=quiz_id)
+
+    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    if quiz.course == None:
+        isOwner = quiz.activity.entity == request.user
+        is_course = False
+        activity_or_course_id = quiz.activity.id
+    else:
+        isOwner = quiz.course.teacher == request.user
+        is_course = True
+        activity_or_course_id = quiz.course.id
+    
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+    
+    #list_qualification = Qualification.objects.filter(quiz=quiz).annotate(Count('user')).values('user').aggregate(max_score=Max('total_score'))
+    #SELECT user, max(total_score) FROM QUALIFICATION WHERE QUIZ=quiz GROUP BY user
+    list_qualification = Qualification.objects.filter(quiz=quiz).values('user').annotate(max_score=Max('total_score'))
+
+    #obtenemos la lista de usuarios(solo obtendremos el id)
+    list_qualification_user = Qualification.objects.filter(quiz=quiz).values('user').distinct()
+    #obtenemos el objeto
+    querySet_of_users = User.objects.filter(id__in=list_qualification_user)
+    list_questions = Question.objects.filter(quiz=quiz)
+    max_qualification = 0
+    for question in list_questions:
+        max_qualification = max_qualification + Answer.objects.filter(correct=True, question=question).count() * question.question_score
+
+    ctx = {
+        'list_qualification':list_qualification,
+        'querySet_of_users':querySet_of_users,
+        'quiz':quiz,
+        'max_qualification':max_qualification,
+        'is_course':is_course
+    }
+
+    return render(request, 'quiz/viewqualifications.html', ctx)
