@@ -19,6 +19,11 @@ from django.core.files.storage import FileSystemStorage
 
 from django.core.mail import send_mail
 
+# Calendar
+import datetime
+from schedule.models import Calendar
+from schedule.models import Event
+
 
 @login_required
 @permission_required('resources.add_resource', raise_exception=True)
@@ -97,6 +102,9 @@ def createResource(request, courseOrActivity, activityCourseFk):
                 user_destination=User.objects.get(email=email_to[0])
             )
             mm.save()
+    
+        if isShownInCalendar:
+            createEventInCalendar(new_resource_name, dateInCalendar, courseOrActivity)
 
         if(courseOrActivity == COURSE):
             return viewsCourseJoin(request, activityCourseFk)
@@ -108,6 +116,28 @@ def createResource(request, courseOrActivity, activityCourseFk):
         'courseOrActivity': courseOrActivity
     }
     return render(request, 'resource/createResource.html', ctx)
+
+
+def createEventInCalendar(title, date, courseOrActivity):
+    if(courseOrActivity == COURSE):
+        calendar = Calendar.objects.get(pk=3)
+    else:
+        calendar = Calendar.objects.get(pk=1)
+
+    try:
+        data = {
+            'title': title,
+            'start': date,
+            'end': date,
+            'calendar': calendar,
+            'color_event': '#a7afb2'
+        }
+        event = Event(**data)
+        event.save()
+    except:
+        print('Event was not created for '+ title)
+        pass
+
 
 @login_required
 @permission_required('resources.delete_resource', raise_exception=True)

@@ -17,16 +17,17 @@
       <a class="nav-link active" id="actividades-tab" data-toggle="tab" href="#actividades" role="tab" aria-controls="actividades" aria-selected="true">Actividades</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="Test-tab" data-toggle="tab" href="#Test" role="tab" aria-controls="Test" aria-selected="false">Tests</a>
+      <a class="nav-link" id="course-tab" data-toggle="tab" href="#course" role="tab" aria-controls="course" aria-selected="false">Cursos</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" id="contact-tab" data-toggle="tab" href="#resources" role="tab" aria-controls="resources" aria-selected="false">Recursos</a>
+      <a class="nav-link" id="Test-tab" data-toggle="tab" href="#Test" role="tab" aria-controls="Test" aria-selected="false">Tests</a>
     </li>
+
   </ul>
   <div class="tab-content" id="myTabContent">
     <div class="tab-pane fade show active" id="actividades" role="tabpanel" aria-labelledby="actividades-tab"><div id="calendarActividades" class="container"></div></div>
     <div class="tab-pane fade" id="Test" role="tabpanel" aria-labelledby="Test-tab"><div id="calendarTests" class="container"></div></div>
-    <div class="tab-pane fade" id="resources" role="tabpanel" aria-labelledby="resources-tab"><div id="calendarResources" class="container"></div></div>
+    <div class="tab-pane fade" id="course" role="tabpanel" aria-labelledby="course-tab"><div id="calendarcourse" class="container"></div></div>
   </div>
 
 
@@ -36,17 +37,17 @@ $(document).ready(function() {
     // page is now ready, initialize the calendar...
     $('#calendarActividades').fullCalendar({
         // put your options and callbacks here
-      events: '/schedule/api/occurrences?calendar_slug=example'
+      events: '/schedule/api/occurrences?calendar_slug=actividades'
     })
 
     $('#calendarTests').fullCalendar({
         // put your options and callbacks here
-      events: '/schedule/api/occurrences?calendar_slug=example'
+      events: '/schedule/api/occurrences?calendar_slug=tests'
     })
 
-    $('#calendarResources').fullCalendar({
+    $('#calendarcourse').fullCalendar({
         // put your options and callbacks here
-      events: '/schedule/api/occurrences?calendar_slug=example'
+      events: '/schedule/api/occurrences?calendar_slug=course'
     })
 
 });

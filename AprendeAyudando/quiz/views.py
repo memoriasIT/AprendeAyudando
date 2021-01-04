@@ -31,6 +31,12 @@ from AprendeAyudando.templatetags.auth_extras import ACTIVITY, COURSE
 #Time
 from django.utils import timezone
 
+# Calendar
+import datetime
+from schedule.models import Calendar
+from schedule.models import Event
+
+
 #-----------------------------------------CREACIÓN DE TESTS---------------------------------------------
 @login_required
 @permission_required('quiz.add_quiz', raise_exception=True)
@@ -77,6 +83,7 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
                 maximum_date=new_quiz_date,
                 show_quiz=new_show_quiz
             )
+          
         else:
             new_quiz = Quiz.objects.create(
                 title=new_quiz_title,
@@ -89,10 +96,31 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
             )
         new_quiz.save()
 
+        # Create event in calendar
+        createEventInCalendar(new_quiz_title, new_quiz_date)
+
         ctx['quiz'] = new_quiz
         ctx['number_questions'] = int(number_questions)
         return render(request, 'quiz/createquestion.html', ctx)
     return render(request, 'quiz/createquiz.html', ctx)
+
+
+# Create event in calendar
+def createEventInCalendar(title, date):
+    try:
+        data = {
+            'title': title,
+            'start': date,
+            'end': date,
+            'calendar': Calendar.objects.get(pk=2),
+            'color_event': '#a7afb2'
+        }
+        event = Event(**data)
+        event.save()
+    except:
+        print('Event was not created for '+ title)
+        pass
+
 
 @login_required
 @permission_required('quiz.add_question', raise_exception=True)
