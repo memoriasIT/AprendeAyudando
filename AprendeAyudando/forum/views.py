@@ -203,5 +203,13 @@ def reply(request, message_id):
             email_to = [user.email]
             send_mail(subject, message, email_from, email_to, fail_silently=True)
 
+            mm = MessagingMessage.objects.create(
+                title=subject,
+                text=message,
+                user_origin=User.objects.get(email=email_from),
+                user_destination=User.objects.get(email=email_to[0])
+            )
+            mm.save()
+
         return viewDebate(request, originalMessage.debate.id)
     return render(request, 'forum/reply.html', {'originalMessage': originalMessage})
