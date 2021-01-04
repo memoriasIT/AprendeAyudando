@@ -36,6 +36,11 @@ import datetime
 from schedule.models import Calendar
 from schedule.models import Event
 
+# Notifications
+from django.core.mail import send_mail                        # Email
+from messaging.models import MessagingMessage # Messaging
+
+
 
 #-----------------------------------------CREACIÓN DE TESTS---------------------------------------------
 @login_required
@@ -251,6 +256,28 @@ def createAnswers(request, question_id, number_questions, number_answers):
         
         number_questions = number_questions - 1
         ctx['number_questions'] = number_questions
+
+        # Si ya ha terminado de crear todas las preguntas
+        if number_questions == 0:
+            # Se notifican a los usuarios inscritos por email de que se ha creado un nuevo test
+
+            enrollable = get_object_or_404(Course, pk=activity_or_course_id) if is_course else get_object_or_404(Activity, pk=activity_or_course_id)
+            # teacher = enrollable.teacher if is_course else enrollable.entity
+            for user in enrollable.enrolled_users.all():
+                subject = '[{}] Nuevo test: {}'.format(enrollable.title, quiz.title)
+                message = '{}: \"{}\" ha añadido un nuevo test a \"{}\": {}'.format('El profesor' if is_course else 'La entidad', request.user.username, enrollable.title, quiz.title)
+                email_from = 'infoaprendeayudando@gmail.com'
+                email_to = [user.email]
+                send_mail(subject, message, email_from, email_to, fail_silently=True)
+            
+                mm = MessagingMessage.objects.create(
+                    title=subject,
+                    text=message,
+                    user_origin=User.objects.get(email=email_from),
+                    user_destination=user
+                )
+                mm.save()
+
         return render(request, 'quiz/createquestion.html', ctx)
 
     return render(request, 'quiz/createanswers.html', ctx)
