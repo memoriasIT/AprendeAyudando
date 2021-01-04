@@ -181,8 +181,9 @@
             <div class="row py-2">
                 {% if isOwner or user.is_superuser %}
                     <a href="{% url 'courses:delete' course.id %}" class="ml-4 mr-2 btn btn-danger btn-sm">Borrar curso</a>
-                    <a href="{% url 'courses:users' course.id %}" class="mx-2 btn btn-info btn-sm">Ver usuarios matriculados</a>
-                    <a href="{% url 'review:list' course.id course.title 'Course' %}" class="mx-2 btn btn-info btn-sm">Ver encuestas de satisfacción</a>
+                    <a href="{% url 'courses:update' course.id %}" class=" mr-2 btn btn-warning btn-sm">Modificar curso</a>
+                    <a href="{% url 'courses:users' course.id %}" class="mr-2 btn btn-info btn-sm">Ver usuarios matriculados</a>
+                    <a href="{% url 'review:list' course.id course.title 'Course' %}" class="mr-2 btn btn-info btn-sm">Ver encuestas de satisfacción</a>
                 {% endif %}
             </div>
         </div>

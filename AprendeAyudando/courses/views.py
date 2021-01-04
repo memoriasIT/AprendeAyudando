@@ -200,6 +200,26 @@ def createCourse(request):
     return render(request, 'courses/create.html',{})
 
 @login_required
+@permission_required('courses.add_course', raise_exception=True)
+def update(request, course_id):
+    course = get_object_or_404(Course, pk=course_id)
+    if request.method=="POST":
+        course_name=request.POST["course_name"]
+        course_description=request.POST["course_description"]
+        if course_name:
+            course.title = course_name
+        if course_description:
+            course.description = course_description
+        course.save()
+        isOwner = True
+
+        return join(request, course.id)
+    context = {
+        'course' : course,
+    }
+    return render(request, 'courses/update.html',context)
+
+@login_required
 @permission_required('courses.delete_course', raise_exception=True)
 def delete(request, course_id):
     course = get_object_or_404(Course, pk=course_id)

@@ -234,6 +234,29 @@ def createActivity(request):
     return render(request, 'activity/create.html',{})
 
 @login_required
+@permission_required('activity.add_activity', raise_exception=True)
+def update(request, activity_id):
+    activity = get_object_or_404(Activity, pk=activity_id)
+    if request.method=="POST":
+        activity_name=request.POST["activity_name"]
+        activity_description=request.POST["activity_description"]
+        activity_is_restricted=request.POST["is_restricted_entry"]=='si'
+        if activity_name:
+            activity.title = activity_name
+        if activity_description:
+            activity.description = activity_description
+        activity.restricted_entry = activity_is_restricted
+        activity.save()
+        isOwner = True
+
+        return join(request, activity.id)
+    context = {
+        'activity' : activity,
+    }
+    return render(request, 'activity/update.html',context)
+
+
+@login_required
 @permission_required('activity.delete_activity', raise_exception=True)
 def delete(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)

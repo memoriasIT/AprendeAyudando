@@ -1,0 +1,24 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Crear Curso{% endblock %}
+
+{% block content %}
+<div class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
+        <h1>Modificar curso</h1>
+
+        <form action="{% url 'courses:update' course.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="course_name">Nombre del curso:</label>
+                <input type="text" name="course_name" class="form-control text-center" value="{{ course.title }}" id="" required>
+            </div>
+
+            <div class="form-group">
+                <label for="course_description">Descripción:</label>
+                <textarea class="form-control text-center" name="course_description" value="{{ course.description }}"rows="3"></textarea>
+            </div>
+            <input type="submit" value="Modificar Curso" class="btn btn-success btn-lg">
+        </form>
+    </div>
+</div>
+{% endblock %}
