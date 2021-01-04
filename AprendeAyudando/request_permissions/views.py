@@ -123,6 +123,22 @@ def createRequest(request, requestType):
         )
     new_request.save()
 
+    role_str = "Profesor" if requestType == PROFESOR else "Entidad"
+
+    subject = 'Solicitud de rol recibida - De: {}'.format(request.user.username)
+    message = 'El usuario \"{}\" ha realizado una solicitud de rol.\n\nUSUARIO: {}\nNOMBRE: {}\nROL SOLICITADO: {}'.format(request.user.username, request.user.username, '{} {}'.format(request.user.first_name, request.user.last_name), role_str)
+    email_from = 'infoaprendeayudando@gmail.com'
+    email_to = ['infoaprendeayudando@gmail.com']
+    send_mail(subject, message, email_from, email_to, fail_silently=True)
+
+    mm = MessagingMessage.objects.create(
+        title=subject,
+        text=message,
+        user_origin=User.objects.get(email=email_from),
+        user_destination=User.objects.get(email=email_to[0])
+    )
+    mm.save()
+
     return render(request, 'landingpage/account.html')
     
 @login_required
