@@ -45,7 +45,7 @@
     counter-reset: prettyListItem; 
     list-style: none; 
     *list-style: decimal; 
-    font: 15px 'trebuchet MS', 'lucida sans';
+    font: 15px 'Raleway';
     padding: 0;
     margin-bottom: 1em;
     text-shadow: 0 1px 0 rgba(255,255,255,.5);
