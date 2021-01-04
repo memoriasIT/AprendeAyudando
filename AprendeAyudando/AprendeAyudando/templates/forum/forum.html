@@ -65,13 +65,18 @@
                     <!--VOLVER A CURSO/ACTIVIDAD-->
                     <div class="container text-center">
                         {% if isCourse %}
-                        <a style="margin-bottom: 50px;" href="{% url 'courses:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a curso</a>
-                        {% else %}
-                        <a style="margin-bottom: 50px;" href="{% url 'activity:join' forum.activityCourseFk %}" class="btn btn-warning btn-sm">Volver a actividad</a>   
-                        {% endif %}
-                        <!--BORRAR FORO-->
+                        <div class="col-12">
+                            <a href="{% url 'courses:join' forum.activityCourseFk %}" class="btn btn-outline-dark btn-sm">Volver a curso</a>
+                            {% else %}
+                            <a href="{% url 'activity:join' forum.activityCourseFk %}" class="btn btn-outline-dark btn-sm">Volver a actividad</a>   
+                            {% endif %}
+                        </div>
+                        <!--BORRAR Y MODIFICAR FORO-->
                         {% if isAuthor is True %}
-                        <a style="margin-bottom: 50px;" href="{% url 'forum:delete' forum.id %}" class="btn btn-danger btn-sm">Borrar foro</a>
+                        <div class="col-12 my-3 text-center">
+                            <a href="{% url 'forum:delete' forum.id %}" class="btn btn-danger btn-sm">Borrar foro</a>
+                            <a href="{% url 'forum:updateForum' forum.id %}" class="btn btn-warning btn-sm">Modificar foro</a>
+                        </div>
                         {% endif %}
                     </div>
                 </div>

@@ -17,67 +17,6 @@ from django.contrib.auth.models import User, Group
 
 
 #-----------------------------------------FOROS------------------------------------------
-
-@login_required
-@permission_required('forum.add_forum', raise_exception=True)
-def createForum(request, courseOrActivity, activityCourseFk):
-    
-    #------------------------CONTROL DE ACCESO-------------------
-    if courseOrActivity == COURSE:
-        course = get_object_or_404(Course, id=activityCourseFk)
-        isOwner = course.teacher == request.user
-    else:
-        activity = get_object_or_404(Activity, id=activityCourseFk)
-        isOwner = activity.entity == request.user
-    if not isOwner and not request.user.is_superuser:
-        return HttpResponseForbidden()
-
-    #---------------------------FORM POST----------------------
-
-    if request.method=="POST":
-        new_forum_name=request.POST["new_forum_name"]
-        new_forum_description=request.POST["new_course_description"]
-        new_forum = Forum.objects.create(
-            title=new_forum_name,
-            author=request.user,
-            description=new_forum_description,
-            activityCourseFk=activityCourseFk,
-            activityCourseType=courseOrActivity
-        )
-        new_forum.save()
-        return join(request, new_forum.id)
-    
-    ctx = {
-        'activityCourseFk': activityCourseFk,
-        'courseOrActivity': courseOrActivity
-    }
-    return render(request, 'forum/createForum.html', ctx)
-    
-
-
-@login_required
-@permission_required('forum.delete_forum', raise_exception=True)
-def delete(request, forum_id):
-    forum = get_object_or_404(Forum, pk=forum_id)
-
-    #------------------------CONTROL DE ACCESO-------------------
-    if forum.activityCourseType == COURSE:
-        course = get_object_or_404(Course, id=forum.activityCourseFk)
-        isOwner = course.teacher == request.user
-    else:
-        activity = get_object_or_404(Activity, id=forum.activityCourseFk)
-        isOwner = activity.entity == request.user
-    if not isOwner and not request.user.is_superuser:
-        return HttpResponseForbidden()
-
-    #------------------------ELIMINACION------------------------
-    activity_or_course_id = forum.activityCourseFk
-    Forum.objects.filter(id=forum_id).delete()
-    if forum.activityCourseType == COURSE:
-        return viewsCourseJoin(request, activity_or_course_id)
-    else:
-        return viewsActivityJoin(request, activity_or_course_id)
-
 @login_required
 def join(request, forum_id): 
     forum = get_object_or_404(Forum, pk=forum_id)
@@ -103,6 +42,82 @@ def join(request, forum_id):
     }
 
     return render(request, 'forum/forum.html',context)
+
+@login_required
+@permission_required('forum.add_forum', raise_exception=True)
+def createForum(request, courseOrActivity, activityCourseFk):
+    
+    #------------------------CONTROL DE ACCESO-------------------
+    if courseOrActivity == COURSE:
+        course = get_object_or_404(Course, id=activityCourseFk)
+        isOwner = course.teacher == request.user
+    else:
+        activity = get_object_or_404(Activity, id=activityCourseFk)
+        isOwner = activity.entity == request.user
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    #---------------------------FORM POST----------------------
+
+    if request.method=="POST":
+        new_forum_name=request.POST["new_forum_name"]
+        new_forum_description=request.POST["new_forum_description"]
+        new_forum = Forum.objects.create(
+            title=new_forum_name,
+            author=request.user,
+            description=new_forum_description,
+            activityCourseFk=activityCourseFk,
+            activityCourseType=courseOrActivity
+        )
+        new_forum.save()
+        return join(request, new_forum.id)
+    
+    ctx = {
+        'activityCourseFk': activityCourseFk,
+        'courseOrActivity': courseOrActivity
+    }
+    return render(request, 'forum/createForum.html', ctx)
+    
+@login_required
+@permission_required('forum.add_forum', raise_exception=True)
+def updateForum(request, forum_id):
+    forum = get_object_or_404(Forum, pk=forum_id)
+    if request.method=="POST":
+        forum_name=request.POST["forum_name"]
+        forum_description=request.POST["forum_description"]
+        if forum_name:
+            forum.title = forum_name
+        if forum_description:
+            forum.description = forum_description
+        forum.save()
+        return join(request, forum.id)
+    context = {
+        'forum' : forum,
+    }
+    return render(request, 'forum/updateForum.html',context)
+
+@login_required
+@permission_required('forum.delete_forum', raise_exception=True)
+def delete(request, forum_id):
+    forum = get_object_or_404(Forum, pk=forum_id)
+
+    #------------------------CONTROL DE ACCESO-------------------
+    if forum.activityCourseType == COURSE:
+        course = get_object_or_404(Course, id=forum.activityCourseFk)
+        isOwner = course.teacher == request.user
+    else:
+        activity = get_object_or_404(Activity, id=forum.activityCourseFk)
+        isOwner = activity.entity == request.user
+    if not isOwner and not request.user.is_superuser:
+        return HttpResponseForbidden()
+
+    #------------------------ELIMINACION------------------------
+    activity_or_course_id = forum.activityCourseFk
+    Forum.objects.filter(id=forum_id).delete()
+    if forum.activityCourseType == COURSE:
+        return viewsCourseJoin(request, activity_or_course_id)
+    else:
+        return viewsActivityJoin(request, activity_or_course_id)
 
 
 #-----------------------------------------DEBATES------------------------------------------

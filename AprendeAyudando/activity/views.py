@@ -273,7 +273,8 @@ def users(request, activity_id):
     userList = []
     for u in User.objects.all():
         if u in activity.enrolled_users.all():
-            userList.append(u)
+            if u != request.user:
+                userList.append(u)
 
     context = {
         'activity' : activity,

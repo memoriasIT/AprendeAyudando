@@ -236,7 +236,8 @@ def users(request, course_id):
     userList = []
     for u in User.objects.all():
         if u in course.enrolled_users.all():
-            userList.append(u)
+            if u != request.user:
+                userList.append(u)
 
     context = {
         'course' : course,

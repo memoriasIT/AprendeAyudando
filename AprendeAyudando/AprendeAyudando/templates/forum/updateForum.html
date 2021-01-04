@@ -1,0 +1,27 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Modificar Foro{% endblock %}
+
+{% block content %}
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
+        <h1>Modificar foro </h1>
+
+        <form action="{% url 'forum:updateForum' forum.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="forum_name">Nombre del foro:</label>
+                <input type="text" name="forum_name" class="form-control text-center" value="{{ forum.title }}" id="" required>
+            </div>
+            <div class="form-group">
+                <label for="forum_description">Descripción:</label>
+                <textarea class="form-control text-center" name="forum_description" rows="3" value="{{ forum.description }}"></textarea>
+            </div>
+            <input type="submit" value="Modificar foro" class="btn btn-success btn-lg">
+        </form>
+    </div>
+    <div class="container text-center">
+        <a style="margin-bottom: 50px;" href="{% url 'forum:join' forum.id %}" class="btn btn-outline-dark btn-sm">Volver a foro</a>   
+    </div>
+</section>
+
+{% endblock %}
