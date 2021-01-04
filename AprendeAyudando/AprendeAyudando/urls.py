@@ -24,8 +24,13 @@ from django.conf.urls.static import static
 
 from . import views
 
+from django.views.generic import TemplateView
+
 urlpatterns = [
     path('', views.landingpage),
+
+    url(r'^schedule/', include('schedule.urls')),
+    url(r'^fullcalendar/', TemplateView.as_view(template_name="calendar/fullcalendar.html"), name='fullcalendar'),
 
     url('register/', views.user_register, name='user_register'),
     url('account/', views.account, name='account'),
