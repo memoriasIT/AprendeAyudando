@@ -157,7 +157,7 @@ def recoverpassword(request):
                 
                 return render(request, template, {
                     'form': miForm,
-                    'error_message': 'The new password has been sent to your email'
+                    'message': 'The new password has been sent to your email.'
                 })
             else:
                 return render(request, template, {

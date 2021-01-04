@@ -30,7 +30,7 @@
                 <div class="col-12"> <!--Funcionalidades-->
                     <h3 class="text-center" >Funcionalidades</h3>
                     <div class="col-12">
-                        <ol id="prettyList">
+                        <ol id="prettyList"><strong>
                         {% if not user|has_group:"EntidadPublicoPrivada" %}
                             <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
                         {% endif %}
@@ -49,7 +49,7 @@
                             <li id="prettyListItem"><a href="{% url 'account_delete' %}">Darse de baja en la plataforma</a></li>
                         {% endif %}
                             <li id="prettyListItem"><a href="{% url 'messaging:index' %}">Mensajería</a></li>
-                        </ol>
+                        </strong></ol>
                     </div>  
                 </div>
             </div> 
