@@ -172,6 +172,7 @@ def viewDebate(request, debate_id):
     
         #---------------------------------------INFO CONTROL-------------------------------------------
     isAuthor = request.user == forum.author
+    print(isAuthor)
     context = {
         'debate' : debate,
         'initialMessage' : initialMessage,
@@ -228,3 +229,21 @@ def reply(request, message_id):
 
         return viewDebate(request, originalMessage.debate.id)
     return render(request, 'forum/reply.html', {'originalMessage': originalMessage})
+
+def deleteMessage(request, message_id):
+    message = get_object_or_404(Message, pk=message_id) 
+    if request.method=="POST":
+        Message.objects.filter(id=message.id).delete
+        if not message.initial:
+            return viewDebate(request, message.debate.id)
+        else:
+            return join(request, message.debate.forum.id)
+    context = {
+        'message' : message,
+        'isInitial' : message.initial == True,
+    }
+    return render(request, 'forum/deleteMessage.html', context)
+
+
+
+    

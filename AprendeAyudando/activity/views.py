@@ -260,11 +260,17 @@ def update(request, activity_id):
 @permission_required('activity.delete_activity', raise_exception=True)
 def delete(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
-    print(activity)
-    print(request.method)
+    if request.method=="POST":
+        print(activity)
+        print(request.method)
 
-    Activity.objects.filter(id=activity_id).delete()
-    return index(request)
+        Activity.objects.filter(id=activity_id).delete()
+        return index(request)
+    else:
+        context = {
+            'activity' : activity,
+        }
+        return render(request, 'activity/deleteActivity.html', context)
 
 @login_required
 @permission_required('activity.add_activity', raise_exception=True)

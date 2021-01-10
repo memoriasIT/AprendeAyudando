@@ -223,11 +223,17 @@ def update(request, course_id):
 @permission_required('courses.delete_course', raise_exception=True)
 def delete(request, course_id):
     course = get_object_or_404(Course, pk=course_id)
-    print(course)
-    print(request.method)
+    if request.method=="POST":
+        print(course)
+        print(request.method)
 
-    Course.objects.filter(id=course_id).delete()
-    return index(request)
+        Course.objects.filter(id=course_id).delete()
+        return index(request)
+    else:
+        context = {
+            'course' : course,
+        }
+        return render(request, 'courses/deleteCourse.html', context)
 
 @login_required
 @permission_required('courses.add_course', raise_exception=True)

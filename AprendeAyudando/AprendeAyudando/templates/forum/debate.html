@@ -29,8 +29,14 @@
                     <p>{{initialMessage.content}}</p>
                 </div>
                 <!------ACCIONES---->
-                <div class="col-12">
+                <div class="col-12 text-right">
                     <a href="{% url 'forum:reply' initialMessage.id %}" class="btn btn-small btn-secondary mt-2">Responder</a>
+                    {% if initialMessage.author == request.user %}
+                    <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
+                    {% endif %}
+                    {% if isAuthor is True %}
+                    <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -42,29 +48,38 @@
                         <!------HEADER---->
                         <div class="col-6 d-flex">
                             <img src="{% static 'general/images/profile/user-icon.png' %}" alt="" style="width:2em;height:2em;">
-                            <h3 class="mx-3">{{message.subject}}</h3>
+                            <h5 class="mx-3">{{message.subject}}</h5>
                         </div>
                         <div class="col-6 text-right">
                             <p>de <span class="text-secondary"> {{message.author.email}} </span> - {{message.pub_date}}</p>
                         </div>
                         <!------CONTENIDO---->
-                        <div class="col-12 bg-info">
+                        <div class="col-12 bg-light">
                             <p>{{message.content}}</p>
                         </div>
                         <!------ACCIONES---->
-                        <div class="col-12">
+                        <div class="col-12 text-right">
                             <a href="{% url 'forum:reply' initialMessage.id %}" class="btn btn-small btn-secondary mt-2">Responder</a>
+                            {% if initialMessage.author == request.user %}
+                            <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
+                            {% endif %}
+                            {% if isAuthor is True %}
+                            <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
                 {% endfor %}
-        {% endif %}</p>
-    <!------VOLVER A FORO----->
-        <a style="margin-bottom: 50px;" href="{% url 'forum:join' forum.id %}" class="btn btn-small btn-warning">Volver a foro</a>
-        <!------BORRAR DEBATE----->
-        {% if isAuthor is True %}
-        <a style="margin-bottom: 50px;" href="{% url 'forum:deleteDebate' debate.id %}" class="btn btn-small btn-danger">Borrar debate</a>
         {% endif %}
+
+        <div class="container text-center">
+            <!------VOLVER A FORO----->
+            <a style="margin-bottom: 50px;" href="{% url 'forum:join' forum.id %}" class="btn btn-outline-dark btn-small">Volver a foro</a>
+            <!------BORRAR DEBATE----->
+            {% if isAuthor is True %}
+            <a style="margin-bottom: 50px;" href="{% url 'forum:deleteDebate' debate.id %}" class="btn btn-small btn-danger">Borrar debate</a>
+            {% endif %}
+        </div>
         
     </div>
 </section>

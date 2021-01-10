@@ -1,0 +1,17 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Borrar Mensaje{% endblock %}
+
+{% block content %}
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
+        <h1>¿Estás seguro que quieres borrar el mensaje?</h1>
+        <h3>Se borrarán también todas las respuestas.</h3>
+        <form class="text-center" action="{% url 'forum:deleteMessage' message.id %}" method="POST">
+            {% csrf_token %}
+            <a class="btn btn-outline-dark btn-lg mx-2" href="{% url 'forum:viewDebate' message.debate.id %}">Cancelar</a>
+            <input type="submit" value="Confirmar borrado" class="btn btn-danger btn-lg">
+        </form>
+    </div>
+</section>
+
+{% endblock %}
