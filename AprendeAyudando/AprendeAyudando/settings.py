@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'resources',
     'review',
     'messaging',
+    'news',
 
     'debug_toolbar',
     'djangobower',

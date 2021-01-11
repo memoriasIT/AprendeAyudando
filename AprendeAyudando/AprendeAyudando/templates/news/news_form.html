@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Noticia{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container bg-light">
+    <div class="row text-center min-vh-100">
+        <div class="col-12 mt-5">
+            <div class="h1">Crear noticia</div>
+
+            <form action="{% url 'news:news-add' %}" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Submit">
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}
