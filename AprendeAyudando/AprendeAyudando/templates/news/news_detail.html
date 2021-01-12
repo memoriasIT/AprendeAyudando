@@ -1,0 +1,22 @@
+{% extends "registration/base.html" %}
+{% block title %}Noticia{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container bg-light">
+    <div class="row text-center min-vh-100">
+        <div class="col-12 mt-5">
+            <h1>{{news.headline}}</h1>
+        </div>
+        <div class="col-12 mt-2">
+            <p>{{news.content}}</p>
+        </div>
+        <div class="col-12">
+            <a class="btn btn-warning btn-sm" href="{% url 'news:news-update' news.id %}">Update</a>
+            <a class="btn btn-danger btn-sm" href="{% url 'news:news-delete' news.id %}">Delete</a>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

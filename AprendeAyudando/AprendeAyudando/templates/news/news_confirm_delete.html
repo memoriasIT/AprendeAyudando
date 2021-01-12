@@ -1,0 +1,18 @@
+{% extends "registration/base.html" %}
+{% block title %}AprendeAyudando - Borrar Noticia{% endblock %}
+
+{% block content %}
+<section class="bg-white text-dark py-5 min-vh-100">
+    <div class="container py-5 text-center">
+        <img class="rounded-circle" src="/static/general/images/warning.png" alt="Warning icon" width="140" height="140">
+        <h1>¿Estás seguro que quieres borrar la noticia?</h1>
+        <h3>Se borrará todo el contenido y no habrá vuelta atrás..</h3>
+        <form class="text-center" action="{% url 'news:news-delete' news.id %}" method="POST">
+            {% csrf_token %}
+            <a class="btn btn-outline-dark btn-lg mx-2" href="{% url 'news:news-detail' news.id %}">Cancelar</a>
+            <input type="submit" value="Confirmar" class="btn btn-danger btn-lg">
+        </form>
+    </div>
+</section>
+
+{% endblock %}

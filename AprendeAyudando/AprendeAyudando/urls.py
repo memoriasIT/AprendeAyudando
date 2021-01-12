@@ -35,7 +35,6 @@ urlpatterns = [
     url('register/', views.user_register, name='user_register'),
     url('account/', views.account, name='account'),
     url('accountdelete/', views.delete_account, name='account_delete'),
-    url('news/', views.news, name='news'),
     
     path('accounts/', include('django.contrib.auth.urls')),
         # accounts/login/ [name='login']
@@ -51,6 +50,7 @@ urlpatterns = [
     path('forum/', include('forum.urls')),
     path('courses/', include('courses.urls')),
     path('activity/', include('activity.urls')),
+    path('news/', include('news.urls')),
     path('requestpermissions/', include('request_permissions.urls')),
     path('quiz/', include('quiz.urls')),
     path('review/', include('review.urls')),
