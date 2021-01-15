@@ -60,17 +60,17 @@ def user_register(request):
             if User.objects.filter(username=form.cleaned_data['username']).exists():
                 return render(request, template, {
                     'form': form,
-                    'error_message': 'Username already exists.'
+                    'error_message': 'El nombre de usuario ya existe.'
                 })
             elif User.objects.filter(email=form.cleaned_data['email']).exists():
                 return render(request, template, {
                     'form': form,
-                    'error_message': 'Email already exists.'
+                    'error_message': 'El correo electrónico ya existe.'
                 })
             elif form.cleaned_data['password'] != form.cleaned_data['password_repeat']:
                 return render(request, template, {
                     'form': form,
-                    'error_message': 'Passwords do not match.'
+                    'error_message': 'Las contraseñas no coinciden.'
                 })
             else:
                 # Create the user:
@@ -156,12 +156,12 @@ def recoverpassword(request):
                 
                 return render(request, template, {
                     'form': miForm,
-                    'message': 'The new password has been sent to your email.'
+                    'message': 'La nueva contraseña ha sido enviada a su correo electrónico.'
                 })
             else:
                 return render(request, template, {
                     'form': miForm,
-                    'error_message': 'Try again. Email does not exists.'
+                    'error_message': 'Inténtelo de nuevo. El correo electrónico no existe.'
                 })
             
 
@@ -199,12 +199,12 @@ def update(request, username):
             if User.objects.filter(email=email).exists() and userEmail != email:
                     return render(request, template, {
                         'form': modForm,
-                        'error_message': 'Email already exists.'
+                        'error_message': 'El correo electrónico ya existe.'
                     })
             elif password != confpassword:
                     return render(request, template, {
                         'form': modForm,
-                        'error_message': 'Passwords do not match.'
+                        'error_message': 'Las contraseñas no coinciden.'
                     })
             else:
                 

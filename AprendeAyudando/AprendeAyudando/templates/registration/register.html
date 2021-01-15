@@ -14,11 +14,11 @@
             <form action="{% url 'user_register' %}" method="post">
                 {% csrf_token %}
                 {% if error_message %}
-                    <p class="text-danger p-d ml-b">{{ error_message }}</p>
+                    <p class="text-danger p-d ml-b text-center">{{ error_message }}</p>
                 {% endif %}
             
                 <div class="form-group clearfix py-1 text-center">
-                    <label for="{{ form.username.id_for_label }}" class="control-label pb-1">Username<span class="text-red">*</span>:</label>
+                    <label for="{{ form.username.id_for_label }}" class="control-label pb-1">Nombre de usuario<span class="text-red">*</span>:</label>
                     <div class="row justify-content-center">
                         <div class="col-lg-6">
                             {{ form.username }}
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="form-group clearfix py-1 text-center">
-                    <label for="{{ form.password.id_for_label }}" class="control-label pb-1">Password<span class="text-red">*</span>:</label>
+                    <label for="{{ form.password.id_for_label }}" class="control-label pb-1">Contraseña<span class="text-red">*</span>:</label>
                     <div class="row justify-content-center">
                         <div class="col-lg-6">
                             {{ form.password }}
@@ -43,7 +43,7 @@
                     </div>
                 </div>
                 <div class="form-group clearfix py-1 text-center">
-                    <label for="{{ form.password_repeat.id_for_label }}" class="control-label pb-1">Confirm password<span class="text-red">*</span>:</label>
+                    <label for="{{ form.password_repeat.id_for_label }}" class="control-label pb-1">Confirmar contraseña<span class="text-red">*</span>:</label>
                     <div class="row justify-content-center">
                         <div class="col-lg-6">
                             {{ form.password_repeat }}
@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="form-group clearfix py-1 text-center">
-                    <label for="{{ form.first_name.id_for_label }}" class="control-label pb-1">First Name:</label>
+                    <label for="{{ form.first_name.id_for_label }}" class="control-label pb-1">Nombre:</label>
                     <div class="row justify-content-center">
                         <div class="col-lg-6">
                             {{ form.first_name }}
@@ -59,7 +59,7 @@
                     </div>
                 </div>
                 <div class="form-group clearfix py-1 text-center">
-                    <label for="{{ form.last_name.id_for_label }}" class="control-label pb-1">Last Name:</label>
+                    <label for="{{ form.last_name.id_for_label }}" class="control-label pb-1">Apellidos:</label>
                     <div class="row justify-content-center">
                         <div class="col-lg-6">
                             {{ form.last_name }}
@@ -67,7 +67,7 @@
                     </div>
                 </div>
                 <div class="col py-1 text-center">
-                    <input type="submit" value="Register" class="btn btn-success btn-lg mb-5">
+                    <input type="submit" value="Registrarse" class="btn btn-success btn-lg mb-5">
                 </div>
             </form>
         </div>
