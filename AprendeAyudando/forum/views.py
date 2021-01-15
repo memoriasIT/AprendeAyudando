@@ -231,12 +231,13 @@ def reply(request, message_id):
     return render(request, 'forum/reply.html', {'originalMessage': originalMessage})
 
 def deleteMessage(request, message_id):
-    message = get_object_or_404(Message, pk=message_id) 
+    message = get_object_or_404(Message, pk=message_id)
     if request.method=="POST":
-        Message.objects.filter(id=message.id).delete()
         if not message.initial:
+            Message.objects.filter(id=message.id).delete()
             return viewDebate(request, message.debate.id)
         else:
+            Debate.objects.filter(pk=message.debate.id).delete()
             return join(request, message.debate.forum.id)
     context = {
         'message' : message,

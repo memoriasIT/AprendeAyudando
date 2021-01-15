@@ -57,9 +57,9 @@
                         </div>
                         <!------ACCIONES---->
                         <div class="col-12 text-right">
-                            <a href="{% url 'forum:reply' initialMessage.id %}" class="btn btn-small btn-secondary mt-2">Responder</a>
+                            <a href="{% url 'forum:reply' message.id %}" class="btn btn-small btn-secondary mt-2">Responder</a>
                             {% if message.author == request.user or isAuthor or request.user.is_superuser %}
-                            <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
+                            <a href="{% url 'forum:deleteMessage' message.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
                             {% endif %}
                         </div>
                     </div>
