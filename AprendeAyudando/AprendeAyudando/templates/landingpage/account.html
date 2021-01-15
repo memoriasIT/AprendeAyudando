@@ -6,7 +6,7 @@
 {% load auth_extras %}
     <link rel="stylesheet" type="text/css" href="{% static 'profile/style.css' %}">
     
-    <section class="bg-dark text-light py-5 min-vh-100">
+    <section class="py-5 min-vh-100">
         <div class="container py-5">
             <div class="row py-5">
                 <div class="col-12">
@@ -31,6 +31,7 @@
                     <h3 class="text-center" >Funcionalidades</h3>
                     <div class="col-12">
                         <ol id="prettyList"><strong>
+                            <li id="prettyListItem"><a href="/fullcalendar">Calendario de eventos</a></li>
                         {% if not user|has_group:"EntidadPublicoPrivada" %}
                             <li id="prettyListItem"><a href="/courses/enrolled">Mis cursos</a></li>
                         {% endif %}
