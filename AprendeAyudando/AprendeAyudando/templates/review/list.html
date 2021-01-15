@@ -32,9 +32,9 @@
             </div>
             <div class="col-12 text-center">
                 {% if isActivity %}
-                <a href="{% url 'activity:join' enrollable_id %}" class="btn btn-warning btn-sm">Volver a actividad</a>  
+                    <a href="{% url 'activity:join' enrollable_id %}" class="btn btn-outline-dark btn-sm">Volver a actividad</a>  
                 {% else %}
-                <a href="{% url 'courses:join' enrollable_id %}" class="btn btn-warning btn-sm">Volver a curso</a>  
+                    <a href="{% url 'courses:join' enrollable_id %}" class="btn btn-outline-dark btn-sm">Volver a curso</a>  
                 {% endif %}
             </div>
         </div>

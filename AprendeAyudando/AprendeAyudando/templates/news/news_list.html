@@ -8,7 +8,7 @@
         <h1 class="text-center">Noticias</h1>
         <div class="col-12 text-right">
             {% if tienePermisos %}
-            <a class = "btn btn-lg btn-secondary" href="{% url 'news:news-add' %}">
+            <a class = "btn btn-secondary" href="{% url 'news:news-add' %}">
                 Crear noticia
             </a>
             {% endif %}
@@ -16,7 +16,7 @@
         <div class="row">
             {% for n in news_list %}
                 <div class="col-12">
-                    <h2> <a href="{% url 'news:news-detail' n.pk %}">{{ n.headline }} </a></h2>
+                    <h2> <a href="{% url 'news:news-detail' n.pk %}" class="text-decoration-none">{{ n.headline }} </a></h2>
                 </div>
                 <div class="col-12">
                     <p> {{ n.content }} </p>

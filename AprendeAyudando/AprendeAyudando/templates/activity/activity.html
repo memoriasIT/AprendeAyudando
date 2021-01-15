@@ -194,7 +194,7 @@
             <div class="row py-2 text-center">
                 {% if not isOwner and show_review %}
                     <div class="col-12">
-                        <a href="{% url 'review:create' activity.id activity.title %}" class="btn btn-warning btn-sm">Puntuar esta actividad</a>
+                        <a href="{% url 'review:create' activity.id activity.title %}" class="btn btn-success btn-sm">Puntuar esta actividad</a>
                     </div>
                 {% endif %}
             </div>

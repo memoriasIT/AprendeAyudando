@@ -36,9 +36,9 @@
                 <p>No existen calificaciones disponibles.</p>
             {% endif %}
             {% if is_course %}
-                <a href="{% url 'courses:join' quiz.course.id %}" class="btn btn-secondary btn-lg">Volver al curso</a>
+                <a href="{% url 'courses:join' quiz.course.id %}" class="btn btn-outline-dark">Volver al curso</a>
             {% else %}
-                <a href="{% url 'activity:join' quiz.activity.id %}" class="btn btn-secondary btn-lg">Volver a la actividad</a>
+                <a href="{% url 'activity:join' quiz.activity.id %}" class="btn btn-outline-dark">Volver a la actividad</a>
             {% endif %}
         </div>
 

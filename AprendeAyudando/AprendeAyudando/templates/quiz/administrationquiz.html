@@ -12,32 +12,33 @@
     <div class="container py-5">
         <div class="row">
             <div class="col-6">
-            <h1>Editar Test</h1>
-            <p>Título del test: <strong>{{ quiz.title }}</strong></p>
-            <p>Descripción del test: <strong>{{ quiz.description }}</strong></p>
-            {% if quiz.maximum_date is None %}
-                <p>Fecha límite: <strong>Sin fecha límite</strong></p>
-            {% else %}
-                <p>Fecha límite: <strong>{{ quiz.maximum_date }}</strong></p>
-            {% endif %}
-            
-            {% if quiz.repeatable %}
-                <p>El test es repetible: <strong class="text-success">SÍ</strong></p>
-            {% else %}
-                <p>El test es repetible: <strong class="text-danger">NO</strong></p>
-            {% endif %}
+                <h1>Editar Test</h1>
+                <p>Título del test: <strong>{{ quiz.title }}</strong></p>
+                <p>Descripción del test: <strong>{{ quiz.description }}</strong></p>
+                {% if quiz.maximum_date is None %}
+                    <p>Fecha límite: <strong>Sin fecha límite</strong></p>
+                {% else %}
+                    <p>Fecha límite: <strong>{{ quiz.maximum_date }}</strong></p>
+                {% endif %}
+                
+                {% if quiz.repeatable %}
+                    <p>El test es repetible: <strong class="text-success">SÍ</strong></p>
+                {% else %}
+                    <p>El test es repetible: <strong class="text-danger">NO</strong></p>
+                {% endif %}
 
-            {% if quiz.show_qualification %}
-                <p>Mostrar calificación: <strong class="text-success">SÍ</strong></p>
-            {% else %}
-                <p>Mostrar calificación: <strong class="text-danger">NO</strong></p>
-            {% endif %}
+                {% if quiz.show_qualification %}
+                    <p>Mostrar calificación: <strong class="text-success">SÍ</strong></p>
+                {% else %}
+                    <p>Mostrar calificación: <strong class="text-danger">NO</strong></p>
+                {% endif %}
 
-            {% if quiz.show_quiz %}
-                <p>Test público: <strong class="text-success">SÍ</strong></p>
-            {% else %}
-                <p>Test público: <strong class="text-danger">NO</strong></p>
-            {% endif %}
+                {% if quiz.show_quiz %}
+                    <p>Test público: <strong class="text-success">SÍ</strong></p>
+                {% else %}
+                    <p>Test público: <strong class="text-danger">NO</strong></p>
+                {% endif %}
+                <a href="{% url 'quiz:startQuiz' quiz.id %}" class="btn btn-sm btn-outline-dark">Volver al Test</a>
             </div>
             <div class="col-6 text-right">
                 <a href="{% url 'quiz:updateQuiz' quiz.id %}" type="submit" class="btn btn-sm btn-warning">Editar campos</a>

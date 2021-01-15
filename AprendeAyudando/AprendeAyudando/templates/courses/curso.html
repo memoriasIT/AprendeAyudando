@@ -172,7 +172,7 @@
             <div class="row py-2 text-center">
                 {% if not isOwner and show_review %}
                     <div class="col-12">
-                        <a href="{% url 'review:create' course.id course.title %}" class="btn btn-warning btn-sm">Puntuar este curso</a>
+                        <a href="{% url 'review:create' course.id course.title %}" class="btn btn-success btn-sm">Puntuar este curso</a>
                     </div>
                 {% endif %}
             </div>
