@@ -128,7 +128,7 @@ def recoverpassword(request):
                 html_content = """  <table style="max-width: 600px; text-align: center; padding: 10px; margin:0 auto; border-collapse: collapse;">
                                         <tr>
                                             <td style="background-color: #ecf0f1; text-align: center; padding: 0">
-                                                <a href="https://aprendeayudando.herokuapp.com/">
+                                                <a href="http://127.0.0.1:8000/">
                                                     <img width="20%" style="display:block; margin: 1.5% 3%; text-align: center;" src="https://aprendeayudando.herokuapp.com/static/general/images/logoTransparent.png">
                                                 </a>
                                             </td>
@@ -142,7 +142,7 @@ def recoverpassword(request):
                                                         Ha solicitado una nueva contraseña en la plataforma AprendeAyudando, su nueva contraseña es: <strong>""" + "%s" %newPass + """</strong></p>
                                                     <br>
                                                     <div style="width: 100%; text-align: center">
-                                                        <a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href="https://aprendeayudando.herokuapp.com/accounts/login/">Iniciar Sesión</a>	
+                                                        <a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href="http://127.0.0.1:8000/accounts/login/">Iniciar Sesión</a>	
                                                     </div>
                                                     <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">AprendeAyudando 2021</p>
                                                 </div>
@@ -223,7 +223,7 @@ def update(request, username):
                     html_content = """  <table style="max-width: 600px; text-align: center; padding: 10px; margin:0 auto; border-collapse: collapse;">
                                             <tr>
                                                 <td style="background-color: #ecf0f1; text-align: center; padding: 0">
-                                                    <a href="https://aprendeayudando.herokuapp.com/">
+                                                    <a href="http://127.0.0.1:8000/">
                                                         <img width="20%" style="display:block; margin: 1.5% 3%; text-align: center;" src="https://aprendeayudando.herokuapp.com/static/general/images/logoTransparent.png">
                                                     </a>
                                                 </td>
@@ -237,7 +237,7 @@ def update(request, username):
                                                             En su cuenta de la plataforma AprendeAyudando la contraseña ha sido modificada, si usted no ha cambiado la contraseña pulse en el siguiente botón para recuperarla.</p>
                                                         <br>
                                                         <div style="width: 100%; text-align: center">
-                                                            <a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href="https://aprendeayudando.herokuapp.com/recoverpassword/">Recuperar Contraseña</a>	
+                                                            <a style="text-decoration: none; border-radius: 5px; padding: 11px 23px; color: white; background-color: #3498db" href="http://127.0.0.1:8000/recoverpassword/">Recuperar Contraseña</a>	
                                                         </div>
                                                         <p style="color: #b3b3b3; font-size: 12px; text-align: center;margin: 30px 0 0">AprendeAyudando 2021</p>
                                                     </div>
