@@ -87,8 +87,18 @@
                         </td>
 
                         <td style="vertical-align: middle;">
-                            <a href="{% url 'quiz:updateQuestion' question.id %}" type="submit" class="btn btn-warning">Editar</a>
-                            <a href="{% url 'quiz:deleteQuestion' question.id %}" class="btn btn-danger">Eliminar</a>
+                            {% if quiz.show_quiz %}
+                                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Debe poner el test en Privado">
+                                    <a href="#" type="submit" class="btn btn-warning disabled" aria-disabled="true">Editar</a>
+                                </span>
+                                <span class="d-inline-block" tabindex="0" data-bs-toggle="tooltip" title="Debe poner el test en Privado">
+                                    <a href="#" class="btn btn-danger disabled" aria-disabled="true">Eliminar</a>
+                                </span>
+                            {% else %}
+                                <a href="{% url 'quiz:updateQuestion' question.id %}" type="submit" class="btn btn-warning">Editar</a>
+                                <a href="{% url 'quiz:deleteQuestion' question.id %}" class="btn btn-danger">Eliminar</a>
+                            {% endif %}
+                            
                         </td>
 
                     </tr>
