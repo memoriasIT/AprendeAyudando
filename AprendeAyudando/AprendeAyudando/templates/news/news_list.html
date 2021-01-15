@@ -7,9 +7,11 @@
     <div class="container py-5">
         <h1 class="text-center">Noticias</h1>
         <div class="col-12 text-right">
+            {% if tienePermisos %}
             <a class = "btn btn-lg btn-secondary" href="{% url 'news:news-add' %}">
                 Crear noticia
             </a>
+            {% endif %}
         </div>
         <div class="row">
             {% for n in news_list %}

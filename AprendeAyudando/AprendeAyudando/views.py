@@ -1,8 +1,6 @@
 from django.shortcuts import render
-
 from django.contrib.auth.models import User, Group
 from django.http import HttpResponseRedirect, HttpResponseForbidden
-from .forms import RegisterForm, RecoverForm, UploadForm
 from django.contrib.auth import login, logout
 from django.shortcuts import redirect
 from django.urls import reverse
@@ -10,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail, EmailMultiAlternatives
 from django.conf import settings
+from .forms import RegisterForm, RecoverForm, UploadForm
 import random
 import string
 
@@ -84,14 +83,14 @@ def user_register(request):
                 user.last_name = form.cleaned_data['last_name']
                 user.save()
                
-                # Add role student to new user
+                # add role 'student' to new user
                 studentGroup = Group.objects.get(name='Estudiante')
                 studentGroup.user_set.add(user)
 
-                # Login the user
+                # log the user in
                 login(request, user)
                
-                # redirect to accounts page:
+                # redirect to accounts page
                 return HttpResponseRedirect(reverse('account'))
 
    # No post data availabe, let's just show the page.

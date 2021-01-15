@@ -4,15 +4,15 @@ from django.http import HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.decorators import permission_required
 from django.contrib.auth.models import User
-from AprendeAyudando.views import has_group
-from review.models import Review
 
+from .models import Activity, ActivityRequest
+from review.models import Review
 from forum.models import Forum
-from resources.models import Resource
-from .models import Activity
-from .models import ActivityRequest
 from quiz.models import Quiz, Qualification, Question, Answer
+from resources.models import Resource
+
 from AprendeAyudando.templatetags.auth_extras import ACTIVITY
+from AprendeAyudando.views import has_group
 
 #Queries
 from django.db.models import Q
@@ -130,7 +130,7 @@ def action_activity_request(request, activity_id):
 def join(request, activity_id):
     activity = get_object_or_404(Activity, pk=activity_id)
 
-    #-----------------------------------CONTROL DE ACCESO-----------------------------------
+    #-----------------------------------CONTROL DE ACCESO----------------------------------
     if activity.restricted_entry and not request.user.is_authenticated:
         return inscription(request, activity_id)
     
@@ -147,10 +147,10 @@ def join(request, activity_id):
     #-----------------------------------------FOROS-----------------------------------------
     forumListCourse = Forum.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
 
-    #-----------------------------------------RECURSOS-----------------------------------------
+    #-----------------------------------------RECURSOS--------------------------------------
     resourceListCourse = Resource.objects.filter(activityCourseType=ACTIVITY, activityCourseFk=activity.id)
 
-    #-------------------------------------------TEST-------------------------------------------
+    #-------------------------------------------TEST----------------------------------------
     dic_test = {}
     if isOwner or request.user.is_superuser:
         quizListActivity = Quiz.objects.filter(activity=activity)

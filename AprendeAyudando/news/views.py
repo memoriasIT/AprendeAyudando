@@ -11,13 +11,27 @@ from django.db import models
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
+from AprendeAyudando.views import has_group
 
 #Views
 from django.views.generic import CreateView, DeleteView, UpdateView, ListView, DetailView
 
+def tienePermisos(user):
+    if has_group(user, 'Profesor') or has_group(user, 'EntidadPublicoPrivada') or user.is_superuser:
+        return True
+    else:
+        return False
+
 class NewsList(ListView):
     model = News
     context_object_name = 'news_list'
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['isCreate'] = True
+        context['tienePermisos'] = tienePermisos(self.request.user)
+        context['user'] = self.request.user
+        return context
     
 class NewsCreate(CreateView):
     form_class = NewsForm
@@ -49,3 +63,8 @@ class NewsDelete(DeleteView):
 class NewsDetail(DetailView):
     model = News
     context_object_name = 'news'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tienePermisos'] = tienePermisos(self.request.user)
+        return context

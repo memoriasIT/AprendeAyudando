@@ -20,11 +20,19 @@
                     <input class="form-control text-center col-1" type="number" max="10" min="1" name="rating" id="rating" required>
                 </div>
                 <div class="form-group">
+                    {% if isActivity %}
                     <label for="problems"><strong>Comente posibles problemas con esta actividad:</strong></label>
+                    {% else %}
+                    <label for="problems"><strong>Comente posibles problemas con este curso:</strong></label>
+                    {% endif %}
                     <textarea class="form-control text-center" name="problems" id= "problems" rows="3" required></textarea>
                 </div>
                 <div class="form-group">
+                    {% if isActivity %}
                     <label for="new_activity_description"><strong>Aporta alguna posible idea para mejorar el contenido de esta actividad:</strong></strong></label>
+                    {% else %}
+                    <label for="problems"><strong>Comente posibles problemas con este curso:</strong></label>
+                    {% endif %}
                     <textarea class="form-control text-center" name="improvements" id= "improvements" rows="3" required></textarea>
                 </div>
                 <input type="submit" value="Puntuar" class="btn btn-success btn-lg">
