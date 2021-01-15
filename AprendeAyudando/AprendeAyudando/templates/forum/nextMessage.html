@@ -1,37 +1,37 @@
-{% block title %}AprendeAyudando - Debate{% endblock %}
-
 {% block style %}
     {% load static %}
     <link rel="stylesheet" type="text/css" href="{% static 'courses/style.css' %}">
 {% endblock %}
 {% block content %}
 {% load auth_extras %}
-{% for mmm in men %}
-    {% with  message=mmm|get_first_item_from_dict value=mmm|get_first_value_item_from_dict %}
-        <div class="container ml-2 my-3">
-            <div class="row">
-                <!------HEADER---->
-                <div class="col-6 d-flex">
-                    <img src="{% static 'general/images/profile/user-icon.png' %}" alt="" style="width:2em;height:2em;">
-                    <h5 class="mx-3">{{message.subject}}</h5>
-                </div>
-                <div class="col-6 text-right">
-                    <p>de <span class="text-secondary"> {{message.author.email}} </span> - {{message.pub_date}}</p>
-                </div>
-                <!------CONTENIDO---->
-                <div class="col-12 bg-light">
-                    <p>{{message.content}}</p>
-                </div>
-                <!------ACCIONES---->
-                <div class="col-12 text-right">
-                    <a href="{% url 'forum:reply' message.id %}" class="btn btn-small btn-secondary mt-2">Responder</a>
-                    {% if message.author == request.user or isAuthor or request.user.is_superuser %}
-                        <a href="{% url 'forum:deleteMessage' message.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
-                    {% endif %}
+<div class="p-4">
+    {% for mmm in men %}
+        {% with  message=mmm|get_first_item_from_dict value=mmm|get_first_value_item_from_dict %}
+            <div class="container ml-2 my-3">
+                <div class="row">
+                    <!------HEADER---->
+                    <div class="col-6 d-flex">
+                        <img src="{% static 'general/images/profile/user-icon.png' %}" alt="" style="width:2em;height:2em;">
+                        <h5 class="mx-3">{{message.subject}}</h5>
+                    </div>
+                    <div class="col-6 text-right">
+                        <p>de <span class="text-secondary"> {{message.author.email}} </span> - {{message.pub_date}}</p>
+                    </div>
+                    <!------CONTENIDO---->
+                    <div class="col-12 bg-light">
+                        <p>{{message.content}}</p>
+                    </div>
+                    <!------ACCIONES---->
+                    <div class="col-12 text-right">
+                        <a href="{% url 'forum:reply' message.id %}" class="btn btn-small btn-secondary mt-2">Responder</a>
+                        {% if message.author == request.user or isAuthor or request.user.is_superuser %}
+                            <a href="{% url 'forum:deleteMessage' message.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
-        {% include "forum/nextMessage.html" with men=value %}
-    {% endwith %}
-{% endfor %}
+            {% include "forum/nextMessage.html" with men=value %}
+        {% endwith %}
+    {% endfor %}
+</div>
 {% endblock %}
