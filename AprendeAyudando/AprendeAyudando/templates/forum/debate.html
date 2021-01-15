@@ -31,11 +31,9 @@
                 <!------ACCIONES---->
                 <div class="col-12 text-right">
                     <a href="{% url 'forum:reply' initialMessage.id %}" class="btn btn-small btn-secondary mt-2">Responder</a>
-                    {% if initialMessage.author == request.user %}
-                    <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
-                    {% endif %}
-                    {% if isAuthor is True %}
-                    <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
+                    
+                    {% if initialMessage.author == request.user or isAuthor or request.user.is_superuser %}
+                        <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
                     {% endif %}
                 </div>
             </div>
@@ -60,10 +58,7 @@
                         <!------ACCIONES---->
                         <div class="col-12 text-right">
                             <a href="{% url 'forum:reply' initialMessage.id %}" class="btn btn-small btn-secondary mt-2">Responder</a>
-                            {% if initialMessage.author == request.user %}
-                            <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
-                            {% endif %}
-                            {% if isAuthor is True %}
+                            {% if message.author == request.user or isAuthor or request.user.is_superuser %}
                             <a href="{% url 'forum:deleteMessage' initialMessage.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
                             {% endif %}
                         </div>
