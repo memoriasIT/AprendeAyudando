@@ -22,6 +22,7 @@ from messaging.models import MessagingMessage
 # Calendar
 import datetime
 from schedule.models import Calendar
+from django.utils.dateparse import parse_date
 from schedule.models import Event
 
 
@@ -70,7 +71,12 @@ def createResource(request, courseOrActivity, activityCourseFk):
         except:
             isShownInCalendar = False
 
-        dateInCalendar = request.POST.get('dateInCalendar', None)
+        if isShownInCalendar:
+            date_str = request.POST.get('dateInCalendar', None)
+            dateInCalendar = parse_date(date_str)
+        else:
+            dateInCalendar = datetime.datetime.now()
+
         if not new_resource_link.startswith('http://') and not new_resource_link.startswith('https://'):
             new_resource_link='http://'+new_resource_link
         new_resource = Resource.objects.create(
