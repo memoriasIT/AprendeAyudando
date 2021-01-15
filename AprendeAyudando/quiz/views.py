@@ -75,7 +75,7 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
         new_quiz_show_qualification = request.POST["show_qualification"]=='si'
         number_questions = request.POST["number_questions"]
         if not number_questions:
-            number_questions = 1
+            number_questions = 0
         if not new_quiz_date:
             new_quiz_date = None
         if(courseOrActivity == COURSE):
@@ -103,7 +103,11 @@ def createQuiz(request, courseOrActivity, courseOrActivity_id):
 
         # Create event in calendar
         createEventInCalendar(new_quiz_title, new_quiz_date)
-
+        if(int(number_questions) <= 0):
+            if(courseOrActivity == COURSE):
+                return viewsCourseJoin(request, courseOrActivity_id)
+            else:
+                return viewsActivityJoin(request, courseOrActivity_id)
         ctx['quiz'] = new_quiz
         ctx['number_questions'] = int(number_questions)
         return render(request, 'quiz/createquestion.html', ctx)
