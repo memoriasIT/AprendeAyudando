@@ -165,22 +165,35 @@ def viewDebate(request, debate_id):
     forum = debate.forum
         #-----------------------------------------MENSAJES-------------------------------------------
     initialMessage = Message.objects.filter(debate = debate, initial = True).first()
-    replies = Reply.objects.filter(originalMessage=initialMessage)
+    """replies = Reply.objects.filter(originalMessage=initialMessage)
     repliesList = []
     for r in replies:
-        repliesList.append(r.replyMessage)
-    
+        repliesList.append(r.replyMessage)"""
+    repliesDict = getMessageRecursive(initialMessage)
         #---------------------------------------INFO CONTROL-------------------------------------------
     isAuthor = request.user == forum.author
-    print(isAuthor)
+
     context = {
         'debate' : debate,
         'initialMessage' : initialMessage,
         'forum' : forum,
         'isAuthor': isAuthor,
-        'repliesList': repliesList,
+        #'repliesList': repliesList,
+        'repliesDict':repliesDict
     }
     return render(request, 'forum/debate.html', context)
+
+def getMessageRecursive(mainMessage):
+    replies = Reply.objects.filter(originalMessage=mainMessage).distinct()
+    repliesList = []
+    for r in replies:
+        dictt = getMessageRecursive(r.replyMessage)
+        repliesList.append(dictt)
+
+    dictt = {
+        mainMessage:repliesList
+    }
+    return dictt
 
 @login_required
 def deleteDebate(request, debate_id):

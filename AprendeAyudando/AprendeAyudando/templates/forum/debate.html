@@ -8,6 +8,7 @@
 
 {% block content %}
 {% load static %}
+{% load auth_extras %}
 <section class="bg-white text-dark py-5 min-vh-100">
     <div class="container py-5">
     <!------DESCRIPCION----->
@@ -38,39 +39,15 @@
                 </div>
             </div>
         </div>
-        <!------respuestas---->
-        {% if repliesList %}
-                {% for message in repliesList %}
-                <div class="container ml-2 my-3">
-                    <div class="row">
-                        <!------HEADER---->
-                        <div class="col-6 d-flex">
-                            <img src="{% static 'general/images/profile/user-icon.png' %}" alt="" style="width:2em;height:2em;">
-                            <h5 class="mx-3">{{message.subject}}</h5>
-                        </div>
-                        <div class="col-6 text-right">
-                            <p>de <span class="text-secondary"> {{message.author.email}} </span> - {{message.pub_date}}</p>
-                        </div>
-                        <!------CONTENIDO---->
-                        <div class="col-12 bg-light">
-                            <p>{{message.content}}</p>
-                        </div>
-                        <!------ACCIONES---->
-                        <div class="col-12 text-right">
-                            <a href="{% url 'forum:reply' message.id %}" class="btn btn-small btn-secondary mt-2">Responder</a>
-                            {% if message.author == request.user or isAuthor or request.user.is_superuser %}
-                            <a href="{% url 'forum:deleteMessage' message.id %}" class="btn btn-small btn-warning mt-2">Eliminar</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-        {% endif %}
-
+        <!--respuestas-->
+        {% with mmm=initialMessage|get_item_from_dict:repliesDict %}
+        
+            {% include "forum/nextMessage.html" with men=mmm %}
+        {% endwith %}
         <div class="container text-center">
-            <!------VOLVER A FORO----->
+            <!--VOLVER A FORO-->
             <a style="margin-bottom: 50px;" href="{% url 'forum:join' forum.id %}" class="btn btn-outline-dark btn-small">Volver a foro</a>
-            <!------BORRAR DEBATE----->
+            <!--BORRAR DEBATE-->
             {% if isAuthor is True %}
             <a style="margin-bottom: 50px;" href="{% url 'forum:deleteDebate' debate.id %}" class="btn btn-small btn-danger">Borrar debate</a>
             {% endif %}

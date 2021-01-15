@@ -30,3 +30,15 @@ def get_list_items_card(list, quiz_id):
 @register.filter(name='get_user_from_id')
 def get_user_from_id(querySet_of_users, user_id):
     return querySet_of_users.get(id=user_id)
+
+@register.filter(name='get_item_from_dict')
+def get_item_from_dict(item, dictt):
+    return dictt[item]
+    
+@register.filter(name='get_first_item_from_dict')
+def get_first_item_from_dict(dictt):
+    return list(dictt.keys())[0]
+
+@register.filter(name='get_first_value_item_from_dict')
+def get_first_value_item_from_dict(dictt):
+    return list(dictt.values())[0]
