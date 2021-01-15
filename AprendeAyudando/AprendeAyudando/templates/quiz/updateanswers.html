@@ -17,13 +17,13 @@
             <p><strong>Posibles respuestas (antiguas):</strong></p>
             {% for answer in list_old_answers %}
                 <div class="form-group row justify-content-center">
+                    <input type="text" class="form-control text-center col-4" name="old_answer_text{{ answer.id }}" value="{{ answer.text }}" required>
                     {% if answer.correct %}
-                        <input type="checkbox" class="eliminarDefaultCheckBox" id="{{ answer.id }}" name="old_answer_is_correct[]" value="{{ answer.id }}" checked>
+                        <input type="checkbox" class="form-control text-center col-1" id="{{ answer.id }}" name="old_answer_is_correct[]" value="{{ answer.id }}" checked>
                     {% else %}
-                        <input type="checkbox" class="eliminarDefaultCheckBox" id="{{ answer.id }}" name="old_answer_is_correct[]" value="{{ answer.id }}">
+                        <input type="checkbox" class="form-control text-center col-1" id="{{ answer.id }}" name="old_answer_is_correct[]" value="{{ answer.id }}">
                     {% endif %}
                     <label for="{{ answer.id }}"></label>
-                    <input type="text" name="old_answer_text{{ answer.id }}" value="{{ answer.text }}"required>
                 </div>
             {% endfor %}
 
@@ -31,9 +31,9 @@
                 <p><strong>Posibles respuestas (nuevas):</strong></p>
                 {% for nn in range_new_number_answers %}
                     <div class="form-group row justify-content-center">
-                        <input type="checkbox" class="eliminarDefaultCheckBox" id="pregunta{{nn}}" name="new_answer_is_correct[]" value="{{nn}}">
+                        <input type="text" class="form-control text-center col-4" name="new_answer_text{{nn}}" required>
+                        <input type="checkbox" class="form-control text-center col-1" id="pregunta{{nn}}" name="new_answer_is_correct[]" value="{{nn}}">
                         <label for="pregunta{{nn}}"></label>
-                        <input type="text" name="new_answer_text{{nn}}" required>
                     </div>
                 {% endfor %}
             {% endif %}
