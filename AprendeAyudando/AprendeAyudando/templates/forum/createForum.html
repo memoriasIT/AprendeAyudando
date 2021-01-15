@@ -20,10 +20,11 @@
         </form>
     </div>
     <div class="container text-center">
-        {% if activityCourseType == 'Course' %}
-            <a style="margin-bottom: 50px;" href="{% url 'courses:join' activityCourseFk %}" class="btn btn-warning btn-sm">Volver a curso</a>
+        {% if courseOrActivity == 'curso' %}
+        
+            <a style="margin-bottom: 50px;" href="{% url 'courses:join' activityCourseFk %}" class="btn btn-outline-dark btn-sm">Volver a curso</a>
         {% else %}
-            <a style="margin-bottom: 50px;" href="{% url 'activity:join' activityCourseFk %}" class="btn btn-warning btn-sm">Volver a actividad</a>   
+            <a style="margin-bottom: 50px;" href="{% url 'activity:join' activityCourseFk %}" class="btn btn-outline-dark btn-sm">Volver a actividad</a>   
         {% endif %}
     </div>
 </section>

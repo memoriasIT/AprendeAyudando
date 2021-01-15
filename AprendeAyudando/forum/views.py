@@ -233,7 +233,7 @@ def reply(request, message_id):
 def deleteMessage(request, message_id):
     message = get_object_or_404(Message, pk=message_id) 
     if request.method=="POST":
-        Message.objects.filter(id=message.id).delete
+        Message.objects.filter(id=message.id).delete()
         if not message.initial:
             return viewDebate(request, message.debate.id)
         else:
